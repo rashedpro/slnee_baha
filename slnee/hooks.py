@@ -20,7 +20,11 @@ doc_events = {
 }
 
 
-
+jenv = {
+    "methods": [
+        "qrcode:frappe.fatoora.getqrcode"
+    ]
+}
 
 
 
