@@ -34,6 +34,7 @@ def get_color(src=None):
         counts[index_max]=0
         peak = codes[index_max]
         colour = binascii.hexlify(bytearray(int(c) for c in peak)).decode('ascii') # actual colour, (in HEX)
+        #if tha background is white the code will select white , so we eliminate it
         if peak[0] > 250 and peak[1] > 250 and peak[1] > 250:
                 index_max = np.argmax(counts)
                 peak = codes[index_max]
