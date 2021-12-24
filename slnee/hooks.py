@@ -9,6 +9,33 @@ app_color = "grey"
 app_email = "baha@slnee.com"
 app_license = "MIT"
 
+
+
+doc_events = {
+        "Company": {
+
+        "before_validate": "slnee.color.change_color"
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fixtures = ["Custom Field"]
+
 # Includes in <head>
 # ------------------
 
