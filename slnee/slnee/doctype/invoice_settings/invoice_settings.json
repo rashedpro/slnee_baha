@@ -1,0 +1,173 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2021-12-27 14:31:49.895508",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "invoice_title",
+  "arabic_title",
+  "show_tax",
+  "column_break_3",
+  "add_qr_code",
+  "qr_code_type",
+  "column_break_6",
+  "serial_number",
+  "description",
+  "unit_price",
+  "unit",
+  "quantity",
+  "column_break_13",
+  "discount",
+  "taxable_amount",
+  "tax_rate",
+  "tax_amount",
+  "total_amount",
+  "section_break_19",
+  "show_money_in_words",
+  "columns_number"
+ ],
+ "fields": [
+  {
+   "fieldname": "invoice_title",
+   "fieldtype": "Data",
+   "label": "Invoice title"
+  },
+  {
+   "fieldname": "arabic_title",
+   "fieldtype": "Data",
+   "label": "\u0625\u0633\u0645 \u0627\u0644\u0641\u0627\u062a\u0648\u0631\u0629"
+  },
+  {
+   "default": "0",
+   "fieldname": "show_tax",
+   "fieldtype": "Check",
+   "label": "Show tax id"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "add_qr_code",
+   "fieldtype": "Check",
+   "label": "Add QR code"
+  },
+  {
+   "fieldname": "qr_code_type",
+   "fieldtype": "Select",
+   "label": "QR code type",
+   "options": "Fatoora app (Saudi Arabia)\nLink\nText"
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Section Break",
+   "label": "Items table"
+  },
+  {
+   "default": "0",
+   "fieldname": "serial_number",
+   "fieldtype": "Check",
+   "label": "Serial Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "description",
+   "fieldtype": "Check",
+   "label": "Description"
+  },
+  {
+   "default": "0",
+   "fieldname": "unit_price",
+   "fieldtype": "Check",
+   "label": "Unit price"
+  },
+  {
+   "default": "0",
+   "fieldname": "unit",
+   "fieldtype": "Check",
+   "label": "Unit"
+  },
+  {
+   "default": "0",
+   "fieldname": "quantity",
+   "fieldtype": "Check",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "discount",
+   "fieldtype": "Check",
+   "label": "Discount"
+  },
+  {
+   "default": "0",
+   "fieldname": "taxable_amount",
+   "fieldtype": "Check",
+   "label": "Taxable amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "tax_rate",
+   "fieldtype": "Check",
+   "label": "Tax rate"
+  },
+  {
+   "default": "0",
+   "fieldname": "tax_amount",
+   "fieldtype": "Check",
+   "label": "Tax amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_amount",
+   "fieldtype": "Check",
+   "label": "Total amount"
+  },
+  {
+   "fieldname": "section_break_19",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "show_money_in_words",
+   "fieldtype": "Check",
+   "label": "Show money in words"
+  },
+  {
+   "fieldname": "columns_number",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "columns number",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2021-12-27 16:01:50.172707",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "Invoice Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

@@ -8,7 +8,7 @@ app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "baha@slnee.com"
 app_license = "MIT"
-
+app_logo_url = "https://business.qms.deom.com.sa/files/2017%20New%20QMS%20LOGO%20corped.jpg"
 
 
 doc_events = {
@@ -22,7 +22,9 @@ doc_events = {
 
 jenv = {
     "methods": [
-        "qrcode:frappe.fatoora.getqrcode"
+        "qrcode:slnee.fatoora.getqrcode",
+	"test:slnee.test.test"
+
     ]
 }
 
