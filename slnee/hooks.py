@@ -40,7 +40,11 @@ jenv = {
 
 
 
-fixtures = ["Custom Field"]
+fixtures = ["Custom Field",
+	{"dt":"Print Format","filters":[["name","like","VAT E-invoice KSA"]]},
+	{"dt":"Server Script","filters":[["name","like","columns number"]]}
+
+]
 
 # Includes in <head>
 # ------------------
