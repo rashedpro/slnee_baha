@@ -4,8 +4,5 @@
 # import frappe
 from frappe.model.document import Document
 
-class Font(Document):
-	def validate(self):
-		if self.type =="Google Fonts" :
-			self.css=self.googlelinks
+class test1(Document):
 	pass

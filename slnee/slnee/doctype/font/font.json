@@ -1,16 +1,16 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2021-12-31 10:37:25.542399",
+ "creation": "2021-12-31 11:01:24.093620",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "name1",
   "type",
+  "googlelinks",
   "file",
   "file_link",
-  "google_link",
   "css"
  ],
  "fields": [
@@ -26,8 +26,7 @@
    "options": "Google Fonts\nOtf"
   },
   {
-   "depends_on": "eval:doc.type==\"Otf\" ;",
-   "description": "Or insert the url the the file",
+   "depends_on": "eval:doc.type==\"Otf\";",
    "fieldname": "file",
    "fieldtype": "Attach",
    "label": "File"
@@ -39,21 +38,21 @@
    "label": "File Link"
   },
   {
-   "depends_on": "eval:doc.type==\"Google Fonts\" ;",
-   "fieldname": "google_link",
-   "fieldtype": "Text",
-   "label": "Google links"
-  },
-  {
    "fieldname": "css",
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Css"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Google Fonts\";",
+   "fieldname": "googlelinks",
+   "fieldtype": "Long Text",
+   "label": "Google links"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-12-31 10:38:54.603391",
+ "modified": "2021-12-31 11:21:45.726234",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Font",
