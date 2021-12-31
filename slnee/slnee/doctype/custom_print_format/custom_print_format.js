@@ -16,6 +16,15 @@ refresh_field("height");
 	 }
 });
 
+frappe.ui.form.on('Custom Print Format', {
+        before_save: function(frm){
+	var cont =document.getElementById("my_container");
+	frm.set_value("html",cont.innerHTML);
+	refresh_field("html");
+	save_header_elements(frm);
+}
+});
+
 
 frappe.ui.form.on('Custom Print Format', {
 	height: function(frm){
@@ -29,7 +38,7 @@ frappe.ui.form.on('Custom Print Format', {
 			document.getElementById("input-range").value=200;
 			refresh_field("height");}
 		else {
-			document.getElementById("header").height=frm.doc.height;}
+			document.getElementById("header").style.height=frm.doc.height.toString()+"px";}
 
 	}
 });
@@ -47,15 +56,13 @@ console.log("1");
 
 }
 
-function place(element,parent_id){
+function place(element,parent_id,frm){
 	if (element.disabled == 0) {
 		var parent = document.getElementById(parent_id);
-		if (element.is_image == 0){
+		if (element.is_image == 0){ //label
 			var element_ = document.createElement("div");
-			$('head').append("<style>.text_element{touch-action:none;border: dashed 1px #CCC;}</style>")
+			add_css(frm,".text_element{touch-action:none;border: dashed 1px #CCC;}");
 			element_.classList.add("text_element");
-			element_.classList.add('resize-drag');
-			element_.style.position="absolute";
 			element_.style.color=element.color;
 			if (element.font){
 				frappe.call({
@@ -64,72 +71,43 @@ function place(element,parent_id){
 						"doctype":"Font",
 						"name":element.font},
 					callback(r) {
-						if(r.message){
-							var css = r.message.css;console.log(css);$('head').append(css);}
+						if(r.message){add_links(frm,r.message.css);}
 						}
 					});
-				
-				element_.style.fontFamily = "'"+element.font+"',sans-serif";}
-			element_.innerHTML=element.label;
-			element_.style.top=element.y.toString()+"px";
-			if (element.center ==0){
-				element_.style.left=element.x.toString() + "px";}
-			else{
-                                element_.style.left="50%";
-				element_.style.transform= "translate(-50%,0)";
-			}
-			var size=element.width;
-			if ( element.height < element.width) {size=element.height;}
-			element_.style.fontSize=size.toString()+"px";
-			parent.appendChild(element_);}
+			element_.style.fontFamily = "'"+element.font+"',sans-serif";}
+			element_.innerHTML=element.label;}
 
-		else{	//image 
+		else{	//image
 			var element_ = document.createElement("img");
-			$('head').append("<style>.image_element{touch-action:none;border: dashed 1px #CCC;}</style>")
+			add_css(frm,".image_element{touch-action:none;border: dashed 1px #CCC;}");
                         element_.classList.add("image_element");
-                        element_.classList.add('resize-drag');
-			element_.style.position="absolute";
 			element_.src = element.image;
-                        element_.style.top=element.y.toString()+"px";
-                        if (element.center ==0){
-                                element_.style.left=element.x.toString() + "px";}
-                        else{
-                                element_.style.left="50%";
-                                element_.style.transform= "translate(-50%,0)";
-                        }
 		}
+			element_.style.top=element.y.toString()+"px";
+                        element_.style.left=element.x.toString()+"px";
+                        element_.setAttribute("data-x",element.x);
+                        element_.setAttribute("data-y",element.y);
+			element_.classList.add('resize-drag');
+                        element_.style.position="absolute";
 			element_.style.width=element.width.toString()+"px";
 			element_.style.height=element.height.toString()+"px";
+			element_.setAttribute("id",element.name);
                         parent.appendChild(element_);
-			
-				}
+	}
 }
 
 
 function first_creation(frm){
 	fix_header(frm)
 	frm.doc.header_elements.forEach(function(element){
-		place(element,"headspace")
+		place(element,"headspace",frm)
 		});
 }
 
 
 function fix_header(frm){
-
-				frappe.call({
-                                        method : "frappe.client.get",
-                                        args:{
-                                                "doctype":"test1",
-                                                "name":"89dafd0b98"},
-                                        callback(r) {
-                                                if(r.message){
-                                                        var css = r.message.name1;console.log(css);$('head').append(css);}
-                                                }
-                                        });
-
-
 	if (frm.doc.show != "No"){
-		var header =  document.getElementById("headspace");
+		var header =  document.getElementById("header");
 		header.style.display="block";
 		header.style.borderColor=frm.doc.border_color;
 		header.style.borderStyle=frm.doc.border;
@@ -139,5 +117,44 @@ function fix_header(frm){
 	else{var header =  document.getElementById("header");
                 header.style.display="none";}
 }
+
+
+function add_css(frm,css){
+	$('head').append("<style>"+css+"</style>")
+	var old_css=frm.doc.css;
+	if (!old_css.includes(css)){
+	frm.set_value("css",old_css+css);
+        refresh_field("css");
+	}
+
+}
+
+function add_links(frm,links){
+	$('head').append(links)
+        var old_links=frm.doc.links;
+	if (old_links==undefined){var old_links="";}
+        if (!old_links.includes(links)){
+        frm.set_value("links",old_links+links);
+        refresh_field("links");
+        }
+
+}
+
+function save_element(frm,element_id){
+	var element =  document.getElementById(element_id);
+	frappe.model.set_value("div",element_id,"height",element.offsetHeight);
+	frappe.model.set_value("div",element_id,"width",element.offsetWidth);
+	frappe.model.set_value("div",element_id,"x",element.style.left.split('px')[0]);
+	frappe.model.set_value("div",element_id,"y",element.style.top.split('px')[0]);
+}
+function save_header_elements(frm){
+	frm.doc.header_elements.forEach(function(element){save_element(frm,element.name);console.log("saved"+element.name);  });
+}
+
+
+
+
+
+
 
 

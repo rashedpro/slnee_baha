@@ -6,15 +6,17 @@ from frappe.model.document import Document
 
 class CustomPrintFormat(Document):
 	def validate(self):
-		if not frappe.db.exists(doc.doc_type,doc.name):
+		if frappe.db.exists("Print Format",self.name) ==None:
+			print(100*"7")
 			doc = frappe.get_doc({
 				'doctype':'Print Format',
-				"name":doc.name,
+				"name":self.name,
 				'doc_type':self.doc_type,
-				"disabled":self.disabled,
-				"html":self.demo,
+				"disabled":self.is_disabled,
+				"html":self.links+self.html,
+				"css":self.css,
 				"Standard": "No",
 				"custom_format":1,
-				"print_format_type":"Jinja"}).insert()
+				"print_format_type":"Jinja"}).insert(ignore_if_duplicate=True)
 
 	pass
