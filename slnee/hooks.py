@@ -15,8 +15,11 @@ doc_events = {
         "Company": {
 
         "before_validate": "slnee.color.change_color"
+		},
+	"Font": {
+	"before_validate":"slnee.slnee.doctype.font.data.test"
+		}
 
-    }
 }
 
 

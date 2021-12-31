@@ -1,0 +1,77 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2021-12-31 10:37:25.542399",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "name1",
+  "type",
+  "file",
+  "file_link",
+  "google_link",
+  "css"
+ ],
+ "fields": [
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Google Fonts\nOtf"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Otf\" ;",
+   "description": "Or insert the url the the file",
+   "fieldname": "file",
+   "fieldtype": "Attach",
+   "label": "File"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Otf\" ;",
+   "fieldname": "file_link",
+   "fieldtype": "Data",
+   "label": "File Link"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Google Fonts\" ;",
+   "fieldname": "google_link",
+   "fieldtype": "Text",
+   "label": "Google links"
+  },
+  {
+   "fieldname": "css",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Css"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-12-31 10:38:54.603391",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "Font",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

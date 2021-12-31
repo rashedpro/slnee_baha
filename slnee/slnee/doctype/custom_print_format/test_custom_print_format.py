@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestInvoiceSettings(unittest.TestCase):
+class TestCustomPrintFormat(unittest.TestCase):
 	pass

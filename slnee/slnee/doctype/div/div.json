@@ -1,0 +1,113 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2021-12-30 18:04:28.650109",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "label",
+  "color",
+  "width",
+  "height",
+  "center",
+  "x",
+  "y",
+  "font_size",
+  "column_break_8",
+  "disabled",
+  "is_image",
+  "image"
+ ],
+ "fields": [
+  {
+   "depends_on": "eval:doc.is_image==\"0\";",
+   "fieldname": "label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Label"
+  },
+  {
+   "default": "#000000",
+   "depends_on": "eval:doc.is_image==\"0\";",
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "label": "Color"
+  },
+  {
+   "default": "50",
+   "fieldname": "width",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Width"
+  },
+  {
+   "default": "30",
+   "fieldname": "height",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Height"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.center==\"0\";",
+   "fieldname": "x",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "X"
+  },
+  {
+   "default": "0",
+   "fieldname": "y",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Y"
+  },
+  {
+   "default": "12",
+   "depends_on": "eval:doc.is_image==\"0\";",
+   "fieldname": "font_size",
+   "fieldtype": "Int",
+   "label": "Font size"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_image",
+   "fieldtype": "Check",
+   "label": "Is image"
+  },
+  {
+   "depends_on": "eval:doc.is_image==\"1\";",
+   "fieldname": "image",
+   "fieldtype": "Attach",
+   "label": "Image"
+  },
+  {
+   "default": "0",
+   "fieldname": "center",
+   "fieldtype": "Check",
+   "label": "center horizontally"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-12-30 19:22:40.030095",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "div",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

@@ -1,0 +1,141 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2021-12-30 15:46:53.438378",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "doctype_section",
+  "doc_type",
+  "print_format",
+  "column_break_4",
+  "is_disabled",
+  "header_section",
+  "show",
+  "height",
+  "html_height",
+  "column_break_5",
+  "border",
+  "border_color",
+  "column_break_8",
+  "header_elements",
+  "demo_section",
+  "demo"
+ ],
+ "fields": [
+  {
+   "fieldname": "header_section",
+   "fieldtype": "Section Break",
+   "label": "Header"
+  },
+  {
+   "fieldname": "show",
+   "fieldtype": "Select",
+   "label": "show",
+   "options": "Yes\nNo\nEmpty"
+  },
+  {
+   "depends_on": "eval:in_list([\"Yes\", \"Empty\"], doc.show)",
+   "description": "in pixels",
+   "fieldname": "height",
+   "fieldtype": "Int",
+   "label": "Height"
+  },
+  {
+   "depends_on": "eval:in_list([\"Yes\", \"Empty\"], doc.show)",
+   "fieldname": "html_height",
+   "fieldtype": "HTML",
+   "options": "\n<div class=\"range-slider\">\n    <input id=\"input-range\" max=\"200\" min=\"20\" step=\"1\" style=\"width: 200px;\" type=\"range\" value=\"100\">\n</div> \n\n"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "none",
+   "depends_on": "eval:in_list([\"Yes\", \"Empty\"], doc.show)",
+   "fieldname": "border",
+   "fieldtype": "Select",
+   "label": "Border",
+   "options": "none\nsolid\ndotted\ndouble\ndashed\ngroove\ninset\noutset"
+  },
+  {
+   "depends_on": "eval:doc.border!=\"none\" && doc.border!=undefined && in_list([\"Yes\", \"Empty\"], doc.show);",
+   "fieldname": "border_color",
+   "fieldtype": "Color",
+   "label": "Border Color"
+  },
+  {
+   "depends_on": "eval:in_list([\"Yes\"], doc.show);",
+   "fieldname": "column_break_8",
+   "fieldtype": "Section Break",
+   "label": "Header elements"
+  },
+  {
+   "fieldname": "demo",
+   "fieldtype": "HTML",
+   "label": "Demo",
+   "options": "\n<div style=\"width: 100%; padding: 1mm; border: solid 1px gray;\">\n\n<table style=\"width: 100%; border: none;\">\n<thead id=\"head\"><tr style=\"border: none;\"><td id=\"header\" style=\"border: none;\"><div id=\"headspace\" style=\"position: relative; width: 100%;\"></div></td></tr></thead>\n<tfoot id=\"foot\"></tfoot>\n</table>\n</div>"
+  },
+  {
+   "fieldname": "demo_section",
+   "fieldtype": "Section Break",
+   "label": "Demo"
+  },
+  {
+   "fieldname": "header_elements",
+   "fieldtype": "Table",
+   "label": "elements",
+   "options": "div"
+  },
+  {
+   "fieldname": "doctype_section",
+   "fieldtype": "Section Break",
+   "label": "Doctype"
+  },
+  {
+   "fieldname": "doc_type",
+   "fieldtype": "Link",
+   "label": "Doctype",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "print_format",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Print format",
+   "options": "Print Format"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-12-31 10:23:23.305951",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "Custom Print Format",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
