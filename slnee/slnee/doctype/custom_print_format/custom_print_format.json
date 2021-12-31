@@ -20,7 +20,8 @@
   "column_break_8",
   "header_elements",
   "demo_section",
-  "demo"
+  "demo",
+  "html"
  ],
  "fields": [
   {
@@ -74,8 +75,9 @@
   {
    "fieldname": "demo",
    "fieldtype": "HTML",
+   "ignore_xss_filter": 1,
    "label": "Demo",
-   "options": "\n<div style=\"width: 100%; padding: 1mm; border: solid 1px gray;\">\n\n<table style=\"width: 100%; border: none;\">\n<thead id=\"head\"><tr style=\"border: none;\"><td id=\"header\" style=\"border: none;\"><div id=\"headspace\" style=\"position: relative; width: 100%;\"></div></td></tr></thead>\n<tfoot id=\"foot\"></tfoot>\n</table>\n</div>"
+   "options": "<style>\n    .resize-drag {\n  \n  border:dashed 1px #CCC; \n  width:100px;\n  touch-action: none;\n\n \n}\n\n    \n</style>\n\n<div style=\"width: 100%; padding: 1mm; border: solid 1px gray;\">\n\n<table style=\"width: 100%; border: none;\">\n<thead id=\"head\"><tr style=\"border: none;\"><td id=\"header\" style=\"border: none;\"><div id=\"headspace\" style=\"width: 100%;\">\n</div></td></tr></thead>\n<tfoot id=\"foot\"></tfoot>\n</table>\n</div>\n\n"
   },
   {
    "fieldname": "demo_section",
@@ -115,11 +117,17 @@
    "fieldname": "is_disabled",
    "fieldtype": "Check",
    "label": "Disabled"
+  },
+  {
+   "fieldname": "html",
+   "fieldtype": "HTML Editor",
+   "hidden": 1,
+   "label": "html"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-12-31 10:23:23.305951",
+ "modified": "2021-12-31 13:54:37.865276",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Custom Print Format",

@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:name1",
  "creation": "2021-12-31 11:01:24.093620",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -17,7 +18,10 @@
   {
    "fieldname": "name1",
    "fieldtype": "Data",
-   "label": "Name"
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "type",
@@ -39,7 +43,7 @@
   },
   {
    "fieldname": "css",
-   "fieldtype": "Data",
+   "fieldtype": "Long Text",
    "hidden": 1,
    "label": "Css"
   },
@@ -52,7 +56,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-12-31 11:21:45.726234",
+ "modified": "2021-12-31 11:32:31.794789",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Font",

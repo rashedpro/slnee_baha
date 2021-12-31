@@ -7,14 +7,15 @@
  "engine": "InnoDB",
  "field_order": [
   "label",
-  "color",
   "width",
   "height",
   "center",
   "x",
   "y",
-  "font_size",
   "column_break_8",
+  "color",
+  "font",
+  "font_size",
   "disabled",
   "is_image",
   "image"
@@ -97,12 +98,19 @@
    "fieldname": "center",
    "fieldtype": "Check",
    "label": "center horizontally"
+  },
+  {
+   "depends_on": "eval:doc.is_image==\"0\";",
+   "fieldname": "font",
+   "fieldtype": "Link",
+   "label": "Font",
+   "options": "Font"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-12-30 19:22:40.030095",
+ "modified": "2021-12-31 11:37:22.627849",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "div",
