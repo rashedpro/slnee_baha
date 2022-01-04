@@ -50,7 +50,7 @@ fixtures = ["Custom Field",
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/slnee/css/slnee.css"
+app_include_css = "/assets/slnee/css/printview.css"
 # app_include_js = "/assets/slnee/js/slnee.js"
 
 # include js, css files in header of web template

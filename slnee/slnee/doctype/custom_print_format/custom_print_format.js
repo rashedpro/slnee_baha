@@ -2,8 +2,23 @@
 // For license information, please see license.txt
 
 
+
 frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
+
+var sidebar= document.getElementsByClassName("layout-side-section")[0]; 
+var element = document.createElement("div");
+element.setAttribute("id","utils");
+element.style.wisth="100%;"
+var el1=document.createElement("div");
+el1.innerHTML="<i class='fa fa-trash' style='font-size:22px;color:gray;'></i>";
+element.appendChild(el1);
+sidebar.appendChild(element);
+
+
+
+
+
 		first_creation(frm);
 var slider = document.getElementById("input-range");
 slider.value=frm.doc.height;
@@ -45,12 +60,10 @@ frappe.ui.form.on('Custom Print Format', {
 
 frappe.ui.form.on('header_elements','Width',function(frm,cdt,cdn) {
 
-console.log(cdt);
 });
 
 function head_elements(frm){
 frm.doc.elements.forEach(function(element){
-console.log("1");
 
 });
 
@@ -61,7 +74,7 @@ function place(element,parent_id,frm){
 		var parent = document.getElementById(parent_id);
 		if (element.is_image == 0){ //label
 			var element_ = document.createElement("div");
-			add_css(frm,".text_element{touch-action:none;border: dashed 1px #CCC;}");
+			add_css(frm,".text_element{touch-action:none;}");
 			element_.classList.add("text_element");
 			element_.style.color=element.color;
 			if (element.font){
@@ -74,12 +87,12 @@ function place(element,parent_id,frm){
 						if(r.message){add_links(frm,r.message.css);}
 						}
 					});
-			element_.style.fontFamily = "'"+element.font+"',sans-serif";}
+			element_.style.fontFamily = "' " +element.font+"',sans-serif";}
 			element_.innerHTML=element.label;}
 
 		else{	//image
 			var element_ = document.createElement("img");
-			add_css(frm,".image_element{touch-action:none;border: dashed 1px #CCC;}");
+			add_css(frm,".image_element{touch-action:none;}");
                         element_.classList.add("image_element");
 			element_.src = element.image;
 		}
@@ -92,13 +105,16 @@ function place(element,parent_id,frm){
 			element_.style.width=element.width.toString()+"px";
 			element_.style.height=element.height.toString()+"px";
 			element_.setAttribute("id",element.name);
+			element_.onclick = function() {element_click(element_)};
                         parent.appendChild(element_);
 	}
 }
 
 
 function first_creation(frm){
-	fix_header(frm)
+	fix_header(frm);
+	document.getElementById("headspace").innerHTML="";
+	document.getElementById.onclick = function() {clear_select()};
 	frm.doc.header_elements.forEach(function(element){
 		place(element,"headspace",frm)
 		});
@@ -122,6 +138,7 @@ function fix_header(frm){
 function add_css(frm,css){
 	$('head').append("<style>"+css+"</style>")
 	var old_css=frm.doc.css;
+	if (old_css == undefined){old_css="";}
 	if (!old_css.includes(css)){
 	frm.set_value("css",old_css+css);
         refresh_field("css");
@@ -142,18 +159,40 @@ function add_links(frm,links){
 
 function save_element(frm,element_id){
 	var element =  document.getElementById(element_id);
+	if (element != undefined) {
 	frappe.model.set_value("div",element_id,"height",element.offsetHeight);
 	frappe.model.set_value("div",element_id,"width",element.offsetWidth);
 	frappe.model.set_value("div",element_id,"x",element.style.left.split('px')[0]);
-	frappe.model.set_value("div",element_id,"y",element.style.top.split('px')[0]);
+	frappe.model.set_value("div",element_id,"y",element.style.top.split('px')[0]);}
 }
 function save_header_elements(frm){
-	frm.doc.header_elements.forEach(function(element){save_element(frm,element.name);console.log("saved"+element.name);  });
+	if (frm.doc.header_elements != undefined){
+	frm.doc.header_elements.forEach(function(element){save_element(frm,element.name);  });
+}}
+
+
+function element_click(element){
+clear_select();
+if (element.style.borderStyle!="dashed"){
+element.style.borderStyle="dashed";
+element.style.borderColor="gray"
+}else{
+element.style.borderStyle="none";
+}
+}
+
+function clear_select(){
+var texts= document.getElementsByClassName("text_element");
+for (var i =0; i<texts.length;i++){
+texts[i].style.borderStyle="none";
+}
+var texts= document.getElementsByClassName("image_element");
+for (var i =0; i<texts.length;i++){
+texts[i].style.borderStyle="none";
 }
 
 
-
-
+}
 
 
 
