@@ -22,6 +22,16 @@ DATE_FORMAT = "%Y-%m-%d"
 TIME_FORMAT = "%H:%M:%S.%f"
 DATETIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT
 
+@frappe.whitelist()
+def get_fields(doctype):
+	fields = frappe.get_doc("DocType",doctype).fields
+	r=[]
+	for f in fields :
+		if f.label!= None and f.fieldtype not in ["Table"]:
+			r.append(f.fieldname)
+	return(r)
+
+
 def money_in_words(number, main_currency = None, fraction_currency=None):
         """
         Returns string in words with currency and fraction currency.

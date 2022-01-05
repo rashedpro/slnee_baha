@@ -6,7 +6,9 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "type",
   "label",
+  "doc_field",
   "width",
   "height",
   "center",
@@ -14,15 +16,20 @@
   "y",
   "column_break_8",
   "color",
+  "bold",
+  "underline",
+  "italic",
   "font",
   "font_size",
   "disabled",
-  "is_image",
-  "image"
+  "image",
+  "border",
+  "border_color",
+  "border_radius"
  ],
  "fields": [
   {
-   "depends_on": "eval:doc.is_image==\"0\";",
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "label",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -30,7 +37,7 @@
   },
   {
    "default": "#000000",
-   "depends_on": "eval:doc.is_image==\"0\";",
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "color",
    "fieldtype": "Color",
    "label": "Color"
@@ -66,7 +73,7 @@
   },
   {
    "default": "12",
-   "depends_on": "eval:doc.is_image==\"0\";",
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "font_size",
    "fieldtype": "Int",
    "label": "Font size"
@@ -82,13 +89,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "0",
-   "fieldname": "is_image",
-   "fieldtype": "Check",
-   "label": "Is image"
-  },
-  {
-   "depends_on": "eval:doc.is_image==\"1\";",
+   "depends_on": "eval:doc.type==\"Image\";",
    "fieldname": "image",
    "fieldtype": "Attach",
    "label": "Image"
@@ -100,17 +101,70 @@
    "label": "center horizontally"
   },
   {
-   "depends_on": "eval:doc.is_image==\"0\";",
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "font",
    "fieldtype": "Link",
    "label": "Font",
    "options": "Font"
+  },
+  {
+   "default": "Label",
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Label\nImage\nTable",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "border_radius",
+   "fieldtype": "Float",
+   "label": "Border Radius"
+  },
+  {
+   "default": "none",
+   "fieldname": "border",
+   "fieldtype": "Select",
+   "label": "Border",
+   "options": "none\nsolid\ndotted\ndouble\ndashed\ngroove\ninset\noutset"
+  },
+  {
+   "depends_on": "eval:doc.border!=\"none\";",
+   "fieldname": "border_color",
+   "fieldtype": "Color",
+   "label": "Border Color"
+  },
+  {
+   "fieldname": "doc_field",
+   "fieldtype": "Select",
+   "label": "Doctype field"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.type==\"label\";",
+   "fieldname": "bold",
+   "fieldtype": "Check",
+   "label": "Bold"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.type==\"label\";",
+   "fieldname": "underline",
+   "fieldtype": "Check",
+   "label": "Underline"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.type==\"label\";",
+   "fieldname": "italic",
+   "fieldtype": "Check",
+   "label": "Italic"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-12-31 11:37:22.627849",
+ "modified": "2022-01-05 17:35:47.943677",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "div",

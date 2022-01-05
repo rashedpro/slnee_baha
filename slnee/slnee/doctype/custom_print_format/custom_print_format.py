@@ -9,6 +9,37 @@ class CustomPrintFormat(Document):
 		if frappe.db.exists("Print Format",self.name) ==None:
 			html=""
 			css= self.css if self.css else ""
+			css+="""
+	thead {display: table-header-group; }
+tfoot {display: none; }
+@media print {
+.print-format {
+margin-left: 0mm;
+margin-right: 0mm;
+}
+#footer-html{
+display:block;
+}
+.page-footer{
+position:fixed;
+bottom:0mm;
+}
+html,body{
+padding-bottom:0mm;
+}
+}
+.print-format {
+padding: 0in;
+}
+
+@media screen{
+.page-footer{display:none;}
+}
+@page  
+{size: auto; 
+ margin: 0mm 0mm 0mm 0mm;  
+} 
+"""
 			if self.links:
 				html+=self.links
 			if self.html:
@@ -27,8 +58,39 @@ class CustomPrintFormat(Document):
 			doc=frappe.get_doc("Print Format",self.name)
 			html=""
 			css= self.css if self.css else ""
+			css+="""
+thead {display: table-header-group; }
+tfoot {display: none; }
+@media print {
+.print-format {
+margin-left: 0mm;
+margin-right: 0mm;
+}
+#footer-html{
+display:block;
+}
+.page-footer{
+position:fixed;
+bottom:0mm;
+}
+html,body{
+padding-bottom:0mm;
+}
+}
+.print-format {
+padding: 0in;
+}
+
+@media screen{
+.page-footer{display:none;}
+}
+@page  
+{size: auto; 
+ margin: 0mm 0mm 0mm 0mm;  
+} 
+"""
 			if self.links:
-				tml+=self.links
+				html+=self.links
 			if self.html:
 				html+=self.html
 			doc.html=html
