@@ -8,4 +8,25 @@ class Font(Document):
 	def validate(self):
 		if self.type =="Google Fonts" :
 			self.css=self.googlelinks
+		if self.type=="Otf file":
+			if self.is_url==1:
+				self.css="""
+<style>
+@font-face {
+font-family:"""+ self.name+""";
+src:url('"""+self.file_link+"""');
+}
+</style>
+"""
+			else:
+				self.css="""
+<style>
+@font-face {
+font-family:"""+ self.name+""";
+src:url('"""+self.file+"""');
+}
+</style>
+"""
+
+
 	pass

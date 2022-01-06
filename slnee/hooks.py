@@ -42,7 +42,8 @@ jenv = {
 
 fixtures = ["Custom Field",
 	{"dt":"Print Format","filters":[["name","like","VAT E-invoice KSA"]]},
-	{"dt":"Server Script","filters":[["name","like","columns number"]]}
+	#{"dt":"Server Script","filters":[["name","like","columns number"]]},
+	{"dt":"Font"}
 
 ]
 
@@ -50,7 +51,7 @@ fixtures = ["Custom Field",
 # ------------------
 
 # include js, css files in header of desk.html
-app_include_css = "/assets/slnee/css/printview.css"
+#app_include_css = "/assets/slnee/css/printview.css"
 # app_include_js = "/assets/slnee/js/slnee.js"
 
 # include js, css files in header of web template

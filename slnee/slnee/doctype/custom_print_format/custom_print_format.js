@@ -99,6 +99,7 @@ function place(element,parent_id,frm){
 			var element_ = document.createElement("div");
 			add_css(frm,".text_element{touch-action:none;}");
 			element_.classList.add("text_element");
+			element_.classList.add("btn-open-row");
 			element_.style.color=element.color;
 			if (element.font){
 				frappe.call({
@@ -115,8 +116,8 @@ function place(element,parent_id,frm){
 				element_.style.textDecoration = "underline";
 						}
 			var text = element.label;
-			if (element.italic){text=text.italics()}
-			if (element.bold){text=text.bold()}
+			//if (element.italic){text=text.italics()}
+			if (element.bold){element_.style.fontWeight="bold";}
 			element_.style.fontSize= element.font_size.toString()+"px";
 			element_.innerHTML=text;}
 
@@ -135,18 +136,29 @@ function place(element,parent_id,frm){
 
 			element_.appendChild(img);
 		}
+		else if (element.type=="Table"){
+			if (element.table_type=="Static"){
+			//static table goes here
+			var table = document.createElement("TABLE");
+		
+			}
+		}
 			//common
-			element_.style.top=element.y.toString()+"px";
-                        element_.style.left=element.x.toString()+"px";
-                        element_.setAttribute("data-x",element.x);
-                        element_.setAttribute("data-y",element.y);
-			element_.classList.add('resize-drag');
-                        element_.style.position="absolute";
-			element_.style.width=element.width.toString()+"px";
-			element_.style.height=element.height.toString()+"px";
-			element_.setAttribute("id",element.name);
-			element_.onclick = function() {element_click(element_)};
-                        parent.appendChild(element_);
+		var x= element.x;
+		if (element.center ==1){
+			x= 396-(element.width/2);
+			}
+		element_.style.top=element.y.toString()+"px";
+                element_.style.left=x.toString()+"px";
+                element_.setAttribute("data-x",x);
+                element_.setAttribute("data-y",element.y);
+		element_.classList.add('resize-drag');
+                element_.style.position="absolute";
+		element_.style.width=element.width.toString()+"px";
+		element_.style.height=element.height.toString()+"px";
+		element_.setAttribute("id",element.name);
+		element_.onclick = function() {element_click(element_)};
+                parent.appendChild(element_);
 	}
 }
 
@@ -162,7 +174,7 @@ function place_qr_code(frm){
 		element_.setAttribute("id","qr_code");
                 add_css(frm,".image_element{touch-action:none;}");
                 element_.classList.add("image_element");
-                img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data=test";
+                img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data="+frm.doc.qr_code_text.replaceAll("\n","%0A");
 		element_.classList.add('resize-drag');
                 element_.style.position="absolute";
 		element_.style.top=frm.doc.qr_code_y.toString()+"px";
@@ -219,7 +231,12 @@ function add_css(frm,css){
 	}
 
 }
-
+function clear_css_links(frm){
+	frm.set_value("css","");
+	frm.set_value("links","");
+	refresh_field("links");
+	refresh_field("css");
+}
 function add_links(frm,links){
 	$('head').append(links)
         var old_links=frm.doc.links;

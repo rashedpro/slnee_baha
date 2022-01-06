@@ -9,10 +9,16 @@
  "field_order": [
   "name1",
   "type",
+  "language",
   "googlelinks",
+  "is_url",
   "file",
   "file_link",
-  "css"
+  "css",
+  "preview_section",
+  "preview_text",
+  "font_size",
+  "demo"
  ],
  "fields": [
   {
@@ -27,19 +33,21 @@
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Type",
-   "options": "Google Fonts\nOtf"
+   "options": "Google Fonts\nOtf file"
   },
   {
-   "depends_on": "eval:doc.type==\"Otf\";",
+   "depends_on": "eval:doc.type==\"Otf file\" && doc.is_url==0;",
+   "description": "Save the font to see the latest preview.",
    "fieldname": "file",
    "fieldtype": "Attach",
    "label": "File"
   },
   {
-   "depends_on": "eval:doc.type==\"Otf\" ;",
+   "depends_on": "eval:doc.type==\"Otf file\" && doc.is_url==1;",
+   "description": "Save the font to see the latest preview.",
    "fieldname": "file_link",
    "fieldtype": "Data",
-   "label": "File Link"
+   "label": "URL"
   },
   {
    "fieldname": "css",
@@ -49,14 +57,52 @@
   },
   {
    "depends_on": "eval:doc.type==\"Google Fonts\";",
+   "description": "Save the font to see the latest preview.",
    "fieldname": "googlelinks",
-   "fieldtype": "Long Text",
+   "fieldtype": "Text",
    "label": "Google links"
+  },
+  {
+   "default": "English",
+   "fieldname": "language",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Language",
+   "options": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629\nEnglish"
+  },
+  {
+   "fieldname": "preview_section",
+   "fieldtype": "Section Break",
+   "label": "Preview"
+  },
+  {
+   "default": "Almost before we knew it, we had left the ground.",
+   "fieldname": "preview_text",
+   "fieldtype": "Data",
+   "label": "Preview Text"
+  },
+  {
+   "fieldname": "demo",
+   "fieldtype": "HTML",
+   "label": "demo",
+   "options": "<div id=\"prv\"></div>"
+  },
+  {
+   "fieldname": "font_size",
+   "fieldtype": "HTML",
+   "options": "<table style=\"border: none;\">\n<tbody><tr><td>\n<div class=\"range-slider\">\n    <input id=\"input-range\" max=\"120\" min=\"1\" step=\"1\" style=\"width: 200px;\" type=\"range\" value=\"100\">\n</div> \n</td>\n<td>\n<div id=\"size\">30px</div>\n</td></tr></tbody></table>\n"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.type==\"Otf file\"",
+   "fieldname": "is_url",
+   "fieldtype": "Check",
+   "label": "Is url"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-12-31 11:32:31.794789",
+ "modified": "2022-01-06 16:34:49.031823",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Font",

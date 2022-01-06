@@ -11,6 +11,7 @@
   "doc_type",
   "print_format",
   "column_break_4",
+  "default_print_format",
   "is_disabled",
   "header_section",
   "show",
@@ -34,11 +35,13 @@
   "qr_code_width",
   "qr_code_x",
   "qr_code_y",
+  "qr_code_text",
   "demo_section",
   "demo"
  ],
  "fields": [
   {
+   "collapsible": 1,
    "fieldname": "header_section",
    "fieldtype": "Section Break",
    "label": "Header"
@@ -81,6 +84,7 @@
    "label": "Border Color"
   },
   {
+   "collapsible": 1,
    "depends_on": "eval:in_list([\"Yes\"], doc.show);",
    "fieldname": "column_break_8",
    "fieldtype": "Section Break",
@@ -161,6 +165,7 @@
    "unique": 1
   },
   {
+   "collapsible": 1,
    "fieldname": "body_section",
    "fieldtype": "Section Break",
    "label": "Body Elements"
@@ -172,6 +177,7 @@
    "options": "div"
   },
   {
+   "collapsible": 1,
    "fieldname": "qr_code_section",
    "fieldtype": "Section Break",
    "label": "Qr Code"
@@ -193,6 +199,7 @@
    "depends_on": "eval:doc.qr_code_type!=\"none\";",
    "fieldname": "qr_code_height",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "qr code height",
    "options": "120"
   },
@@ -200,6 +207,7 @@
    "depends_on": "eval:doc.qr_code_type!=\"none\";",
    "fieldname": "qr_code_width",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "qr code width",
    "options": "120"
   },
@@ -207,6 +215,7 @@
    "depends_on": "eval:doc.qr_code_type!=\"none\";",
    "fieldname": "qr_code_x",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "qr code x",
    "options": "0"
   },
@@ -214,17 +223,30 @@
    "depends_on": "eval:doc.qr_code_type!=\"none\";",
    "fieldname": "qr_code_y",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "qr code y",
    "options": "0"
   },
   {
    "fieldname": "column_break_24",
    "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.qr_code_type==\"text\";",
+   "fieldname": "qr_code_text",
+   "fieldtype": "Long Text",
+   "label": "Qr Code Text"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_print_format",
+   "fieldtype": "Check",
+   "label": "Default print format"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-05 16:16:04.049095",
+ "modified": "2022-01-06 11:07:39.585918",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Custom Print Format",

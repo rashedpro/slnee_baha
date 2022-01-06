@@ -9,20 +9,24 @@
   "type",
   "label",
   "doc_field",
-  "width",
-  "height",
-  "center",
-  "x",
-  "y",
-  "column_break_8",
   "color",
   "bold",
   "underline",
   "italic",
+  "image",
+  "table_type",
+  "table_columns",
+  "table_lines",
+  "fetch_from",
+  "width",
+  "height",
+  "x",
+  "y",
+  "column_break_8",
+  "disabled",
+  "center",
   "font",
   "font_size",
-  "disabled",
-  "image",
   "border",
   "border_color",
   "border_radius"
@@ -40,20 +44,21 @@
    "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "color",
    "fieldtype": "Color",
+   "in_list_view": 1,
    "label": "Color"
   },
   {
    "default": "50",
    "fieldname": "width",
    "fieldtype": "Int",
-   "in_list_view": 1,
+   "hidden": 1,
    "label": "Width"
   },
   {
    "default": "30",
    "fieldname": "height",
    "fieldtype": "Int",
-   "in_list_view": 1,
+   "hidden": 1,
    "label": "Height"
   },
   {
@@ -61,14 +66,14 @@
    "depends_on": "eval:doc.center==\"0\";",
    "fieldname": "x",
    "fieldtype": "Int",
-   "in_list_view": 1,
+   "hidden": 1,
    "label": "X"
   },
   {
    "default": "0",
    "fieldname": "y",
    "fieldtype": "Int",
-   "in_list_view": 1,
+   "hidden": 1,
    "label": "Y"
   },
   {
@@ -82,6 +87,7 @@
    "default": "0",
    "fieldname": "disabled",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "Disabled"
   },
   {
@@ -92,6 +98,7 @@
    "depends_on": "eval:doc.type==\"Image\";",
    "fieldname": "image",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Image"
   },
   {
@@ -111,6 +118,7 @@
    "default": "Label",
    "fieldname": "type",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Type",
    "options": "Label\nImage\nTable",
    "reqd": 1
@@ -135,36 +143,65 @@
    "label": "Border Color"
   },
   {
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "doc_field",
    "fieldtype": "Select",
    "label": "Doctype field"
   },
   {
    "default": "0",
-   "depends_on": "eval:doc.type==\"label\";",
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "bold",
    "fieldtype": "Check",
    "label": "Bold"
   },
   {
    "default": "0",
-   "depends_on": "eval:doc.type==\"label\";",
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "underline",
    "fieldtype": "Check",
    "label": "Underline"
   },
   {
    "default": "0",
-   "depends_on": "eval:doc.type==\"label\";",
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "italic",
    "fieldtype": "Check",
    "label": "Italic"
+  },
+  {
+   "default": "Static",
+   "depends_on": "eval:doc.type==\"Table\";",
+   "fieldname": "table_type",
+   "fieldtype": "Select",
+   "label": "Table type",
+   "options": "Static\nFetch from"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Table\" && doc.table_type==\"Fetch from\";",
+   "fieldname": "fetch_from",
+   "fieldtype": "Select",
+   "label": "Fetch From"
+  },
+  {
+   "default": "1",
+   "depends_on": "eval.doc.type==\"Text\";",
+   "fieldname": "table_columns",
+   "fieldtype": "Int",
+   "label": "Columns"
+  },
+  {
+   "default": "1",
+   "depends_on": "eval:doc.type==\"Type\" && doc.table_type==\"Static\";",
+   "fieldname": "table_lines",
+   "fieldtype": "Int",
+   "label": "lines"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-01-05 17:35:47.943677",
+ "modified": "2022-01-06 16:43:47.832942",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "div",
