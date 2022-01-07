@@ -10,6 +10,75 @@ frappe.ui.form.on('Custom Print Format', {
 frappe.ui.form.on('Custom Print Format', {
         qr_code_type:function(frm){place_qr_code(frm);}
 });
+frappe.ui.form.on('Custom Print Format', {
+        show:function(frm){fix_header(frm);},
+	border_color:function(frm){fix_header(frm);},
+	border:function(frm){fix_header(frm);},
+	//height:function(frm){fix_header(frm);};
+	get_default_header:function(frm){
+	frm.clear_table("header_elements");
+	frm.refresh_field("header_elements");
+	frappe.call({
+		method:"frappe.client.get",
+		args: {
+			"doctype":"Company",
+			"name":frm.doc.company
+			},
+		callback(r){
+			if(r.message){
+			console.log(r.message.color);
+			let row = frm.add_child('header_elements',{
+				label:r.message.name,
+				color:r.message.color,
+				type:"Label",
+				width:270,
+				height:frm.doc.height-12,
+				x:6,
+				y:6,
+				font_size:25,
+				text_align:"left"
+			});
+			let row2 = frm.add_child('header_elements',{ 
+                                label:r.message.company_name_in_arabic,
+                                color:r.message.color,
+                                type:"Label",
+				width:270,
+				height:frm.doc.height-12,
+				x:505,
+				y:6,
+				font_size:25,
+				text_align:"right"
+
+                        });
+			let row3 = frm.add_child('header_elements',{ 
+                                label:"Logo",
+				image:r.message.company_logo,
+				center:1,
+                                //color:r.message.color,
+                                type:"Image",
+                                width:frm.doc.height-12,
+                                height:frm.doc.height-12,
+                                //x:220,
+                                y:5,
+                                //font_size:25
+
+                        });
+
+
+			frm.refresh_field("header_elements");
+			fix_header(frm);
+			}
+		}
+	});
+}
+});
+
+frappe.ui.form.on('Custom Print Format', {
+        show_footer:function(frm){fix_footer(frm);},
+	footer_border_color:function(frm){fix_footer(frm);},
+	footer_border:function(frm){fix_footer(frm);},
+	//footer_height:function(frm){fix_footer(frm);}
+});
 
 
 frappe.ui.form.on('Custom Print Format', {
@@ -54,12 +123,15 @@ refresh_field("height");
 
 frappe.ui.form.on('Custom Print Format', {
         before_save: function(frm){
-	var cont =document.getElementById("my_container");
-	frm.set_value("html",cont.innerHTML);
-	refresh_field("html");
-	save_header_elements(frm);
-	save_body_elements(frm);
-	save_qr_code(frm);
+		var cont =document.getElementById("my_container");
+		frm.set_value("html",cont.innerHTML.replaceAll("dashed none","none"));
+		frm.set_value("html",cont.innerHTML.replaceAll("none dashed","none"));
+                refresh_field("html");
+		save_header_elements(frm);
+		save_body_elements(frm);
+		save_qr_code(frm);
+		save_footer_elements(frm);
+
 }
 });
 
@@ -76,7 +148,7 @@ frappe.ui.form.on('Custom Print Format', {
 			document.getElementById("input-range").value=200;
 			refresh_field("height");}
 		else {
-			document.getElementById("header").style.height=frm.doc.height.toString()+"px";}
+			document.getElementById("headspace").style.height=frm.doc.height.toString()+"px";}
 
 	}
 });
@@ -99,6 +171,7 @@ function place(element,parent_id,frm){
 			var element_ = document.createElement("div");
 			add_css(frm,".text_element{touch-action:none;}");
 			element_.classList.add("text_element");
+			element_.style.textAlign=element.text_align;
 			element_.classList.add("btn-open-row");
 			element_.style.color=element.color;
 			if (element.font){
@@ -189,36 +262,69 @@ function place_qr_code(frm){
 
 
 
+
 }
 
 function first_creation(frm){
-	fix_header(frm);
-	document.getElementById("headspace").innerHTML="";
 	document.getElementById.onclick = function() {clear_select()};
-	frm.doc.header_elements.forEach(function(element){
-		place(element,"headspace",frm)
-		});
+	
 	place_qr_code(frm)
 	frm.doc.body_elements.forEach(function(element){
                 place(element,"bodyspace",frm)
                 });
-
+	place_qr_code(frm)
+	fix_header(frm);
+        fix_footer(frm);
 
 }
 
 
 function fix_header(frm){
+	document.getElementById("headspace").innerHTML="";
 	if (frm.doc.show != "No"){
-		var header =  document.getElementById("header");
+		var header =  document.getElementById("headspace");
 		header.style.display="block";
 		header.style.borderColor=frm.doc.border_color;
 		header.style.borderStyle=frm.doc.border;
 		//header.style.borderWidth:frm.doc.
 		header.style.height=frm.doc.height.toString()+"px";
+		if (frm.doc.border=="none"){
+			header.style.borderBottom="dashed 1px #CCC";
+		}
+
+		if (frm.doc.show =="Yes"){
+        frm.doc.header_elements.forEach(function(element){
+                place(element,"headspace",frm)
+                });}
+
 				}
-	else{var header =  document.getElementById("header");
+	else{var header =  document.getElementById("headspace");
                 header.style.display="none";}
 }
+function fix_footer(frm){
+	document.getElementById("footspace").innerHTML="";
+        if (frm.doc.show_footer != "No"){
+                var footer =  document.getElementById("footspace");
+                footer.style.display="block";
+                footer.style.borderColor=frm.doc.footer_border_color;
+                footer.style.borderStyle=frm.doc.footer_border;
+                footer.style.height=frm.doc.footer_height.toString()+"px";
+		if (frm.doc.footer_border=="none"){
+                        footer.style.borderTop="dashed 1px #CCC";
+                }
+
+
+if (frm.doc.show_footer =="Yes"){
+        frm.doc.footer_elements.forEach(function(element){
+                place(element,"footspace",frm)
+                });}
+
+                                }
+        else{var footer =  document.getElementById("footspace");
+                footer.style.display="none";}
+}
+
+
 
 
 function add_css(frm,css){
@@ -289,6 +395,13 @@ function save_header_elements(frm){
 	if (frm.doc.header_elements != undefined){
 	frm.doc.header_elements.forEach(function(element){save_element(frm,element.name);  });
 }}
+
+function save_footer_elements(frm){
+        if (frm.doc.footer_elements != undefined){
+        frm.doc.footer_elements.forEach(function(element){save_element(frm,element.name);  });
+}}
+
+
 
 function save_body_elements(frm){
         if (frm.doc.body_elements != undefined){

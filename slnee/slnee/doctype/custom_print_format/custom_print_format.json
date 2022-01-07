@@ -21,6 +21,9 @@
   "border",
   "border_color",
   "column_break_8",
+  "default_header",
+  "company",
+  "get_default_header",
   "header_elements",
   "html",
   "css",
@@ -36,6 +39,14 @@
   "qr_code_x",
   "qr_code_y",
   "qr_code_text",
+  "footer_section",
+  "show_footer",
+  "footer_height",
+  "column_break_36",
+  "footer_border",
+  "footer_border_color",
+  "footer_element_sections",
+  "footer_elements",
   "demo_section",
   "demo"
  ],
@@ -95,7 +106,7 @@
    "fieldtype": "HTML",
    "ignore_xss_filter": 1,
    "label": "Demo",
-   "options": "<style>\n    .resize-drag {\n  touch-action: none;\n}\n\n    \n</style>\n\n<div id=\"my_container\" style=\"width: 791px; padding: 0mm; border: solid 1px gray;\">\n\n<table style=\"width: 100%; border: none;\">\n<thead id=\"head\"><tr style=\"border: none;\"><td id=\"header\" style=\"border: none;\"><div id=\"headspace\" style=\"width: 100%; height: inherit;\">\n</div></td></tr></thead>\n<tbody><tr><td><div id=\"bodyspace\" style=\"position: relative; min-height: 200px;\">\n\n</div></td></tr>\n</tbody><tfoot id=\"foot\"></tfoot>\n</table>\n</div>\n\n"
+   "options": "<style>\n .context-menu {\n            position: absolute;\n            text-align: center;\n            background: white;\n            border: 1px solid black;\n            border-radius: 20px;\n        }\n  \n        .context-menu ul {\n            padding: 0px;\n            margin: 0px;\n            min-width: 100px;\n            list-style: none;\n            border-radius: 20px;\n        }\n  \n        .context-menu ul li {\n            padding-bottom: 7px;\n            padding-top: 7px;\n            border: none;\n            border-radius: 20px;\n        }\n  \n        .context-menu ul li a {\n            text-decoration: none;\n            color: black;\n        }\n  \n        .context-menu ul li:hover {\n            background: gray;\n        }\n    .resize-drag {\n  touch-action: none;\nborder:dashed 1px #CCC; \n}\n\n    \n</style>\n\n<div id=\"my_container\" style=\"width: 791px; padding: 0mm; border: solid 1px gray;\">\n\n<table style=\"width: 100%; border: none;\">\n<thead id=\"head\"><tr style=\"border: none;\"><td id=\"header\" style=\"border: none;\"><div id=\"header-html1\" style=\"width: 100%; height: inherit;\"><div id=\"headspace\" style=\"position: relative;\"></div>\n</div></td></tr></thead>\n<tbody><tr><td><div id=\"bodyspace\" style=\"position: relative; min-height: 800px;\">\n\n</div></td></tr>\n</tbody>\n<tfoot id=\"foot\">\n<tr style=\"border: none;\"><td id=\"footer\" style=\"border: none;\"><div id=\"footer-html\" style=\"width: 100%; height: inherit;\">\n<div id=\"footspace\" style=\"width: 100%; position: relative;\">\n</div>\n</div></td></tr>\n</tfoot>\n</table>\n</div>\n<div class=\"context-menu\" id=\"contextMenu\" style=\"display: none;\">\n        <ul>\n            <li><a href=\"#\">Delete</a></li>\n            \n        </ul>\n    </div>\n"
   },
   {
    "fieldname": "demo_section",
@@ -242,11 +253,82 @@
    "fieldname": "default_print_format",
    "fieldtype": "Check",
    "label": "Default print format"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "footer_section",
+   "fieldtype": "Section Break",
+   "label": "Footer"
+  },
+  {
+   "default": "No",
+   "fieldname": "show_footer",
+   "fieldtype": "Select",
+   "label": "show",
+   "options": "Yes\nNo\nEmpty"
+  },
+  {
+   "default": "80",
+   "depends_on": "eval:doc.show_footer!=\"No\";",
+   "fieldname": "footer_height",
+   "fieldtype": "Int",
+   "label": "Height"
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "none",
+   "depends_on": "eval:in_list([\"Yes\", \"Empty\"], doc.show_footer);",
+   "fieldname": "footer_border",
+   "fieldtype": "Select",
+   "label": "Border",
+   "options": "none\nsolid\ndotted\ndouble\ndashed\ngroove\ninset\noutset"
+  },
+  {
+   "default": "#000000",
+   "depends_on": "eval:doc.footer_border!=\"none\" && doc.footer_border!=undefined && in_list([\"Yes\", \"Empty\"], doc.show_footer);",
+   "fieldname": "footer_border_color",
+   "fieldtype": "Color",
+   "label": "Border color"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:in_list([\"Yes\"], doc.show_footer);",
+   "fieldname": "footer_element_sections",
+   "fieldtype": "Section Break",
+   "label": "Footer elements"
+  },
+  {
+   "fieldname": "footer_elements",
+   "fieldtype": "Table",
+   "label": "Elements",
+   "options": "div"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_header",
+   "fieldtype": "Check",
+   "label": "default header"
+  },
+  {
+   "depends_on": "eval:doc.default_header==1;",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "depends_on": "eval:doc.company!= null && doc.default_header ==1; ",
+   "fieldname": "get_default_header",
+   "fieldtype": "Button",
+   "label": "Get default header"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-06 11:07:39.585918",
+ "modified": "2022-01-07 17:23:53.581731",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Custom Print Format",
