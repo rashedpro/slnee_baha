@@ -46,7 +46,8 @@ fixtures = ["Custom Field",
 	#{"dt":"Server Script","filters":[["name","like","columns number"]]},
 	{"dt":"Font"},
 	{"dt":"Custom Print Format","filters":[["name","like","invoice"]]},
-	{"dt":"div","filters":[["parent","like","invoice"]]}
+	{"dt":"div","filters":[["parent","like","invoice"]]},
+	{"dt":"Print Format","filters":[["name","like","invoice"]]}
 ]
 
 # Includes in <head>
