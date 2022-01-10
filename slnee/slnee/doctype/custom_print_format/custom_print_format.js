@@ -83,6 +83,10 @@ frappe.ui.form.on('Custom Print Format', {
 
 frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
+document.getElementById("delete").onclick = function(){delete_element(frm);}
+document.getElementById("disable").onclick = function(){disable_element(frm);}
+document.getElementById("bodyspace").onclick = function(){hideMenu();}
+document.getElementById("headspace").onclick = function(){hideMenu();}
 
 var sidebar= document.getElementsByClassName("layout-side-section")[0]; 
 var element = document.createElement("div");
@@ -120,6 +124,9 @@ frappe.ui.form.on('Custom Print Format', {
 		save_qr_code(frm);
 		save_footer_elements(frm);
 
+},
+after_save: function(frm){
+frm.reload_doc();
 }
 });
 
@@ -219,7 +226,7 @@ function place(element,parent_id,frm){
 		element_.style.width=element.width.toString()+"px";
 		element_.style.height=element.height.toString()+"px";
 		element_.setAttribute("id",element.name);
-		element_.onclick = function() {element_click(element_)};
+		element_.onclick = function() {element_click(element_);hideMenu();};
 		element_.oncontextmenu = rightClick;
                 parent.appendChild(element_);
 	}
@@ -231,18 +238,24 @@ function hideMenu() {
   
         function rightClick(e) {
             e.preventDefault();
-  
             if (document.getElementById(
                 "contextMenu").style.display == "block")
                 hideMenu();
             else {
-                console.log(this.id);
-                var menu = document
-                    .getElementById("contextMenu")
-                      
+		var parent_id = this.parentElement.id;
+		console.log(parent_id);
+                var menu = document.getElementById("contextMenu")
+		menu.children[0].setAttribute("id",parent_id.substring(0,1)+"enu"+this.id);
                 menu.style.display = 'block';
-                menu.style.left = e.pageX + "px";
-                menu.style.top = e.pageY + "px";
+                menu.style.left = (this.offsetLeft+this.offsetWidth).toString()+"px";
+		if (parent_id=="headspace"){
+                menu.style.top = this.style.top;}
+		else if (parent_id=="bodyspace"){
+			var h = document.getElementById("headspace").offsetHeight;
+			menu.style.top= (this.offsetTop+ document.getElementById("headspace").offsetHeight).toString()+"px";
+
+}
+
             }}
 
 function place_qr_code(frm){
@@ -266,6 +279,8 @@ function place_qr_code(frm){
 		element_.style.width=frm.doc.qr_code_width.toString()+"px";
                 element_.style.height=frm.doc.qr_code_height.toString()+"px";
 		element_.appendChild(img);
+		element_.onclick = function() {element_click(element_);hideMenu();};
+                element_.oncontextmenu = rightClick;
 		parent.appendChild(element_);
 }
 
@@ -448,4 +463,49 @@ texts[i].style.borderStyle="none";
 
 
 
+function delete_element(frm){
+	var element = document.getElementById("delete").parentElement.parentElement.id;
+	var clicked = element.substring(4);
+	if (element.substring(0,1)=="h"){
+	frm.doc.header_elements.splice(clicked,1);
+	frm.refresh_field("header_elements");frm.dirty();}
+	else if (element.substring(0,1)=="b"){
+	frm.doc.body_elements.splice(clicked,1);
+	frm.refresh_field("body_elements");frm.dirty()
+	}
+	else{
+	frm.doc.footer_elements.splice(clicked,1);
+        frm.refresh_field("footer_elements");frm.dirty();
+	}
+	document.getElementById(clicked).remove();
+	hideMenu();
+}
 
+function disable_element(frm){
+var element = document.getElementById("delete").parentElement.parentElement.id;
+        var clicked = element.substring(4);
+	if (element=="benuqr_code"){
+		console.log("qr_code");
+		frm.set_value("qr_code_type","none");
+		frm.refresh_field("qr_code_type");
+		document.getElementById("qr_code").remove();
+		hideMenu();
+	}
+	else{
+
+        if (element.substring(0,1)=="h"){
+	frappe.model.set_value("div",clicked,"disabled",1)
+        frm.refresh_field("header_elements");}
+        else if (element.substring(0,1)=="b"){
+        frm.doc.body_elements.splice(clicked,1);
+        frm.refresh_field("body_elements");
+        }
+        else{
+        frm.doc.footer_elements.splice(clicked,1);
+        frm.refresh_field("footer_elements");
+        }
+        document.getElementById(clicked).remove();
+        hideMenu();
+
+}
+}
