@@ -84,18 +84,6 @@ frappe.ui.form.on('Custom Print Format', {
 frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
 
-
-
-frappe.call({
-                                        method : "slnee.data.get_fields",
-                                        args:{
-                                                "doctype":"Sales Invoice"
-                                            },
-                                        callback(r) {
-                                                if(r.message){}
-                                                }
-                                        });
-
 var sidebar= document.getElementsByClassName("layout-side-section")[0]; 
 var element = document.createElement("div");
 element.setAttribute("id","utils");
@@ -226,15 +214,36 @@ function place(element,parent_id,frm){
                 element_.setAttribute("data-x",x);
                 element_.setAttribute("data-y",element.y);
 		element_.classList.add('resize-drag');
+		element_.classList.add('clickable001');
                 element_.style.position="absolute";
 		element_.style.width=element.width.toString()+"px";
 		element_.style.height=element.height.toString()+"px";
 		element_.setAttribute("id",element.name);
 		element_.onclick = function() {element_click(element_)};
+		element_.oncontextmenu = rightClick;
                 parent.appendChild(element_);
 	}
 }
-
+function hideMenu() {
+            document.getElementById(
+                "contextMenu").style.display = "none"
+        }
+  
+        function rightClick(e) {
+            e.preventDefault();
+  
+            if (document.getElementById(
+                "contextMenu").style.display == "block")
+                hideMenu();
+            else {
+                console.log(this.id);
+                var menu = document
+                    .getElementById("contextMenu")
+                      
+                menu.style.display = 'block';
+                menu.style.left = e.pageX + "px";
+                menu.style.top = e.pageY + "px";
+            }}
 
 function place_qr_code(frm){
 	if (document.getElementById("qr_code")!= undefined){

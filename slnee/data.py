@@ -17,7 +17,19 @@ from click import secho
 from num2words import num2words
 
 
-
+number_format_info = {
+	"#,###.##": (".", ",", 2),
+	"#.###,##": (",", ".", 2),
+	"# ###.##": (".", " ", 2),
+	"# ###,##": (",", " ", 2),
+	"#'###.##": (".", "'", 2),
+	"#, ###.##": (".", ", ", 2),
+	"#,##,###.##": (".", ",", 2),
+	"#,###.###": (".", ",", 3),
+	"#.###": ("", ".", 0),
+	"#,###": ("", ",", 0),
+	"#.########": (".", "", 8)
+}
 DATE_FORMAT = "%Y-%m-%d"
 TIME_FORMAT = "%H:%M:%S.%f"
 DATETIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT
@@ -110,3 +122,48 @@ def in_words(integer, in_million=True,lang=None):
         return ret.replace('-', ' ')
 
 
+def cint(s, default=0):
+	"""Convert to integer
+		:param s: Number in string or other numeric format.
+		:returns: Converted number in python integer type.
+		Returns default if input can not be converted to integer.
+		Examples:
+		>>> cint("100")
+		100
+		>>> cint("a")
+		0
+	"""
+	try:
+		return int(float(s))
+	except Exception:
+		return default
+def flt(s, precision=None):
+	"""Convert to float (ignoring commas in string)
+		:param s: Number in string or other numeric format.
+		:param precision: optional argument to specify precision for rounding.
+		:returns: Converted number in python float type.
+		Returns 0 if input can not be converted to float.
+		Examples:
+		>>> flt("43.5", precision=0)
+		44
+		>>> flt("42.5", precision=0)
+		42
+		>>> flt("10,500.5666", precision=2)
+		10500.57
+		>>> flt("a")
+		0.0
+	"""
+	if isinstance(s, str):
+		s = s.replace(',','')
+
+	try:
+		num = float(s)
+		if precision is not None:
+			num = rounded(num, precision)
+	except Exception:
+		num = 0.0
+
+	return num
+
+def get_number_format_info(format):
+	return number_format_info.get(format) or (".", ",", 2)

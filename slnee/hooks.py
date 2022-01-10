@@ -23,7 +23,8 @@ doc_events = {
 jenv = {
     "methods": [
         "qrcode:slnee.fatoora.getqrcode",
-	"test:slnee.test.test"
+	"test:slnee.test.test",
+	"money:slnee.data.money_in_words"
 
     ]
 }
