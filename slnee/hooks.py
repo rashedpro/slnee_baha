@@ -42,12 +42,12 @@ jenv = {
 
 
 fixtures = ["Custom Field",
-	{"dt":"Print Format","filters":[["name","like","VAT E-invoice KSA"]]},
+	#{"dt":"Print Format","filters":[["name","like","VAT E-invoice KSA"]]},
 	#{"dt":"Server Script","filters":[["name","like","columns number"]]},
 	{"dt":"Font"},
-	{"dt":"Custom Print Format","filters":[["name","like","invoice"]]},
-	{"dt":"div","filters":[["parent","like","invoice"]]},
-	{"dt":"Print Format","filters":[["name","like","invoice"]]}
+	#{"dt":"Custom Print Format","filters":[["name","like","invoice"]]},
+	#{"dt":"div","filters":[["parent","like","invoice"]]},
+	#{"dt":"Print Format","filters":[["name","like","invoice"]]}
 ]
 
 # Includes in <head>

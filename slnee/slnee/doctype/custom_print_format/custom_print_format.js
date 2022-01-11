@@ -4,8 +4,7 @@
 frappe.ui.form.on('Custom Print Format', {
 	qr_code_color:function(frm){
 	if (frm.doc.qr_code_type=="text"){
-	document.getElementById("qr_code").src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&color="+frm.doc.qr_code_color.substring(1)+"&data=test";
-}}
+	document.getElementById("qr_code").src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&color="+frm.doc.qr_code_color.substring(1)+"&data=test";}}
 });
 frappe.ui.form.on('Custom Print Format', {
         qr_code_type:function(frm){place_qr_code(frm);}
@@ -26,7 +25,6 @@ frappe.ui.form.on('Custom Print Format', {
 			},
 		callback(r){
 			if(r.message){
-			console.log(r.message.color);
 			let row = frm.add_child('header_elements',{
 				label:r.message.name,
 				color:r.message.color,
@@ -42,7 +40,7 @@ frappe.ui.form.on('Custom Print Format', {
                                 label:r.message.company_name_in_arabic,
                                 color:r.message.color,
                                 type:"Label",
-				width:270,
+				width:265,
 				height:frm.doc.height-12,
 				x:505,
 				y:6,
@@ -85,9 +83,10 @@ frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
 document.getElementById("delete").onclick = function(){delete_element(frm);}
 document.getElementById("disable").onclick = function(){disable_element(frm);}
+document.getElementById("duplicate").onclick = function(){duplicate_element(frm);}
 document.getElementById("bodyspace").onclick = function(){hideMenu();}
 document.getElementById("headspace").onclick = function(){hideMenu();}
-
+document.getElementById("page-Custom Print Format").onclick = function(){hideMenu();}
 var sidebar= document.getElementsByClassName("layout-side-section")[0]; 
 var element = document.createElement("div");
 element.setAttribute("id","utils");
@@ -148,8 +147,10 @@ frappe.ui.form.on('Custom Print Format', {
 	}
 });
 
-frappe.ui.form.on('header_elements','Width',function(frm,cdt,cdn) {
-
+//trigger when label change in a div
+frappe.ui.form.on('div','label' ,function(frm,cdt,cdn){
+	var div = locals[cdt][cdn];
+	document.getElementById(div.name).innerHTML=div.label;
 });
 
 function head_elements(frm){
@@ -236,27 +237,39 @@ function hideMenu() {
                 "contextMenu").style.display = "none"
         }
   
-        function rightClick(e) {
+function rightClick(e) {
             e.preventDefault();
             if (document.getElementById(
                 "contextMenu").style.display == "block")
                 hideMenu();
-            else {
+            
 		var parent_id = this.parentElement.id;
-		console.log(parent_id);
                 var menu = document.getElementById("contextMenu")
-		menu.children[0].setAttribute("id",parent_id.substring(0,1)+"enu"+this.id);
+		menu.children[0].setAttribute("id",parent_id+"%%"+this.id);
                 menu.style.display = 'block';
-                menu.style.left = (this.offsetLeft+this.offsetWidth).toString()+"px";
+		//remove delete -duplicate if it's qr code
+		if (this.id=="qr_code")
+			{
+			document.getElementById("del").style.display="none";
+			document.getElementById("dup").style.display="none";}
+		//retrieve delete - duplicate if it's not
+		else{
+			 document.getElementById("del").style.display="block";
+			 document.getElementById("dup").style.display="block";}
+		//if the element is too right, make the menu on left
+		if (this.offsetLeft+this.offsetWidth > 600)
+			{ menu.style.left = (this.offsetLeft-150).toString()+"px";}
+		else //menu on right 
+			{menu.style.left = (this.offsetLeft+this.offsetWidth).toString()+"px";}
 		if (parent_id=="headspace"){
                 menu.style.top = this.style.top;}
-		else if (parent_id=="bodyspace"){
-			var h = document.getElementById("headspace").offsetHeight;
-			menu.style.top= (this.offsetTop+ document.getElementById("headspace").offsetHeight).toString()+"px";
+		if (parent_id=="bodyspace"){
+			menu.style.top= (this.offsetTop+ document.getElementById("headspace").offsetHeight).toString()+"px";}
+		if (parent_id=="footspace"){
+                        menu.style.top= (this.offsetTop+ document.getElementById("headspace").offsetHeight + document.getElementById("bodyspace").offsetHeight).toString()+"px";}
 
-}
 
-            }}
+            }
 
 function place_qr_code(frm){
 	if (document.getElementById("qr_code")!= undefined){
@@ -269,7 +282,9 @@ function place_qr_code(frm){
 		element_.setAttribute("id","qr_code");
                 add_css(frm,".image_element{touch-action:none;}");
                 element_.classList.add("image_element");
-                img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data="+frm.doc.qr_code_text.replaceAll("\n","%0A");
+		var text = frm.qr_code_text;
+		if(text == undefined){text="write your text inside the specified box."}
+                img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data="+text.replaceAll("\n","%0A");
 		element_.classList.add('resize-drag');
                 element_.style.position="absolute";
 		element_.style.top=frm.doc.qr_code_y.toString()+"px";
@@ -310,7 +325,7 @@ function fix_header(frm){
 		header.style.display="block";
 		header.style.borderColor=frm.doc.border_color;
 		header.style.borderStyle=frm.doc.border;
-		//header.style.borderWidth:frm.doc.
+		header.style.borderWidth=frm.doc.header_border_width.toString()+"px";
 		header.style.height=frm.doc.height.toString()+"px";
 		if (frm.doc.border=="none"){
 			header.style.borderBottom="dashed 1px #CCC";
@@ -332,6 +347,7 @@ function fix_footer(frm){
                 footer.style.display="block";
                 footer.style.borderColor=frm.doc.footer_border_color;
                 footer.style.borderStyle=frm.doc.footer_border;
+		footer.style.borderWidth=frm.doc.footer_border_width.toString()+"px";
                 footer.style.height=frm.doc.footer_height.toString()+"px";
 		if (frm.doc.footer_border=="none"){
                         footer.style.borderTop="dashed 1px #CCC";
@@ -405,7 +421,6 @@ var element =  document.getElementById("qr_code");
 
 
 function set_labels(frm,element_id){
-console.log(element_id);
 		frappe.model.set_value("div",element_id,"doc_field","test");
 }
 
@@ -464,48 +479,102 @@ texts[i].style.borderStyle="none";
 
 
 function delete_element(frm){
-	var element = document.getElementById("delete").parentElement.parentElement.id;
-	var clicked = element.substring(4);
-	if (element.substring(0,1)=="h"){
-	frm.doc.header_elements.splice(clicked,1);
-	frm.refresh_field("header_elements");frm.dirty();}
-	else if (element.substring(0,1)=="b"){
-	frm.doc.body_elements.splice(clicked,1);
-	frm.refresh_field("body_elements");frm.dirty()
-	}
-	else{
-	frm.doc.footer_elements.splice(clicked,1);
-        frm.refresh_field("footer_elements");frm.dirty();
-	}
-	document.getElementById(clicked).remove();
+	var element = document.getElementById("delete").parentElement.parentElement.id.split('%%');
+	var table= element[0];
+	var row_name=element[1];
+	console.log(table,row_name);
+	remove_row(frm,table,row_name);
+	document.getElementById(row_name).remove();
 	hideMenu();
 }
 
 function disable_element(frm){
-var element = document.getElementById("delete").parentElement.parentElement.id;
-        var clicked = element.substring(4);
-	if (element=="benuqr_code"){
-		console.log("qr_code");
+	var element = document.getElementById("delete").parentElement.parentElement.id.split('%%');
+        var table= element[0];
+        var row_name=element[1];
+	if (row_name=="qr_code"){
 		frm.set_value("qr_code_type","none");
 		frm.refresh_field("qr_code_type");
 		document.getElementById("qr_code").remove();
 		hideMenu();
 	}
 	else{
-
-        if (element.substring(0,1)=="h"){
-	frappe.model.set_value("div",clicked,"disabled",1)
-        frm.refresh_field("header_elements");}
-        else if (element.substring(0,1)=="b"){
-        frm.doc.body_elements.splice(clicked,1);
-        frm.refresh_field("body_elements");
-        }
-        else{
-        frm.doc.footer_elements.splice(clicked,1);
-        frm.refresh_field("footer_elements");
-        }
-        document.getElementById(clicked).remove();
+	disable_row(frm,table,row_name);
+        document.getElementById(row_name).remove();
         hideMenu();
 
 }
+}
+
+function duplicate_element(frm){
+	var element = document.getElementById("delete").parentElement.parentElement.id.split('%%');
+        var table= element[0];
+        var row_name=element[1];
+	duplicate_row(frm,table,row_name);
+	
+
+
+
+}
+
+function remove_row(frm,table,row_name){
+	if (table=="headspace"){table="header_elements";var i= frm.doc.header_elements.length;}
+	else if (table=="footspace"){table="footer_elements";var i = frm.doc.footer_elements.length;}
+	else {table="body_elements";var i=frm.doc.body_elements.length;}
+		while (i--)
+		{
+    			if(frm.doc[table][i].name==row_name)
+    			{
+        			frm.get_field(table).grid.grid_rows[i].remove();
+    			}
+		}
+	frm.refresh_field(table);
+}
+
+
+function disable_row(frm,table,row_name){
+	frappe.model.set_value("div",row_name,"disabled",1)
+	if (table=="headspace"){table="header_elements";}
+        else if (table=="footspace"){table="footer_elements";}
+        else {table="body_elements";}
+	frm.refresh_field(table);
+
+}
+
+
+function duplicate_row(frm,table,row_name){
+	if (table=="headspace"){var parent="header_elements";}
+        else if (table=="footspace"){var parent="footer_elements";}
+        else {var parent="body_elements";}
+
+	var doc = frappe.model.get_doc("div",row_name);
+	if (doc.image==undefined){
+		var img="";
+	}else {var img=doc.image;}
+	if (doc.font==undefined){
+		var font="";}
+	else {var font = doc.font;}
+	let row = frm.add_child(parent,{
+                                label:doc.label,
+                                color:doc.color,
+                                type:doc.type,
+				image:img,
+                                width:doc.width,
+                                height:doc.height,
+                                x:6,
+                                y:6,
+                                font_size:doc.font_size,
+                                text_align:doc.text_align,
+				font:font,
+				//border:doc.border,
+				//border_color:doc.border_color;
+				bold:doc.bold,
+				underline:doc.underline,
+				italic:doc.italic,
+				center:0,
+				//border_radius:doc.border_radius
+                        });
+	place(row,table,frm);
+	frm.refresh_field(parent);
+
 }

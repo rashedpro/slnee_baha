@@ -42,6 +42,14 @@ def get_fields(doctype):
 		if f.label!= None and f.fieldtype not in ["Table"]:
 			r.append(f.fieldname)
 	return(r)
+@frappe.whitelist()
+def get_table_fields(doctype):
+        fields = frappe.get_doc("DocType",doctype).fields
+        r=[]
+        for f in fields :
+                if f.label!= None and f.fieldtype == "Table":
+                        r.append(f.fieldname)
+        return(r)
 
 
 def money_in_words(number, main_currency = None, fraction_currency=None):

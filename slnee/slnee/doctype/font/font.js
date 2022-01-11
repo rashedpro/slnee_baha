@@ -5,8 +5,8 @@ frappe.ui.form.on('Font', {
 	 refresh: function(frm) {
 		//set slider font-size
                 var slider = document.getElementById("input-range");
-		slider.value=30;
-		document.getElementById("prv").style.fontSize="30px";
+		slider.value=40;
+		document.getElementById("prv").style.fontSize="40px";
                 slider.oninput = function() {
                         var element = document.getElementById("prv");
                         element.style.fontSize=this.value.toString()+"px";
@@ -18,7 +18,7 @@ frappe.ui.form.on('Font', {
 		console.log(frm.doc.preview_text);
 		if (frm.doc.preview_text=="" || frm.doc.preview_text==undefined){
 			if(frm.doc.language=="English"){
-				frm.set_value("preview_text","Almost before we knew it, we had left the ground.")
+				frm.set_value("preview_text","A journey of a thousand miles begins with a single step.")
 			}
 
 		}
@@ -54,11 +54,11 @@ frappe.ui.form.on('Font', {
 frappe.ui.form.on('Font', {
 	language: function(frm){
 		if (frm.doc.language=="العربية"){
-			frm.set_value("preview_text","الحب سماء لا تمطر غير الأحلام")
+			frm.set_value("preview_text","بسم الله الرحمن الرحيم ")
 			refresh_field("preview_text");
 		}
 		else if (frm.doc.language=="English"){
-                        frm.set_value("preview_text","Almost before we knew it, we had left the ground.")
+                        frm.set_value("preview_text","A journey of a thousand miles begins with a single step.")
                         refresh_field("preview_text");
                 }
 
