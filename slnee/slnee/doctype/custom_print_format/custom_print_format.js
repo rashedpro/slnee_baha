@@ -77,6 +77,24 @@ frappe.ui.form.on('Custom Print Format', {
 });
 
 
+
+
+//action when a div is opened
+frappe.ui.form.on('div', { 
+    form_render(frm, cdt, cdn) {
+		var div = locals[cdt][cdn]
+		frappe.call({
+                method:"slnee.data.get_fields",
+		args:{"doctype":frm.doc.doc_type},
+                callback(r){
+			cur_frm.set_df_property(div.parentfield,"options",r.message,cur_frm.doc.name,"doc_field",cdn);
+                	frm.refresh_field(div.parentfield);
+
+}});
+}
+
+});
+
 frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
 		//event_list
@@ -172,6 +190,8 @@ frm.doc.elements.forEach(function(element){
 
 }
 
+
+//place an element 
 function place(element,parent_id,frm){
 	if (element.disabled == 0) {
 		var parent = document.getElementById(parent_id);
@@ -196,7 +216,10 @@ function place(element,parent_id,frm){
 			if (element.underline ==1){
 				element_.style.textDecoration = "underline";
 						}
-			var text = element.label;
+			if (element.doc_field!="" && element.doc_field != undefined) {
+			var text = "{{doc."+element.doc_field+"}}";
+			}else{
+			var text = element.label;}
 			if (element.italic){text=text.italics()}
 			if (element.bold){element_.style.fontWeight="bold";}
 			element_.style.fontSize= element.font_size.toString()+"px";
@@ -220,8 +243,31 @@ function place(element,parent_id,frm){
 		else if (element.type=="Table"){
 			if (element.table_type=="Static"){
 			//static table goes here
-			var table = document.createElement("TABLE");
-		
+			var element_ = document.createElement("TABLE");
+			element_.style.borderSpacing=element.cell_spacing.toString()+"px";
+			//get table cells
+			frappe.call({
+		                method:"slnee.data.get_cells",
+                		args:{ "prin":frm.doc.name,
+                        	"div":element.name
+                       		 },
+                		callback(r){
+					for (let i=0;i<element.table_lines;i++){
+						//lines
+						var tr = document.createElement("TR");
+						for (let j=0;j<element.table_columns;j++){
+							var cell = r.message[i][j];
+							var  td = create_cell(frm,cell,i+1,j+1);
+							
+			
+						tr.appendChild(td);
+						}
+					element_.appendChild(tr)
+					}
+
+					}
+                });
+
 			}
 		}
 			//common
@@ -236,6 +282,7 @@ function place(element,parent_id,frm){
 		element_.classList.add('resize-drag');
 		element_.style.borderStyle=element.border;
 		element_.style.borderColor=element.border_color;
+		element_.style.borderWidth=element.border_size.toString()+"px";
 		element_.classList.add('clickable001');
                 element_.style.position="absolute";
 		element_.style.width=element.width.toString()+"px";
@@ -246,6 +293,61 @@ function place(element,parent_id,frm){
                 parent.appendChild(element_);
 	}
 }
+
+//create table cell from doc cell
+function create_cell(frm,cell,i,j){
+	var  td = document.createElement("TD");
+	td.setAttribute("id","*"+(i).toString()+"-"+(j).toString() )
+	if (cell!=undefined){
+		td.setAttribute("id",cell.div+"*"+(i).toString()+"-"+(j).toString() )
+		 if (cell.type == "Label"){ //label
+                        var element_ = document.createElement("div");
+                        add_css(frm,".text_element{touch-action:none;}");
+                        element_.classList.add("text_element");
+                        //element_.classList.add("btn-open-row");
+                        element_.style.color=cell.color;
+                        if (cell.font){
+                                frappe.call({
+                                        method : "frappe.client.get",
+                                        args:{
+                                                "doctype":"Font",
+                                                "name":cell.font},
+                                        callback(r) {
+                                                if(r.message){add_links(frm,r.message.css);}
+                                                }
+                                        });
+                        element_.style.fontFamily = "'"+cell.font+"',sans-serif";}
+                        if (cell.underline ==1){
+                                element_.style.textDecoration = "underline";
+                                                }
+                        var text = cell.label;
+			if (text == undefined){text=""};
+                        if (cell.italic){text=text.italics()}
+                        if (cell.bold){element_.style.fontWeight="bold";}
+                        element_.style.fontSize= cell.font_size.toString()+"px";
+                        element_.innerHTML=text;}
+			//endlabel
+
+		//common
+		td.style.borderStyle=cell.border;
+                td.style.borderColor=cell.border_color;
+		td.style.borderWidth=cell.border_size.toString()+"px";
+		if (i==1){td.style.width=cell.width.toString()+"px";}
+		td.style.textAlign=cell.text_align;
+		td.style.cursor="pointer;"
+		td.appendChild(element_);
+
+
+
+}
+else{
+td.classList.add("empty_td");
+
+}
+
+return(td);
+}
+
 function hideMenu() {
             document.getElementById(
                 "contextMenu").style.display = "none"
@@ -833,11 +935,12 @@ function byid(id){return (document.getElementById(id));}
 function get_cells(frm,div_id){
 	frappe.call({
                 method:"slnee.data.get_cells",
-		args:{ "print":frm.doc.name,
+		args:{ "prin":frm.doc.name,
 			"div":div_id
 			},
                 callback(r){
-			console.log(r.message);}
+			console.log(r.message[0]);
+			return(r.message);}
 		});
 
 }

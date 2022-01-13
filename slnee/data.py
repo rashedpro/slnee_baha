@@ -39,8 +39,10 @@ def get_fields(doctype):
 	fields = frappe.get_doc("DocType",doctype).fields
 	r=[]
 	for f in fields :
-		if f.label!= None and f.fieldtype not in ["Table"]:
+		if f.label!= None and f.fieldtype not in ["Table","Section Break","Column Break"]:
 			r.append(f.fieldname)
+	r.sort()
+	r.insert(0,"")
 	return(r)
 @frappe.whitelist()
 def get_table_fields(doctype):
@@ -56,19 +58,23 @@ def get_fonts():
 	return (frappe.db.get_list('Font', pluck='name',order_by='name asc'))
 
 @frappe.whitelist()
-def get_cells(print,div):
-	lines=frappe.db.get_value("div",div,"lines")
-	columns=frappe.db.get_value("div",div,"columns")
+def get_cells(prin,div):
+	lines=frappe.db.get_value("div",div,"table_lines")
+	columns=frappe.db.get_value("div",div,"table_columns")
 	table=[]
-	for l in range(lines):
+	print(prin,div,lines,columns)
+	for l in range(1,lines+1):
 		line=[]
-		for c in range(columns):
-			c= frappe.db.get_list('cell',filters={'parent':print,'div':div,"line":l,"column":c})
+		for c in range(1,columns+1):
+			c= frappe.db.get_list('cell',filters={'parent':prin,'div':div,"line":l,"column":c})
 			#c = [None] if len(c)==0
-			if len(c)==0:
-				c= [None]
-			line.append(c[0])
+			if len(c)!=0:
+				doc = frappe.get_doc('cell', c[0]["name"])
+			else:
+				doc=None
+			line.append(doc)
 		table.append(line)
+	print(table)
 	return(table)
 
 def money_in_words(number, main_currency = None, fraction_currency=None):
