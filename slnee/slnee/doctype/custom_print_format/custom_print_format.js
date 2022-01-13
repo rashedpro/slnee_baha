@@ -91,6 +91,18 @@ frappe.ui.form.on('div', {
                 	frm.refresh_field(div.parentfield);
 
 }});
+
+frappe.call({
+                method:"slnee.data.get_table_fields",
+                args:{"doctype":frm.doc.doc_type},
+                callback(r){
+                        cur_frm.set_df_property(div.parentfield,"options",r.message,cur_frm.doc.name,"fetch_from",cdn);
+                        frm.refresh_field(div.parentfield);
+
+}});
+
+
+
 }
 
 });

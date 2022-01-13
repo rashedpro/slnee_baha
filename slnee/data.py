@@ -41,6 +41,8 @@ def get_fields(doctype):
 	for f in fields :
 		if f.label!= None and f.fieldtype not in ["Table","Section Break","Column Break"]:
 			r.append(f.fieldname)
+	r.append("name")
+	r.append("page_number")
 	r.sort()
 	r.insert(0,"")
 	return(r)
@@ -51,6 +53,8 @@ def get_table_fields(doctype):
         for f in fields :
                 if f.label!= None and f.fieldtype == "Table":
                         r.append(f.fieldname)
+        r.sort()
+        r.insert(0,"")
         return(r)
 
 @frappe.whitelist()
