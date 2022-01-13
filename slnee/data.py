@@ -51,6 +51,25 @@ def get_table_fields(doctype):
                         r.append(f.fieldname)
         return(r)
 
+@frappe.whitelist()
+def get_fonts():
+	return (frappe.db.get_list('Font', pluck='name',order_by='name asc'))
+
+@frappe.whitelist()
+def get_cells(print,div):
+	lines=frappe.db.get_value("div",div,"lines")
+	columns=frappe.db.get_value("div",div,"columns")
+	table=[]
+	for l in range(lines):
+		line=[]
+		for c in range(columns):
+			c= frappe.db.get_list('cell',filters={'parent':print,'div':div,"line":l,"column":c})
+			#c = [None] if len(c)==0
+			if len(c)==0:
+				c= [None]
+			line.append(c[0])
+		table.append(line)
+	return(table)
 
 def money_in_words(number, main_currency = None, fraction_currency=None):
         """

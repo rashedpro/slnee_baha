@@ -187,19 +187,20 @@
   },
   {
    "default": "1",
-   "depends_on": "eval.doc.type==\"Text\";",
+   "depends_on": "eval:doc.type==\"Table\";",
    "fieldname": "table_columns",
    "fieldtype": "Int",
    "label": "Columns"
   },
   {
    "default": "1",
-   "depends_on": "eval:doc.type==\"Type\" && doc.table_type==\"Static\";",
+   "depends_on": "eval:doc.type==\"Table\" && doc.table_type==\"Static\";",
    "fieldname": "table_lines",
    "fieldtype": "Int",
    "label": "lines"
   },
   {
+   "depends_on": "eval:doc.type==\"Label\";",
    "fieldname": "text_align",
    "fieldtype": "Select",
    "label": "Text Align",
@@ -209,7 +210,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-01-07 16:40:45.440181",
+ "modified": "2022-01-12 17:12:38.709709",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "div",

@@ -1,6 +1,4 @@
-// Copyright (c) 2021, Weslati Baha Eddine and contributors
-// For license information, please see license.txt
-
+// Copyright (c) 2021, Weslati Baha Eddine and contributors For license information, please see license.txt
 frappe.ui.form.on('Custom Print Format', {
 	qr_code_color:function(frm){
 	if (frm.doc.qr_code_type=="text"){
@@ -81,12 +79,25 @@ frappe.ui.form.on('Custom Print Format', {
 
 frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
-document.getElementById("delete").onclick = function(){delete_element(frm);}
-document.getElementById("disable").onclick = function(){disable_element(frm);}
-document.getElementById("duplicate").onclick = function(){duplicate_element(frm);}
-document.getElementById("bodyspace").onclick = function(){hideMenu();}
-document.getElementById("headspace").onclick = function(){hideMenu();}
-document.getElementById("page-Custom Print Format").onclick = function(){hideMenu();}
+		//event_list
+		document.getElementById("delete").onclick = function(){delete_element(frm);}
+		document.getElementById("disable").onclick = function(){disable_element(frm);}
+		document.getElementById("duplicate").onclick = function(){duplicate_element(frm);}
+		document.getElementById("bodyspace").onclick = function(){hideMenu();}
+		document.getElementById("headspace").onclick = function(){hideMenu();}
+		document.getElementById("make-bold").onclick = function(){toggle_bold(frm);}
+		document.getElementById("make-italic").onclick = function(){toggle_italic(frm);;}
+		document.getElementById("make-underline").onclick = function(){toggle_underline(frm);}
+		$('#select-size').on('keyup change', function() {change_size($(this).val());});
+		document.getElementById("plus").onclick = function(){add_size(1);}
+		document.getElementById("minus").onclick = function(){add_size(-1);}
+		set_fonts_to_select();
+		document.getElementById("page-Custom Print Format").onclick = function(){hideMenu();}
+		byid("select-fonts").onchange = function(){change_font(frm);}
+		byid("make-disable").onclick = function(){disable_element_tools(frm)}
+		byid("make-copy").onclick = function(){duplicate_element_tools(frm)}
+		byid("make-delete").onclick = function(){delete_element_tools(frm)}
+
 var sidebar= document.getElementsByClassName("layout-side-section")[0]; 
 var element = document.createElement("div");
 element.setAttribute("id","utils");
@@ -114,6 +125,7 @@ refresh_field("height");
 
 frappe.ui.form.on('Custom Print Format', {
         before_save: function(frm){
+		refresh_last();
 		var cont =document.getElementById("my_container");
 		frm.set_value("html",cont.innerHTML.replaceAll("dashed none","none"));
 		frm.set_value("html",cont.innerHTML.replaceAll("none dashed","none"));
@@ -185,7 +197,7 @@ function place(element,parent_id,frm){
 				element_.style.textDecoration = "underline";
 						}
 			var text = element.label;
-			//if (element.italic){text=text.italics()}
+			if (element.italic){text=text.italics()}
 			if (element.bold){element_.style.fontWeight="bold";}
 			element_.style.fontSize= element.font_size.toString()+"px";
 			element_.innerHTML=text;}
@@ -222,12 +234,14 @@ function place(element,parent_id,frm){
                 element_.setAttribute("data-x",x);
                 element_.setAttribute("data-y",element.y);
 		element_.classList.add('resize-drag');
+		element_.style.borderStyle=element.border;
+		element_.style.borderColor=element.border_color;
 		element_.classList.add('clickable001');
                 element_.style.position="absolute";
 		element_.style.width=element.width.toString()+"px";
 		element_.style.height=element.height.toString()+"px";
 		element_.setAttribute("id",element.name);
-		element_.onclick = function() {element_click(element_);hideMenu();};
+		element_.onclick = function() {element_click(frm,element_);hideMenu();};
 		element_.oncontextmenu = rightClick;
                 parent.appendChild(element_);
 	}
@@ -262,9 +276,9 @@ function rightClick(e) {
 		else //menu on right 
 			{menu.style.left = (this.offsetLeft+this.offsetWidth).toString()+"px";}
 		if (parent_id=="headspace"){
-                menu.style.top = this.style.top;}
+                	menu.style.top = this.style.top;}
 		if (parent_id=="bodyspace"){
-			menu.style.top= (this.offsetTop+ document.getElementById("headspace").offsetHeight).toString()+"px";}
+			menu.style.top= (this.offsetTop+ document.getElementById("headspace").offsetHeight+40).toString()+"px";}
 		if (parent_id=="footspace"){
                         menu.style.top= (this.offsetTop+ document.getElementById("headspace").offsetHeight + document.getElementById("bodyspace").offsetHeight).toString()+"px";}
 
@@ -294,7 +308,7 @@ function place_qr_code(frm){
 		element_.style.width=frm.doc.qr_code_width.toString()+"px";
                 element_.style.height=frm.doc.qr_code_height.toString()+"px";
 		element_.appendChild(img);
-		element_.onclick = function() {element_click(element_);hideMenu();};
+		element_.onclick = function() {element_click(frm,element_);hideMenu();};
                 element_.oncontextmenu = rightClick;
 		parent.appendChild(element_);
 }
@@ -384,13 +398,14 @@ function clear_css_links(frm){
 	refresh_field("css");
 }
 function add_links(frm,links){
-	$('head').append(links)
-        var old_links=frm.doc.links;
-	if (old_links==undefined){var old_links="";}
-        if (!old_links.includes(links)){
-        frm.set_value("links",old_links+links);
-        refresh_field("links");
-        }
+	if(links!=undefined){
+		$('head').append(links)
+        	var old_links=frm.doc.links;
+		if (old_links==undefined){var old_links="";}
+        	if (!old_links.includes(links)){
+        	frm.set_value("links",old_links+links);
+        	refresh_field("links");
+        }}
 
 }
 
@@ -449,17 +464,133 @@ function save_body_elements(frm){
 
 
 
-
-function element_click(element){
-//
-//clear_select();
-//if (element.style.borderStyle!="dashed"){
-//element.style.borderStyle="dashed";
-//element.style.borderColor="gray"
-//}else{
-//element.style.borderStyle="none";
-//}
+//action when click element
+function element_click(frm,element){
+	toggle_clicked_border(frm,element)
+	var id= element.id;
+	if (id!="qr_code"){
+		set_tools(id);}
+	else{
+		clear_tools();
+		removeclass("make-disable","desactive");
+		addclass("make-disable","active");
+		byid("select-fonts").disabled = true;
+		byid("select-size").disabled = true;
+		addclass("make-bold","desactive");
+		addclass("make-italic","desactive");
+		addclass("make-underline","desactive");
+		removeclass("make-bold","active");
+                removeclass("make-italic","active");
+                removeclass("make-underline","active");
+		console.log("qr_code clicked");
+		document.getElementsByClassName("tools")[0].setAttribute("id","aqr_code");
+	}
 }
+
+//toggle border when clicked
+function toggle_clicked_border(frm,element){
+	if (element.style.borderStyle!="dashed"){
+		refresh_last();
+		element.style.borderStyle="dashed";
+		element.style.borderColor="gray"
+	}else{
+		refresh_border(element);
+	}
+}
+
+//reload element from client side
+function reload_element(frm,id){
+	var element = frappe.model.get_doc("div",id);
+	if (element != undefined){
+		var real_element = byid(id);
+		if (real_element!=undefined){real_element.remove();}
+		var parent =  element.parentfield.substring(0,4)+"space";
+		place(element,parent,frm);
+
+}
+}
+
+//refresh border to original
+function refresh_border(element){
+	console.log("refresh",element.id);
+	if (element.id=="qr_code"){	
+		console.log("now");
+		element.style.borderStyle="none";
+	}
+	else{
+	var el = frappe.model.get_doc("div",element.id);
+	if (el != undefined){
+		element.style.borderStyle=el.border;
+		element.style.borderColor=el.border_color;
+}}}
+
+//refresh last clicked leement's border
+function refresh_last(){
+	if (selected_element()!=undefined){
+		var id = selected_element().id;
+		if (id != undefined){
+			refresh_border(byid(id));
+}}
+}
+
+function clear_tools(){
+	var items = ["bold","italic","underline","right","left","center"]
+	for (let i =0; i < items.length;i++){
+		removeclass("make-"+items[i],"selected");}
+	desactive_tools();}
+
+
+function set_tools(id){
+	clear_tools();
+	var doc = frappe.model.get_doc("div",id);
+	//set toosl for texts
+	if (doc.type=="Label"){
+		byid("select-fonts").disabled = false;
+                byid("select-size").disabled = false;
+		addclass("make-bold","active");
+                addclass("make-italic","active");
+                addclass("make-underline","active");
+                removeclass("make-bold","desactive");
+                removeclass("make-italic","desactive");
+                removeclass("make-underline","desactive");
+
+		document.getElementById("select-size").value =doc.font_size;
+		byid("select-fonts").value=doc.font;
+		document.getElementById("make-"+doc.text_align).classList.add("selected");
+		if (doc.bold==1){addclass("make-bold","selected");}
+		if (doc.italic==1){addclass("make-italic","selected");}
+		if (doc.underline==1){addclass("make-underline","selected");}}
+		active_tools();
+		console.log(doc.label ,"clicked");
+		document.getElementsByClassName("tools")[0].setAttribute("id","a"+doc.name);}
+function active_tools(){
+	addclass("make-disable","active");
+	addclass("make-delete","active");
+	addclass("make-copy","active");
+	removeclass("make-disable","desactive");
+	removeclass("make-delete","desactive");
+	removeclass("make-copy","desactive");}
+function desactive_tools(){
+	addclass("make-disable","desactive");
+	addclass("make-delete","desactive");
+	addclass("make-copy","desactive");
+	removeclass("make-disable","active");
+	removeclass("make-delete","active");
+	removeclass("make-copy","active");}
+function toggle_select(id){
+	var el = document.getElementById(id);
+	if ($("#"+id).hasClass("selected")){
+		el.classList.remove("selected");
+		return (false) ;}
+	else{
+	el.classList.add("selected");
+	return (true);}}
+
+
+
+function addclass(id,class_){document.getElementById(id).classList.add(class_);}
+function removeclass(id,class_){document.getElementById(id).classList.remove(class_);}
+
 
 function clear_select(){
 /*
@@ -477,17 +608,16 @@ texts[i].style.borderStyle="none";
 }
 
 
-
+//delete element from menu
 function delete_element(frm){
 	var element = document.getElementById("delete").parentElement.parentElement.id.split('%%');
 	var table= element[0];
 	var row_name=element[1];
-	console.log(table,row_name);
 	remove_row(frm,table,row_name);
 	document.getElementById(row_name).remove();
 	hideMenu();
 }
-
+//disable element from menu
 function disable_element(frm){
 	var element = document.getElementById("delete").parentElement.parentElement.id.split('%%');
         var table= element[0];
@@ -502,36 +632,22 @@ function disable_element(frm){
 	disable_row(frm,table,row_name);
         document.getElementById(row_name).remove();
         hideMenu();
-
-}
-}
-
+}}
+//duplicate element from menu
 function duplicate_element(frm){
 	var element = document.getElementById("delete").parentElement.parentElement.id.split('%%');
         var table= element[0];
         var row_name=element[1];
 	duplicate_row(frm,table,row_name);
-	
-
-
-
 }
-
 function remove_row(frm,table,row_name){
 	if (table=="headspace"){table="header_elements";var i= frm.doc.header_elements.length;}
 	else if (table=="footspace"){table="footer_elements";var i = frm.doc.footer_elements.length;}
 	else {table="body_elements";var i=frm.doc.body_elements.length;}
-		while (i--)
-		{
-    			if(frm.doc[table][i].name==row_name)
-    			{
-        			frm.get_field(table).grid.grid_rows[i].remove();
-    			}
-		}
-	frm.refresh_field(table);
-}
-
-
+		while (i--){
+    			if(frm.doc[table][i].name==row_name){
+        			frm.get_field(table).grid.grid_rows[i].remove();}}
+	frm.refresh_field(table);}
 function disable_row(frm,table,row_name){
 	frappe.model.set_value("div",row_name,"disabled",1)
 	if (table=="headspace"){table="header_elements";}
@@ -578,3 +694,151 @@ function duplicate_row(frm,table,row_name){
 	frm.refresh_field(parent);
 
 }
+
+
+
+//tools events
+function toggle_bold(frm){
+var id = document.getElementsByClassName("tools")[0].id.substring(1);
+if (toggle_select("make-bold")){
+frappe.model.set_value("div",id,"bold",1)
+document.getElementById(id).style.fontWeight="bold";
+}
+else
+{
+frappe.model.set_value("div",id,"bold",0);
+document.getElementById(id).style.fontWeight="normal";
+};}
+//toggle italic
+function toggle_italic(frm){
+var id = document.getElementsByClassName("tools")[0].id.substring(1);
+var element = document.getElementById(id);
+if (toggle_select("make-italic")){
+frappe.model.set_value("div",id,"italic",1)
+element.innerHTML=element.innerHTML.italics();
+}
+else
+{
+frappe.model.set_value("div",id,"italic",0);
+element.innerHTML=element.innerHTML.replaceAll("<i>","") ;
+};
+}
+//toggle italic 
+function toggle_underline(frm){
+var id = document.getElementsByClassName("tools")[0].id.substring(1);
+var element = document.getElementById(id);
+if (toggle_select("make-underline")){
+frappe.model.set_value("div",id,"underline",1)
+element.style.textDecoration="underline"}
+else{
+frappe.model.set_value("div",id,"underline",0);
+element.style.textDecoration="none";
+};}
+
+//change font size;
+function change_size(val){
+	if (isNumeric(val)){
+		if (val <121 && val >1) {
+			var id = document.getElementsByClassName("tools")[0].id.substring(1);
+			var element = document.getElementById(id);
+			element.style.fontSize=val.toString()+"px";
+			frappe.model.set_value("div",id,"font_size",val)
+		}
+}else{
+console.log("not integer!");
+}}
+//add size to selected element
+function add_size(s){
+	var size = parseInt(document.getElementById("select-size").value);
+        if (size+s <121) {
+                document.getElementById("select-size").value=size+s;
+                var element = selected_element();
+                element.style.fontSize=(size+s).toString()+"px";
+                frappe.model.set_value("div",element.id,"font_size",size+s);
+}}
+//change font family
+function change_font(frm){
+	var element=selected_element();
+	var select =byid("select-fonts");
+	frappe.call({
+        	method : "frappe.client.get",
+                args:{
+                	"doctype":"Font",
+                        "name":select.value},
+                callback(r) {
+                	if(r.message){add_links(frm,r.message.css);}}});
+	element.style.fontFamily="'"+select.value+"',sans-serif";
+	frappe.model.set_value("div",element.id,"font",select.value);
+}
+//disable element from tools
+function disable_element_tools(frm){
+	var selected=selected_element();
+	var row_name = selected.id
+        var table= selected.parentElement.id;
+        if (row_name=="qr_code"){
+                frm.set_value("qr_code_type","none");
+                frm.refresh_field("qr_code_type");
+                document.getElementById("qr_code").remove();
+                hideMenu();
+        }
+        else{
+        disable_row(frm,table,row_name);
+        document.getElementById(row_name).remove();}
+	desactive_tools();
+}
+//duplicate element from tools
+function duplicate_element_tools(frm){
+	var selected=selected_element();
+        var row_name = selected.id
+        var table= selected.parentElement.id;
+        duplicate_row(frm,table,row_name);
+}
+
+//delete element from tools
+function delete_element_tools(frm){
+	var selected=selected_element();
+        var row_name = selected.id
+        var table= selected.parentElement.id;
+        remove_row(frm,table,row_name);
+        document.getElementById(row_name).remove();
+        hideMenu();
+	desactive_tools();
+}
+
+
+
+
+function selected_element(){return (document.getElementById(document.getElementsByClassName("tools")[0].id.substring(1)));}
+function isNumeric(val) {return /^-?\d+$/.test(val);}
+
+
+
+
+
+
+//put all fonts in select options
+function set_fonts_to_select(){
+frappe.call({
+                method:"slnee.data.get_fonts",
+                callback(r){
+			var list=byid("select-fonts");
+			for (let i =0;i<r.message.length;i++){
+				var option = document.createElement("option");
+				option.text=r.message[i];
+				list.add(option);
+}}});}
+function byid(id){return (document.getElementById(id));}
+
+
+function get_cells(frm,div_id){
+	frappe.call({
+                method:"slnee.data.get_cells",
+		args:{ "print":frm.doc.name,
+			"div":div_id
+			},
+                callback(r){
+			console.log(r.message);}
+		});
+
+}
+//end

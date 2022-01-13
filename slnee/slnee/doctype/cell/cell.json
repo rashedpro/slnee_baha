@@ -1,0 +1,217 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-01-12 17:02:26.137704",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "type",
+  "label",
+  "doc_field",
+  "color",
+  "text_align",
+  "vertical_align",
+  "bold",
+  "underline",
+  "italic",
+  "image",
+  "fetch_from",
+  "width",
+  "height",
+  "x",
+  "y",
+  "column_break_8",
+  "disabled",
+  "font",
+  "font_size",
+  "border",
+  "border_color",
+  "border_radius",
+  "div",
+  "line",
+  "column"
+ ],
+ "fields": [
+  {
+   "default": "Label",
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Label\nImage",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Label"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "doc_field",
+   "fieldtype": "Select",
+   "label": "Doctype field"
+  },
+  {
+   "default": "#000000",
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "in_list_view": 1,
+   "label": "Color"
+  },
+  {
+   "fieldname": "text_align",
+   "fieldtype": "Select",
+   "label": "Text Align",
+   "options": "left\nright\ncenter"
+  },
+  {
+   "default": "0",
+   "fieldname": "vertical_align",
+   "fieldtype": "Check",
+   "label": "Vertical align"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "bold",
+   "fieldtype": "Check",
+   "label": "Bold"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "underline",
+   "fieldtype": "Check",
+   "label": "Underline"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "italic",
+   "fieldtype": "Check",
+   "label": "Italic"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Image\";",
+   "fieldname": "image",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Image"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Table\" && doc.table_type==\"Fetch from\";",
+   "fieldname": "fetch_from",
+   "fieldtype": "Select",
+   "label": "Fetch From"
+  },
+  {
+   "default": "50",
+   "fieldname": "width",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Width"
+  },
+  {
+   "default": "30",
+   "fieldname": "height",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Height"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.center==\"0\";",
+   "fieldname": "x",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "X"
+  },
+  {
+   "default": "0",
+   "fieldname": "y",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Y"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Disabled"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "font",
+   "fieldtype": "Link",
+   "label": "Font",
+   "options": "Font"
+  },
+  {
+   "default": "12",
+   "depends_on": "eval:doc.type==\"Label\";",
+   "fieldname": "font_size",
+   "fieldtype": "Int",
+   "label": "Font size"
+  },
+  {
+   "default": "none",
+   "fieldname": "border",
+   "fieldtype": "Select",
+   "label": "Border",
+   "options": "none\nsolid\ndotted\ndouble\ndashed\ngroove\ninset\noutset"
+  },
+  {
+   "depends_on": "eval:doc.border!=\"none\";",
+   "fieldname": "border_color",
+   "fieldtype": "Color",
+   "label": "Border Color"
+  },
+  {
+   "default": "0",
+   "fieldname": "border_radius",
+   "fieldtype": "Float",
+   "label": "Border Radius"
+  },
+  {
+   "fieldname": "div",
+   "fieldtype": "Link",
+   "label": "div",
+   "options": "div"
+  },
+  {
+   "default": "1",
+   "fieldname": "line",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "line"
+  },
+  {
+   "default": "1",
+   "fieldname": "column",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "column"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-01-12 17:20:37.790660",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "cell",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
