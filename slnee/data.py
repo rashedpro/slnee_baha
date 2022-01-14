@@ -81,6 +81,8 @@ def get_cells(prin,div):
 	print(table)
 	return(table)
 
+
+
 def money_in_words(number, main_currency = None, fraction_currency=None):
         """
         Returns string in words with currency and fraction currency.

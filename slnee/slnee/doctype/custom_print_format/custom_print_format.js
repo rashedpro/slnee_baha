@@ -617,7 +617,6 @@ function element_click(frm,element){
 		removeclass("make-bold","active");
                 removeclass("make-italic","active");
                 removeclass("make-underline","active");
-		console.log("qr_code clicked");
 		document.getElementsByClassName("tools")[0].setAttribute("id","aqr_code");
 	}
 }
@@ -647,9 +646,7 @@ function reload_element(frm,id){
 
 //refresh border to original
 function refresh_border(element){
-	console.log("refresh",element.id);
 	if (element.id=="qr_code"){	
-		console.log("now");
 		element.style.borderStyle="none";
 	}
 	else{
@@ -696,7 +693,6 @@ function set_tools(id){
 		if (doc.italic==1){addclass("make-italic","selected");}
 		if (doc.underline==1){addclass("make-underline","selected");}}
 		active_tools();
-		console.log(doc.label ,"clicked");
 		document.getElementsByClassName("tools")[0].setAttribute("id","a"+doc.name);}
 function active_tools(){
 	addclass("make-disable","active");
@@ -972,7 +968,6 @@ function get_cells(frm,div_id){
 			"div":div_id
 			},
                 callback(r){
-			console.log(r.message[0]);
 			return(r.message);}
 		});
 
