@@ -209,7 +209,7 @@
    "fieldname": "text_align",
    "fieldtype": "Select",
    "label": "Text Align",
-   "options": "left\nright\ncenter"
+   "options": "center\nleft\nright\njustify"
   },
   {
    "default": "0",
@@ -234,7 +234,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-01-14 09:04:35.363332",
+ "modified": "2022-01-14 16:43:48.160553",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "div",

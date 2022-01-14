@@ -106,10 +106,29 @@ frappe.call({
 }
 
 });
+function offset(el) {
+    var rect = el.getBoundingClientRect(),
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+}
+
+function stick(){
+	var tools = document.getElementsByClassName("tools")[0];
+	var top = offset(tools).top;
+	console.log(top);
+	if (top-window.pageYOffset < 10 ) {
+		tools.classList.add("sticky");
+}else {tools.classList.remove("sticky");}
+
+}
+
 
 frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
 		//event_list
+		window.onscroll = function() { stick()};
+
 		document.getElementById("delete").onclick = function(){delete_element(frm);}
 		document.getElementById("disable").onclick = function(){disable_element(frm);}
 		document.getElementById("duplicate").onclick = function(){duplicate_element(frm);}
@@ -607,16 +626,11 @@ function element_click(frm,element){
 		set_tools(id);}
 	else{
 		clear_tools();
-		removeclass("make-disable","desactive");
-		addclass("make-disable","active");
+		//desactiveall("make-delete","make-copy")
+		active("make-disable");
+		desactiveall(["make-bold","make-italic","make-underline","plus","minus","make-justify"]);
 		byid("select-fonts").disabled = true;
 		byid("select-size").disabled = true;
-		addclass("make-bold","desactive");
-		addclass("make-italic","desactive");
-		addclass("make-underline","desactive");
-		removeclass("make-bold","active");
-                removeclass("make-italic","active");
-                removeclass("make-underline","active");
 		document.getElementsByClassName("tools")[0].setAttribute("id","aqr_code");
 	}
 }
@@ -679,35 +693,45 @@ function set_tools(id){
 	if (doc.type=="Label"){
 		byid("select-fonts").disabled = false;
                 byid("select-size").disabled = false;
-		addclass("make-bold","active");
-                addclass("make-italic","active");
-                addclass("make-underline","active");
-                removeclass("make-bold","desactive");
-                removeclass("make-italic","desactive");
-                removeclass("make-underline","desactive");
-
-		document.getElementById("select-size").value =doc.font_size;
+		activeall(["make-bold","make-italic","make-underline","plus","minus","make-justify"]);
+		byid("select-size").value =doc.font_size;
 		byid("select-fonts").value=doc.font;
 		document.getElementById("make-"+doc.text_align).classList.add("selected");
 		if (doc.bold==1){addclass("make-bold","selected");}
 		if (doc.italic==1){addclass("make-italic","selected");}
 		if (doc.underline==1){addclass("make-underline","selected");}}
+	if (doc.type=="Image"){
+		byid("select-fonts").disabled = true;
+                byid("select-size").disabled = true;
+		byid("select-size").value="";
+		byid("select-fonts").value="";
+		desactiveall(["make-bold","make-italic","make-underline","plus","minus","make-justify"]);
+
+	}
 		active_tools();
 		document.getElementsByClassName("tools")[0].setAttribute("id","a"+doc.name);}
+
+
+function desactiveall(ids){
+	for (var i =0;i<ids.length;i++){
+		desactive(ids[i]);}}
+function activeall(ids){
+        for (var i =0;i<ids.length;i++){
+                active(ids[i]);}}
+function desactive(id){
+	addclass(id,"desactive");
+        removeclass(id,"active");
+}
+function active(id){
+        addclass(id,"active");
+        removeclass(id,"desactive");
+}
+
+
 function active_tools(){
-	addclass("make-disable","active");
-	addclass("make-delete","active");
-	addclass("make-copy","active");
-	removeclass("make-disable","desactive");
-	removeclass("make-delete","desactive");
-	removeclass("make-copy","desactive");}
+	activeall(["make-disable","make-delete","make-copy"])}
 function desactive_tools(){
-	addclass("make-disable","desactive");
-	addclass("make-delete","desactive");
-	addclass("make-copy","desactive");
-	removeclass("make-disable","active");
-	removeclass("make-delete","active");
-	removeclass("make-copy","active");}
+	desactiveall(["make-disable","make-delete","make-copy"])}
 function toggle_select(id){
 	var el = document.getElementById(id);
 	if ($("#"+id).hasClass("selected")){
