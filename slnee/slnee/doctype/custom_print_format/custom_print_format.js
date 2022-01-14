@@ -195,6 +195,17 @@ frappe.ui.form.on('div','label' ,function(frm,cdt,cdn){
 	document.getElementById(div.name).innerHTML=div.label;
 });
 
+//trigger when docfield change in a div
+frappe.ui.form.on('div','doc_field' ,function(frm,cdt,cdn){
+        var div = locals[cdt][cdn];
+	if (div.doc_field!="" && div.doc_field!=undefined){
+	div.label=div.doc_field;
+	frm.refresh_field(div.parentfield);
+        document.getElementById(div.name).innerHTML="{{doc."+div.doc_field+"}}";}
+	else { div.label="";byid(div.name).innerHTML="";frm.refresh_field(div.parentfield);}
+});
+
+
 function head_elements(frm){
 frm.doc.elements.forEach(function(element){
 
@@ -296,15 +307,24 @@ function place(element,parent_id,frm){
 		element_.style.borderColor=element.border_color;
 		element_.style.borderWidth=element.border_size.toString()+"px";
 		element_.classList.add('clickable001');
+		element_.classList.add('code'+element.name);
                 element_.style.position="absolute";
 		element_.style.width=element.width.toString()+"px";
 		element_.style.height=element.height.toString()+"px";
 		element_.setAttribute("id",element.name);
 		element_.onclick = function() {element_click(frm,element_);hideMenu();};
 		element_.oncontextmenu = rightClick;
+		//element_="test"+element_;
                 parent.appendChild(element_);
 	}
 }
+
+function add_hide_code(frm,id){
+
+	var code="<script>if (eval(1==1)){document.getElementById("+id+").style.display='none;'}</script>"
+	
+}
+
 
 //create table cell from doc cell
 function create_cell(frm,cell,i,j){
@@ -414,6 +434,7 @@ function place_qr_code(frm){
 		if(text == undefined){text="write your text inside the specified box."}
                 img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data="+text.replaceAll("\n","%0A");
 		element_.classList.add('resize-drag');
+		element_.classList.add("codeqr_code");
                 element_.style.position="absolute";
 		element_.style.top=frm.doc.qr_code_y.toString()+"px";
                 element_.style.left=frm.doc.qr_code_x.toString()+"px";

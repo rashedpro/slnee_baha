@@ -77,9 +77,10 @@ function dragMoveListener (event) {
 
   // translate the element
   //target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-    target.style.top = y+'px';
+    target.style.borderStyle="none";
+	target.style.top = y+'px';
     target.style.left =x+'px';
-
+    
   // update the posiion attributes
   target.setAttribute('data-x', x)
   target.setAttribute('data-y', y)

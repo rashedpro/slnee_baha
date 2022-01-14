@@ -39,11 +39,20 @@ padding: 0in;
 {size: auto; 
  margin: 0mm 0mm 0mm 0mm;  
 } 
+.hide1{display:none;}
 """
 			if self.links:
 				html+=self.links
 			if self.html:
 				html+=self.html
+			for i in self.header_elements +self.body_elements+self.footer_elements:
+				if (i.display_depends_on != None and i.display_depends_on !=""):
+					pos=html.find("code"+i.name)
+					l=len(str(i.name))
+					html=html[:pos+l+4]+" {% if not "+i.display_depends_on+" %}hide1 {% endif %}"+html[pos+l+4:]
+			if (self.display_qr!= None and self.display_qr != ""):
+				pos=html.find("codeqr_code")
+				html=html[:pos+11]+" {% if not ("+self.display_qr+") %}hide1 {% endif %}"+html[pos+11:]
 			doc = frappe.get_doc({
 				'doctype':'Print Format',
 				"name":self.name,
@@ -88,13 +97,26 @@ padding: 0in;
 {size: auto; 
  margin: 0mm 0mm 0mm 0mm;  
 } 
+.hide1{display:none;}
 """
 			if self.links:
 				html+=self.links
 			if self.html:
 				html+=self.html
+			for i in self.header_elements+self.body_elements+self.footer_elements:
+				if (i.display_depends_on != None and i.display_depends_on !=""):
+					pos=html.find("code"+i.name)
+					l=len(str(i.name))
+					html=html[:pos+l+4]+" {% if not ("+i.display_depends_on+") %}hide1 {% endif %}"+html[pos+l+4:]
+
+
+			if (self.display_qr!= None and self.display_qr != ""):
+				pos=html.find("codeqr_code")
+				html=html[:pos+11]+" {% if not "+self.display_qr+" %}hide1 {% endif %}"+html[pos+11:]
 			doc.html=html
 			doc.css=css
 			doc.disabled=self.is_disabled
 			doc.save()
+
+	
 	pass
