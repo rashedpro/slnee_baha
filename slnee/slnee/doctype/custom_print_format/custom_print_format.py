@@ -38,7 +38,7 @@ padding: 0in;
 }
 @page  
 {size: auto; 
- margin: 0mm 0mm 0mm 0mm;  
+ margin: 0mm 0mm 0mm 0mm;
 } 
 .hide1{display:none;}
 """
@@ -141,7 +141,7 @@ padding: 0in;
 							field=text[p:i]
 							break
 					meta = frappe.get_meta(self.doc_type)
-					if not meta.has_field(field):
+					if ( not field in ["name","docstatus","creation"]) and ( not meta.has_field(field)):
 						frappe.msgprint("Invalid 'depends_on' expression in QR Code",raise_exception=False)
 						frappe.msgprint(("Doctype {0} has no attribute {1}").format(self.doc_type,field),raise_exception = True )
 				else:
@@ -167,7 +167,7 @@ padding: 0in;
 									field=text[p:j]
 									break
 						meta = frappe.get_meta(self.doc_type)
-						if not meta.has_field(field):
+						if (not field in ["name","docstatus","creation"]) and ( not meta.has_field(field) ) :
 							frappe.msgprint(("Invalid 'depends_on' expression in {0}, row {1}").format(i.parentfield,i.idx),raise_exception=False)
 							frappe.msgprint(("Doctype {0} has no attribute {1}").format(self.doc_type,field),raise_exception = True )
 

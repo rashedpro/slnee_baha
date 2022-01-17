@@ -18,7 +18,8 @@
   "preview_section",
   "preview_text",
   "font_size",
-  "demo"
+  "demo",
+  "symbols"
  ],
  "fields": [
   {
@@ -98,11 +99,17 @@
    "fieldname": "is_url",
    "fieldtype": "Check",
    "label": "Is url"
+  },
+  {
+   "fieldname": "symbols",
+   "fieldtype": "HTML",
+   "label": "Symbols",
+   "options": "<style>\n    \n    \n    .col-sm{\n        \n        width:auto;\nfont-size:22px;\n    }\n</style><div class=\"container symbols\" id=\"english\">\n  <div class=\"row\">\n    <div class=\"col-sm\">A</div><div class=\"col-sm\">B</div><div class=\"col-sm\">C</div><div class=\"col-sm\">D</div><div class=\"col-sm\">E</div><div class=\"col-sm\">F</div><div class=\"col-sm\">G</div><div class=\"col-sm\">H</div><div class=\"col-sm\">I</div><div class=\"col-sm\">J</div><div class=\"col-sm\">K</div><div class=\"col-sm\">L</div><div class=\"col-sm\">M</div><div class=\"col-sm\">N</div><div class=\"col-sm\">O</div><div class=\"col-sm\">P</div><div class=\"col-sm\">Q</div><div class=\"col-sm\">R</div><div class=\"col-sm\">S</div><div class=\"col-sm\">T</div><div class=\"col-sm\">U</div><div class=\"col-sm\">V</div><div class=\"col-sm\">W</div><div class=\"col-sm\">X</div><div class=\"col-sm\">Y</div><div class=\"col-sm\">Z</div><div class=\"col-sm\">a</div><div class=\"col-sm\">b</div><div class=\"col-sm\">c</div><div class=\"col-sm\">d</div><div class=\"col-sm\">e</div><div class=\"col-sm\">f</div><div class=\"col-sm\">g</div><div class=\"col-sm\">h</div><div class=\"col-sm\">i</div><div class=\"col-sm\">j</div><div class=\"col-sm\">k</div><div class=\"col-sm\">l</div><div class=\"col-sm\">m</div><div class=\"col-sm\">n</div><div class=\"col-sm\">o</div><div class=\"col-sm\">p</div><div class=\"col-sm\">q</div><div class=\"col-sm\">r</div><div class=\"col-sm\">s</div><div class=\"col-sm\">t</div><div class=\"col-sm\">u</div><div class=\"col-sm\">v</div><div class=\"col-sm\">w</div><div class=\"col-sm\">x</div><div class=\"col-sm\">y</div><div class=\"col-sm\">z</div><div class=\"col-sm\">0</div><div class=\"col-sm\">1</div><div class=\"col-sm\">2</div><div class=\"col-sm\">3</div><div class=\"col-sm\">4</div><div class=\"col-sm\">5</div><div class=\"col-sm\">6</div><div class=\"col-sm\">7</div><div class=\"col-sm\">8</div><div class=\"col-sm\">9</div><div class=\"col-sm\">.</div><div class=\"col-sm\">,</div><div class=\"col-sm\">!</div><div class=\"col-sm\">?</div><div class=\"col-sm\">-</div><div class=\"col-sm\">_</div><div class=\"col-sm\">(</div><div class=\"col-sm\">)</div><div class=\"col-sm\">[</div><div class=\"col-sm\">]</div><div class=\"col-sm\">%</div><div class=\"col-sm\">#</div><div class=\"col-sm\">@</div>\n   \n    \n  </div>\n</div>"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-11 14:08:39.515939",
+ "modified": "2022-01-17 17:30:38.096925",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Font",

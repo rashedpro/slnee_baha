@@ -113,10 +113,8 @@ function offset(el) {
     return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
 }
 
-function stick(){
-	var tools = document.getElementsByClassName("tools")[0];
+function stick(tools){
 	var top = offset(tools).top;
-	console.log(top);
 	if (top-window.pageYOffset < 10 ) {
 		tools.classList.add("sticky");
 }else {tools.classList.remove("sticky");}
@@ -127,7 +125,8 @@ function stick(){
 frappe.ui.form.on('Custom Print Format', {
 	 refresh: function(frm) {
 		//event_list
-		window.onscroll = function() { stick()};
+		var tools = document.getElementsByClassName("tools")[0];
+		window.onscroll = function() { stick(tools)};
 
 		document.getElementById("delete").onclick = function(){delete_element(frm);}
 		document.getElementById("disable").onclick = function(){disable_element(frm);}
@@ -175,9 +174,8 @@ refresh_field("height");
 frappe.ui.form.on('Custom Print Format', {
         before_save: function(frm){
 		refresh_last();
-		var cont =document.getElementById("my_container");
-		frm.set_value("html",cont.innerHTML.replaceAll("dashed none","none"));
-		frm.set_value("html",cont.innerHTML.replaceAll("none dashed","none"));
+		var cont =document.getElementById("my_container").innerHTML;
+		frm.set_value("html",cont.replaceAll("none dashed","none"));
                 refresh_field("html");
 		save_header_elements(frm);
 		save_body_elements(frm);
@@ -258,8 +256,11 @@ function place(element,parent_id,frm){
 			if (element.underline ==1){
 				element_.style.textDecoration = "underline";
 						}
-			if (element.doc_field!="" && element.doc_field != undefined) {
-			var text = "{{doc."+element.doc_field+"}}";
+			if (element.doc_field!="" && element.doc_field != undefined ) {
+				if (element.doc_field!="page_number"){
+					var text = "{{doc."+element.doc_field+"}}";}
+				else { var text = "<div class='hide1'>"+element.page_number_format+"</div><div class='hide-in-demo'>{{ _('"+
+					element.page_number_format+"').format('<span class='page'></span>', '<span class='topage'></span>') }}</div>" ;}
 			}else{
 			var text = element.label;}
 			if (element.italic){text=text.italics()}
@@ -827,6 +828,8 @@ function duplicate_row(frm,table,row_name){
 	else {var font = doc.font;}
 	let row = frm.add_child(parent,{
                                 label:doc.label,
+				doc_field:doc.doc_field,
+				page_number_format:doc.page_number_format,
                                 color:doc.color,
                                 type:doc.type,
 				image:img,

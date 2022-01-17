@@ -15,13 +15,12 @@ frappe.ui.form.on('Font', {
 
 
 		//fix preview text
-		console.log(frm.doc.preview_text);
+		console.log("yoho");
 		if (frm.doc.preview_text=="" || frm.doc.preview_text==undefined){
-			if(frm.doc.language=="English"){
-				frm.set_value("preview_text","A journey of a thousand miles begins with a single step.")
-			}
-
+			console.log("hello");
+			set_preview_text(frm);
 		}
+		set_symbols(frm);
 		set_preview(frm);
 	 }
 });
@@ -36,6 +35,7 @@ function set_preview(frm){
         var parent = document.getElementById("prv");
         parent.innerHTML="";
         parent.appendChild(element);
+	document.getElementsByClassName("symbols")[0].style.fontFamily = frm.doc.name;
 
 }
 
@@ -53,14 +53,30 @@ frappe.ui.form.on('Font', {
 
 frappe.ui.form.on('Font', {
 	language: function(frm){
-		if (frm.doc.language=="العربية"){
-			frm.set_value("preview_text","بسم الله الرحمن الرحيم ")
-			refresh_field("preview_text");
-		}
-		else if (frm.doc.language=="English"){
-                        frm.set_value("preview_text","A journey of a thousand miles begins with a single step.")
+	set_preview_text(frm);
+	set_symbols(frm);}
+});
+
+
+function set_symbols(frm){
+if (frm.doc.language=="العربية"){
+	document.getElementById("english").style.display="none";
+}
+if (frm.doc.language=="English"){
+        document.getElementById("english").style.display="block";
+}
+
+
+
+}
+
+function set_preview_text(frm){
+	if (frm.doc.language=="العربية"){
+                        frm.set_value("preview_text","بسم الله الرحمن الرحيم ")
                         refresh_field("preview_text");
                 }
-
-	}
-});
+        else if (frm.doc.language=="English"){
+                frm.set_value("preview_text","A journey of a thousand miles begins with a single step.")
+                refresh_field("preview_text");
+                }
+}
