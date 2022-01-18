@@ -3,6 +3,8 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.permissions import add_permission,update_permission_property,get_doctype_roles
+
 
 class CustomPrintFormat(Document):
 	def validate(self):
@@ -54,6 +56,8 @@ padding: 0in;
 			if (self.display_qr!= None and self.display_qr != ""):
 				pos=html.find("codeqr_code")
 				html=html[:pos+11]+" {% if not ("+self.display_qr+") %}hide1 {% endif %}"+html[pos+11:]
+			if "{{link_to_pdf}}" in html:
+				html = "{% set link_to_pdf ='"+str(frappe.utils.get_url())+"/api/method/slnee.utils.print_format.download?code='+encrypt(doc.doctype,doc.name,'"+self.name+"') %}" + html
 			doc = frappe.get_doc({
 				'doctype':'Print Format',
 				"name":self.name,
@@ -115,15 +119,32 @@ padding: 0in;
 			if (self.display_qr!= None and self.display_qr != ""):
 				pos=html.find("codeqr_code")
 				html=html[:pos+11]+" {% if not ("+self.display_qr+") %}hide1 {% endif %}"+html[pos+11:]
+			if "{{link_to_pdf}}" in html:
+				html = "{% set link_to_pdf ='"+str(frappe.utils.get_url())+"/api/method/slnee.utils.print_format.download?code='+encrypt(doc.doctype,doc.name,'"+self.name+"') %}" + html
 			doc.html=html
 			doc.css=css
 			doc.disabled=self.is_disabled
 			doc.save()
-
-	
+		if  self.qr_code_type=="Download pdf" and self.allow_guest_to_download_pdf :
+			if "Guest" not in get_doctype_roles(self.doc_type):
+				add_permission(self.doc_type,"Guest")
+			update_permission_property(self.doc_type,"Guest",0,"read",value=1)
+			update_permission_property(self.doc_type,"Guest",0,"print",value=1)
+			frappe.msgprint("Guest has Read and Print permission for "+str(self.doc_type),raise_exception=False)
+		else :
+			if "Guest" not in get_doctype_roles(self.doc_type):
+				add_permission(self.doc_type,"Guest")
+			update_permission_property(self.doc_type,"Guest",0,"read",value=0)
+			update_permission_property(self.doc_type,"Guest",0,"print",value=0)
 	pass
 
 
+
+
+	def check_user_permissions(self):
+		if not (frappe.has_permission(self.doc_type,"print",user="Guest") and frappe.has_permission(self.doc_type,"read",user="Guest") ) :
+			frappe.msgprint("Guest has no read and print permissions for "+str(self.doc_type),raise_exception=False)
+			frappe.msgprint("Open Role Permissions Manager to add Guest permissions.",raise_exception=True)
 
 	def jinja_check(self):
 		from jinja2 import Template

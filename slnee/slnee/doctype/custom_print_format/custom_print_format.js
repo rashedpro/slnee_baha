@@ -442,17 +442,22 @@ function rightClick(e) {
 function place_qr_code(frm){
 	if (document.getElementById("qr_code")!= undefined){
 	document.getElementById("qr_code").remove();}
-	if (frm.doc.qr_code_type=="text")
-	{
 		var parent = document.getElementById("bodyspace");
 		var element_ = document.createElement("div");
 		var img =  document.createElement("img");
 		element_.setAttribute("id","qr_code");
                 add_css(frm,".image_element{touch-action:none;}");
                 element_.classList.add("image_element");
-		var text = frm.qr_code_text;
-		if(text == undefined){text="write your text inside the specified box."}
-                img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data="+text.replaceAll("\n","%0A");
+		if (frm.doc.qr_code_type=="text")
+		        {
+			var text = frm.qr_code_text;
+			if(text == undefined){text="write your text inside the specified box.";}}
+		if (frm.doc.qr_code_type=="Download pdf"){
+        //download pdf qr code
+			var text = "{{link_to_pdf}}";
+
+		}
+		img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data="+text.replaceAll("\n","%0A");
 		element_.classList.add('resize-drag');
 		element_.classList.add("codeqr_code");
                 element_.style.position="absolute";
@@ -466,7 +471,7 @@ function place_qr_code(frm){
 		element_.onclick = function() {element_click(frm,element_);hideMenu();};
                 element_.oncontextmenu = rightClick;
 		parent.appendChild(element_);
-}
+		
 
 
 

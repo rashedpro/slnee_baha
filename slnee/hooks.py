@@ -24,7 +24,8 @@ jenv = {
     "methods": [
         "qrcode:slnee.fatoora.getqrcode",
 	"test:slnee.test.test",
-	"money:slnee.data.money_in_words"
+	"money:slnee.data.money_in_words",
+	"encrypt:slnee.utils.print_format.encrypt"
 
     ]
 }
