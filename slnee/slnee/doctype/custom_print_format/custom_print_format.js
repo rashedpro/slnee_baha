@@ -4,13 +4,21 @@ frappe.ui.form.on('Custom Print Format', {
 	if (frm.doc.qr_code_type=="text"){
 	document.getElementById("qr_code").src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&color="+frm.doc.qr_code_color.substring(1)+"&data=test";}}
 });
+//qrcode
 frappe.ui.form.on('Custom Print Format', {
-        qr_code_type:function(frm){place_qr_code(frm);}
+        qr_code_type:function(frm){place_qr_code(frm);},
+	qr_code_color:function(frm){place_qr_code(frm);},
+	qr_code_text:function(frm){place_qr_code(frm);}
 });
+//header
 frappe.ui.form.on('Custom Print Format', {
         show:function(frm){fix_header(frm);},
 	border_color:function(frm){fix_header(frm);},
 	border:function(frm){fix_header(frm);},
+	header_top:function(frm){fix_header(frm);},
+	header_right:function(frm){fix_header(frm);},
+	header_left:function(frm){fix_header(frm);},
+	header_bottom:function(frm){fix_header(frm);},
 	//height:function(frm){fix_header(frm);};
 	get_default_header:function(frm){
 	frm.clear_table("header_elements");
@@ -450,13 +458,19 @@ function place_qr_code(frm){
                 element_.classList.add("image_element");
 		if (frm.doc.qr_code_type=="text")
 		        {
-			var text = frm.qr_code_text;
+			var text = frm.doc.qr_code_text;
+			console.log(text);
 			if(text == undefined){text="write your text inside the specified box.";}}
-		if (frm.doc.qr_code_type=="Download pdf"){
+		else if (frm.doc.qr_code_type=="Download pdf"){
         //download pdf qr code
 			var text = "{{link_to_pdf}}";
 
 		}
+		else if (frm.doc.qr_code_type=="fatoora app"){
+			var text = "fatoora app not configured!";
+
+		}
+		else { return ; var text ="none";}
 		img.src = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&color="+frm.doc.qr_code_color.substring(1)+"&data="+text.replaceAll("\n","%0A");
 		element_.classList.add('resize-drag');
 		element_.classList.add("codeqr_code");
@@ -497,8 +511,17 @@ function fix_header(frm){
 	if (frm.doc.show != "No"){
 		var header =  document.getElementById("headspace");
 		header.style.display="block";
-		header.style.borderColor=frm.doc.border_color;
-		header.style.borderStyle=frm.doc.border;
+		header.style.borderStyle="none";
+		if (frm.doc.header_bottom){
+		header.style.borderBottom=frm.doc.border.toString()+" "+frm.doc.border_color.toString(); }
+		if (frm.doc.header_top){
+                header.style.borderTop=frm.doc.border.toString()+" "+frm.doc.border_color.toString(); }
+		if (frm.doc.header_right){
+                header.style.borderRight=frm.doc.border.toString()+" "+frm.doc.border_color.toString(); }
+		if (frm.doc.header_left){
+                header.style.borderLeft=frm.doc.border.toString()+" "+frm.doc.border_color.toString(); }
+		//header.style.borderColor=frm.doc.border_color;
+		//header.style.borderStyle=frm.doc.border;
 		header.style.borderWidth=frm.doc.header_border_width.toString()+"px";
 		header.style.height=frm.doc.height.toString()+"px";
 		if (frm.doc.border=="none"){

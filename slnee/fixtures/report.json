@@ -1,0 +1,112 @@
+[
+ {
+  "add_total_row": 0,
+  "columns": [
+   {
+    "fieldname": "name",
+    "fieldtype": "Link",
+    "label": "Name",
+    "options": "Font",
+    "parent": "Fonts",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 100
+   },
+   {
+    "fieldname": "language",
+    "fieldtype": "Data",
+    "label": "Language",
+    "options": null,
+    "parent": "Fonts",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 70
+   },
+   {
+    "fieldname": "preview",
+    "fieldtype": "Data",
+    "label": "Preview",
+    "options": null,
+    "parent": "Fonts",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 400
+   }
+  ],
+  "disable_prepared_report": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "fieldname": "language",
+    "fieldtype": "Select",
+    "label": "Language",
+    "mandatory": 0,
+    "options": "\nEnglish\n\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+    "parent": "Fonts",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "bold",
+    "fieldtype": "Check",
+    "label": "bold",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Fonts",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "font-size",
+    "fieldtype": "Select",
+    "label": "Font size",
+    "mandatory": 0,
+    "options": "8\n10\n12\n14\n16\n18\n20\n22\n24\n26",
+    "parent": "Fonts",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "text",
+    "fieldtype": "Data",
+    "label": "Preview text",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Fonts",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": "setTimeout(() => {  \n\n\nvar result = frappe.query_report.raw_data.result;\nfor (var i = 0 ; i <result.length;i++){\nvar name = result[i].name;\n\nif (result[i].type!=\"Google Fonts\") {\nfrappe.call({\n    method : \"frappe.client.get\",\n    args:{ \"doctype\":\"Font\",\"name\":name},\n    callback(r){if (r.message) {document.querySelector('head').innerHTML += r.message.css;\n    }},async:false\n    })\n    }\n    \n}\n\n}, 2000);\n\n\n",
+  "json": null,
+  "letter_head": null,
+  "modified": "2022-03-04 14:54:38.596793",
+  "module": "Slnee",
+  "name": "Fonts",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Font",
+  "reference_report": null,
+  "report_name": "Fonts",
+  "report_script": "fil={}\ntry:\n    bold=True if filters[\"bold\"]==1 else False\nexcept:\n    bold=False\ntry:\n    text=filters[\"text\"]\nexcept:\n    text=\"\"\ntry:\n    size = str(filters[\"font-size\"])+\"px\"\nexcept:\n    size=\"18px\"\ntry:\n    fil[\"language\"]=filters[\"language\"]\nexcept:\n    pass\nfonts = frappe.db.get_list(\"Font\",fields=[\"name\",\"css\",\"preview_text\",\"type\",\"language\"],filters=fil)\nresult=[]\nfor f in fonts:\n    d={}\n    t = text if text else f[\"preview_text\"]\n    d[\"name\"]=f[\"name\"]\n    \n    if bold:\n        d[\"preview\"]=\"<span style='font-weight:bold;font-size:\"+size+\";font-family:\"+f[\"name\"]+\"';>\"+str(f[\"css\"])+t+\"</span>\"\n    else:\n        d[\"preview\"]=\"<span style='font-size:\"+size+\";font-family:\"+f[\"name\"]+\"';>\"+str(f[\"css\"])+t+\"</span>\"\n    d[\"language\"]=f[\"language\"]\n    d[\"type\"]=f[\"type\"]\n    result.append(d)\n",
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Fonts",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ]
+ }
+]

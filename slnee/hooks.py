@@ -46,6 +46,9 @@ fixtures = ["Custom Field",
 	#{"dt":"Print Format","filters":[["name","like","VAT E-invoice KSA"]]},
 	#{"dt":"Server Script","filters":[["name","like","columns number"]]},
 	{"dt":"Font"},
+	{"dt":"File", "filters":[["attached_to_field","like","flag"]]},
+	{"dt":"Country"},
+	{"dt":"Report", "filters":[['name','like','Fonts']]}
 	#{"dt":"Custom Print Format","filters":[["name","like","invoice"]]},
 	#{"dt":"div","filters":[["parent","like","invoice"]]},
 	#{"dt":"Print Format","filters":[["name","like","invoice"]]}

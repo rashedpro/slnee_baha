@@ -9,6 +9,8 @@ from frappe.permissions import add_permission,update_permission_property,get_doc
 class CustomPrintFormat(Document):
 	def validate(self):
 		self.jinja_check()
+		#url = frappe.utils.get_url()
+		url="http://192.168.1.13:8080"
 		if frappe.db.exists("Print Format",self.name) ==None:
 			html=""
 			css= self.css if self.css else ""
@@ -57,7 +59,7 @@ padding: 0in;
 				pos=html.find("codeqr_code")
 				html=html[:pos+11]+" {% if not ("+self.display_qr+") %}hide1 {% endif %}"+html[pos+11:]
 			if "{{link_to_pdf}}" in html:
-				html = "{% set link_to_pdf ='"+str(frappe.utils.get_url())+"/api/method/slnee.utils.print_format.download?code='+encrypt(doc.doctype,doc.name,'"+self.name+"') %}" + html
+				html = "{% set link_to_pdf ='"+str(url)+"/api/method/slnee.utils.print_format.download?code='+encrypt(doc.doctype,doc.name,'"+self.name+"') %}" + html
 			doc = frappe.get_doc({
 				'doctype':'Print Format',
 				"name":self.name,
@@ -120,7 +122,7 @@ padding: 0in;
 				pos=html.find("codeqr_code")
 				html=html[:pos+11]+" {% if not ("+self.display_qr+") %}hide1 {% endif %}"+html[pos+11:]
 			if "{{link_to_pdf}}" in html:
-				html = "{% set link_to_pdf ='"+str(frappe.utils.get_url())+"/api/method/slnee.utils.print_format.download?code='+encrypt(doc.doctype,doc.name,'"+self.name+"') %}" + html
+				html = "{% set link_to_pdf ='"+str(url)+"/api/method/slnee.utils.print_format.download?code='+encrypt(doc.doctype,doc.name,'"+self.name+"') %}" + html
 			doc.html=html
 			doc.css=css
 			doc.disabled=self.is_disabled

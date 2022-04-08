@@ -34,7 +34,7 @@
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Type",
-   "options": "Google Fonts\nOtf file"
+   "options": "Google Fonts\nOtf file\nCss"
   },
   {
    "depends_on": "eval:doc.type==\"Otf file\" && doc.is_url==0;",
@@ -51,9 +51,9 @@
    "label": "URL"
   },
   {
+   "depends_on": "eval:doc.type==\"Css\";",
    "fieldname": "css",
    "fieldtype": "Long Text",
-   "hidden": 1,
    "label": "Css"
   },
   {
@@ -109,7 +109,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-17 17:30:38.096925",
+ "modified": "2022-03-04 10:17:59.924357",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Font",
