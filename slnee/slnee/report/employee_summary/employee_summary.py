@@ -30,6 +30,24 @@ def get_columns():
 def get_data(filters):
 	flags={}
 	stats=filters["status"]
+	if "sort" in list(filters.keys()):
+		if filters["sort"]=="Name":
+			sort="employee_name"
+		elif filters["sort"]=="Last modified on":
+			sort="modified"
+		else:
+			sort="salary"
+	else:
+		sort="first_name"
+	if filters["type"]=="Ascending":
+		type=" asc"
+	else:
+		type=" desc"
+	filters.pop("type")
+	try:
+		filters.pop("sort")
+	except:
+		pass
 	active=0
 	if "greater_than" in list(filters.keys()) and filters["greater_than"]:
 		try:
@@ -66,6 +84,7 @@ def get_data(filters):
 		f.append(["nationality",'in',filters["nationality"]])
 	if "company" in list(filters.keys()):
 		f.append(["company",'in',[filters["company"]]])
+	
 	filters=f
 	try:
 		filters.pop("on_leave")
@@ -81,7 +100,10 @@ def get_data(filters):
 		pass
 	if stats:
 		filters.append(["status","in",stats])
-	ll=frappe.db.get_list("Employee",filters=filters,fields=["status","name","employee_name","designation","passport_number","date_of_birth","bank_ac_no","cell_number","personal_email","nationality"])
+	order=sort+type
+	if sort=="salary":
+		order=""
+	ll=frappe.db.get_list("Employee",filters=filters,fields=["status","name","employee_name","designation","passport_number","date_of_birth","bank_ac_no","cell_number","personal_email","nationality"],order_by=order)
 	data=[]
 	labels=[]
 	values=[]
@@ -169,12 +191,32 @@ def get_data(filters):
 			total_on_leaves+=1
 			d["on_leave"]="<span style='color:red;'>Yes</span>"
 	#chart = {'data':{'labels':labels,"datasets": [{"name": "full_name", "values": "salary"}]}}
+	nn=len(data)
+	if nn==0:
+		average=0
+	else:
+		average = total_salary/len(data)
+	if sort=="Salary":
+		data9=[]
+		labels9=[]
+		values9=[]
+		values29=[]
+		for i in range(nn):
+			ind=max_salary(data)
+			data9.append(data[ind])
+			labels9.append(labels[ind])
+			values9.append(values[ind])
+			values29.append(values2[ind])
+			data.pop(ind)
+			labels.pop(ind)
+			values.pop(ind)
+			values2.pop(ind)
 	chart = {'data':{'labels':labels,'datasets':[{'name':'salary','values':values} , {'name':'Leave Balance','values': values2}]},'type':'bar'}
-	report_summary = [	{"label":"Total Employees","value":len(data),'indicator':'Blue',"width":50},
+	report_summary = [	{"label":"Total Employees","value":nn,'indicator':'Blue',"width":50},
 				{"label":"Active","value":active,'indicator':'Green'},
 				{"label":"On Leave today","value":"<span style='color:#f78d02'>"+str(total_on_leaves)+"</span>",'indicator':'f78d02'},
 				{"label":"Total Salary","value":"{:,.2f} SAR".format(total_salary),'indicator':'Red'},
-				{"label":"Average Salary","value":"<span style='color:#6402f7;'>"+"{:,.2f} SAR".format(total_salary//len(data))+"</span>"}]
+				{"label":"Average Salary","value":"<span style='color:#6402f7;'>"+"{:,.2f} SAR".format(average)+"</span>"}]
 	return(data,chart,report_summary)
 
 
@@ -201,3 +243,17 @@ def get_salary_structure(employee):
 	if st_name:
 		return(st_name[0][0])
 	return None
+
+
+
+
+def max_salary(data):
+	if len(data)==1:
+		return(data[0])
+	ind=0
+	ma=data[0]["salary"]
+	for i in range(1,len(data())):
+		if data[i]["salary"]> ma:
+			ind=i
+			ma=data[i]["salary"]
+	return(ind)

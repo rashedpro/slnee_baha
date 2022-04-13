@@ -53,5 +53,19 @@ frappe.query_reports["Employee Summary"] = {
                         fieldtype: 'MultiSelectList',
                         options: ["Active","Inactive","Suspended","Left"]
                 },
+		{
+                        fieldname:'sort',
+                        label: __('Sort by'),
+                        fieldtype: 'Select',
+                        options: ["Name","Salary","Last modified on"],
+                	default: "Name",
+		},
+		{
+                        fieldname:'type',
+                        label: __('Order'),
+                        fieldtype: 'Select',
+                        options: ["Ascending","Descending"],
+                        default: "Ascending",
+                }
 	]
 };
