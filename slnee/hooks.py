@@ -8,7 +8,7 @@ app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "baha@slnee.com"
 app_license = "MIT"
-
+app_logo_url = "/files/zarabilogo1e.png"
 
 
 doc_events = {
@@ -22,7 +22,7 @@ doc_events = {
 
 jenv = {
     "methods": [
-        "qrcode:slnee.fatoora.getqrcode",
+        "getqrcode:slnee.fatoora.getqrcode",
 	"test:slnee.test.test",
 	"money:slnee.data.money_in_words",
 	"encrypt:slnee.utils.print_format.encrypt"
@@ -33,7 +33,12 @@ jenv = {
 
 
 
+website_context = {
+	"favicon" : "/files/zarabilogo1e.png",
+	"splash_image" : "/files/zarabilogo1e.png",
 
+
+}
 
 
 
@@ -46,6 +51,7 @@ fixtures = ["Custom Field",
 	#{"dt":"Print Format","filters":[["name","like","VAT E-invoice KSA"]]},
 	#{"dt":"Server Script","filters":[["name","like","columns number"]]},
 	{"dt":"Font"},
+	{"dt":"Translation"},
 	{"dt":"File", "filters":[["attached_to_field","like","flag"]]},
 	{"dt":"Country"},
 	{"dt":"Report", "filters":[['name','like','Fonts']]},
