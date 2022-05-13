@@ -8,7 +8,7 @@ app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "baha@slnee.com"
 app_license = "MIT"
-app_logo_url = "/files/zarabilogo1e.png"
+app_logo_url = "/assets/slnee/images/logo.png"
 
 
 doc_events = {
@@ -34,10 +34,8 @@ jenv = {
 
 
 website_context = {
-	"favicon" : "/files/zarabilogo1e.png",
-	"splash_image" : "/files/zarabilogo1e.png",
-
-
+	"favicon" : "/assets/slnee/images/favicon.png",
+	"splash_image" : "/assets/slnee/images/logo.png",
 }
 
 
@@ -52,7 +50,9 @@ fixtures = ["Custom Field",
 	#{"dt":"Server Script","filters":[["name","like","columns number"]]},
 	{"dt":"Font"},
 	{"dt":"Translation"},
-	{"dt":"File", "filters":[["attached_to_field","like","flag"]]},
+	{"dt":"Navbar Settings"},
+	{"dt":"Website Settings"},
+	#{"dt":"File", "filters":[["attached_to_field","like","flag"]]},
 	{"dt":"Country"},
 	{"dt":"Report", "filters":[['name','like','Fonts']]},
 	{"dt":"Workspace","filters":[['name','in',['Accounting','HR']]]},
