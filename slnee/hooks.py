@@ -54,7 +54,7 @@ fixtures = ["Custom Field",
 	{"dt":"Translation"},
 	{"dt":"File", "filters":[["attached_to_field","like","flag"]]},
 	{"dt":"Country"},
-	{"dt":"Report", "filters":[['name','like','Fonts']]},
+	{"dt":"Report", "filters":[['name','in',['Fonts','Sales Analytics']]]},
 	{"dt":"Workspace","filters":[['name','in',['Accounting','HR']]]},
 	{"dt":"Translation"}
 	#{"dt":"Custom Print Format","filters":[["name","like","invoice"]]},
