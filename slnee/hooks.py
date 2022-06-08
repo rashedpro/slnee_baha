@@ -33,10 +33,10 @@ jenv = {
 
 
 
-#website_context = {
+website_context = {
 #	"favicon" : "/assets/slnee/images/favicon.png",
-#	"splash_image" : "/assets/slnee/images/logo.png",
-#}
+	"splash_image" : "/files/logoo.png",
+}
 
 
 
