@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <style>
 .btn-primary {background-color:{{button_color}} !important;}
-
+{% if font %}
+	body{font-family:{{font}} !important;}
+{% endif %}
+{% if square %}
+	button{border-radius:0 !important;}
+{% endif %}
 </style>
-
+{{css}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
  <script src="https://cdn.jsdelivr.net/npm/frappe-charts@1.2.4/dist/frappe-charts.min.iife.js"></script>

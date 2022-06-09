@@ -1,6 +1,11 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 /* eslint-disable */
+var styles = ".summary-value{line-height : 20px !important;}"
+var styleSheet = document.createElement("style")
+styleSheet.innerText = styles
+document.head.appendChild(styleSheet)
+
 
 frappe.query_reports["Manufactured Items Summary"] = {
 	"filters": [

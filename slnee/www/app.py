@@ -27,14 +27,19 @@ def get_context(context):
 	except Exception as e:
 		boot = frappe._dict(status="failed", error=str(e))
 		print(frappe.get_traceback())
-
+	user_doc=frappe.get_doc("User",frappe.session.user)
 	try:
-		context["button_color"]=frappe.get_doc("Website Settings").button_color
+		context["button_color"]=user_doc.button_color
 	except:
 		context["button_color"]="#2595ec"
 	if not context["button_color"]:
 		context["button_color"]="#2595ec"
-
+	context["font"]=user_doc.font
+	try:
+		context["css"]=frappe.get_doc("Font",context["font"]).css
+	except:
+		context["css"]=""
+	context["square"]=not bool(user_doc.round_buttons)
 
 
 

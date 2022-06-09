@@ -19,12 +19,15 @@ def execute(filters=None):
 	data = dataa["res"]
 	columns = get_columns(filters)
 	#chart_data = get_chart_data(data, filters)
+	link="a"
 	cards=[
 		{"label":_("Total Items"),"value":dataa["total_items"],'indicator':'Blue',"width":50},
 		{"label":_("Total Produced Quantity"),"value":dataa["total_produced_qty"],'indicator':'Green',"width":50},
-		{"label":_("Max Produced Quantity"),"value":str(dataa["max_name"])+"("+str(dataa["max_produced_qty"])+")",'indicator':'Red',"width":50}
-
 	]
+	if not link:
+		cards.append({"label":_("Max Produced Quantity"),"value":str(dataa["max_name"])+"("+str(dataa["max_produced_qty"])+")",'indicator':'Red',"width":50})
+	else:
+		 cards.append({"label":_("Max Produced Quantity"),"value":"<a href='"+link+"/app/item/{}' style='color:#4de3fa !important;'>{}</a>".format(dataa["max_name"],dataa["max_name"])+"("+str(dataa["max_produced_qty"])+")",'indicator':'Red',"width":50})
 	chart=dataa["chart"]
 	return columns, data, None, chart,cards
 
@@ -84,7 +87,7 @@ def get_data(filters):
 		row=ans[d.production_item]
 		row["qty"]=row["qty"]+d.qty
 		row["produced_qty"]=row["produced_qty"]+d.produced_qty
-		total_produced_qty+=row["produced_qty"]
+		total_produced_qty+=d.produced_qty
 		row["lead_time"]=row["lead_time"]+d.lead_time
 		ans[d.production_item]=row
 	ans2=[]
@@ -100,7 +103,7 @@ def get_data(filters):
 			min_value=qty
 			min_name=r
 		values.append(qty)
-	chart = {'data':{'labels':items,'datasets':[{'name':'Produced Qty','values':values}] },"type":"bar"}
+	chart = {'data':{'labels':items,'datasets':[{'name':'Produced Qty','values':values}] },"type":"bar","colors":["#03befc"]}
 	return {"res":ans2,"total_items":len(items),"total_produced_qty":total_produced_qty,"chart":chart,"max_produced_qty":max_value,"max_name":max_name}
 
 
@@ -260,7 +263,7 @@ def get_columns(filters):
 					"label": _("Lead Time (in mins)"),
 					"fieldname": "lead_time",
 					"fieldtype": "Float",
-					"width": 130,
+					"width": 160,
 				},
 			]
 		)

@@ -58,12 +58,15 @@ class Analytics(object):
 			unit="SAR"
 		else:
 			unit="unit"
+		link=frappe.get_doc("Website Settings").host_name
 		summary = [
 			{"label":"Total "+str(self.filters.tree_type)+"s","value":len(self.data),"indicator":"Red"},
 			{ "label":"Total "+str(self.filters["value_quantity"]),"value":"{:,.2f} {}".format(self.totaltotal,unit),"indicator":"Blue"},
-			{ "label":"Max (<a href='https://business.zerabi.deom.com.sa/app/{}/{}' style='color:#4de3fa !important;'>{}</a>)".format(self.filters.tree_type.replace(" ","-").lower(),self.maxunit,self.maxunitname),"value":"{:,.2f} {}".format(self.maxvalue,unit),"indicator":"Green"},
-
-]
+			]
+		if not link:
+			summary.append({ "label":"Max (<span style='color:#4de3fa !important;'>{}</span>)".format(self.maxunitname),"value":"{:,.2f} {}".format(self.maxvalue,unit),"indicator":"Green"})
+		else:
+			summary.append({ "label":"Max (<a href='"+link+"/app/{}/{}' style='color:#4de3fa !important;'>{}</a>)".format(self.filters.tree_type.replace(" ","-").lower(),self.maxunit,self.maxunitname),"value":"{:,.2f} {}".format(self.maxvalue,unit),"indicator":"Green"})
 
 
 		return self.columns, self.data, None, self.chart, summary, skip_total_row
