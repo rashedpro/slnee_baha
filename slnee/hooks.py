@@ -8,7 +8,7 @@ app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "baha@slnee.com"
 app_license = "MIT"
-app_logo_url = "/assets/slnee/images/logo.png"
+#app_logo_url = "/assets/slnee/images/logo.png"
 
 
 doc_events = {
@@ -35,7 +35,7 @@ jenv = {
 
 website_context = {
 #	"favicon" : "/assets/slnee/images/favicon.png",
-	"splash_image" : "/files/logoo.png",
+	"splash_image" : "/files/erplogo1.png",
 }
 
 
@@ -50,8 +50,8 @@ fixtures = ["Custom Field",
 	#{"dt":"Server Script","filters":[["name","like","columns number"]]},
 	{"dt":"Font"},
 	{"dt":"Translation"},
-	{"dt":"Navbar Settings"},
-	{"dt":"Website Settings"},
+	#{"dt":"Navbar Settings"},
+	#{"dt":"Website Settings"},
 	#{"dt":"File", "filters":[["attached_to_field","like","flag"]]},
 	{"dt":"Country"},
 	{"dt":"Report", "filters":[['name','in',['Fonts','Sales Analytics']]]},
