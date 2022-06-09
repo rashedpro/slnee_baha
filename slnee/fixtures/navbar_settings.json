@@ -1,6 +1,6 @@
 [
  {
-  "app_logo": "",
+  "app_logo": "/files/erplogo1.png",
   "docstatus": 0,
   "doctype": "Navbar Settings",
   "help_dropdown": [
@@ -60,8 +60,8 @@
     "route": null
    }
   ],
-  "logo_width": 100,
-  "modified": "2022-05-13 11:39:25.926310",
+  "logo_width": 70,
+  "modified": "2022-06-08 09:53:19.620236",
   "name": "Navbar Settings",
   "parent": null,
   "parentfield": null,
@@ -113,7 +113,7 @@
    },
    {
     "action": "frappe.ui.toolbar.view_website()",
-    "hidden": 0,
+    "hidden": 1,
     "is_standard": 1,
     "item_label": "View Website",
     "item_type": "Action",
@@ -134,8 +134,19 @@
     "route": null
    },
    {
-    "action": null,
+    "action": "new frappe.ui.ThemeSwitcher().show()",
     "hidden": 0,
+    "is_standard": 1,
+    "item_label": "Toggle Theme",
+    "item_type": "Action",
+    "parent": "Navbar Settings",
+    "parentfield": "settings_dropdown",
+    "parenttype": "Navbar Settings",
+    "route": null
+   },
+   {
+    "action": null,
+    "hidden": 1,
     "is_standard": 1,
     "item_label": "Background Jobs",
     "item_type": "Route",

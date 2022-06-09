@@ -502,5 +502,41 @@
   "parenttype": null,
   "preview_text": "A journey of a thousand miles begins with a single step.",
   "type": "Google Fonts"
+ },
+ {
+  "css": "<link href=\"https://fonts.googleapis.com\" rel=\"preconnect\">\n<link href=\"https://fonts.gstatic.com\" rel=\"preconnect\">\n<link href=\"https://fonts.googleapis.com/css2?family=Patrick+Hand&amp;display=swap\" rel=\"stylesheet\">",
+  "docstatus": 0,
+  "doctype": "Font",
+  "file": null,
+  "file_link": null,
+  "googlelinks": "<link href=\"https://fonts.googleapis.com\" rel=\"preconnect\">\n<link href=\"https://fonts.gstatic.com\" rel=\"preconnect\">\n<link href=\"https://fonts.googleapis.com/css2?family=Patrick+Hand&amp;display=swap\" rel=\"stylesheet\">",
+  "is_url": 0,
+  "language": "English",
+  "modified": "2022-06-09 11:25:34.569271",
+  "name": "Patrick Hand",
+  "name1": "Patrick Hand",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "preview_text": "A journey of a thousand miles begins with a single step.",
+  "type": "Google Fonts"
+ },
+ {
+  "css": "<link href=\"https://fonts.googleapis.com\" rel=\"preconnect\">\n<link href=\"https://fonts.gstatic.com\" rel=\"preconnect\">\n<link href=\"https://fonts.googleapis.com/css2?family=Satisfy&amp;display=swap\" rel=\"stylesheet\">",
+  "docstatus": 0,
+  "doctype": "Font",
+  "file": null,
+  "file_link": null,
+  "googlelinks": "<link href=\"https://fonts.googleapis.com\" rel=\"preconnect\">\n<link href=\"https://fonts.gstatic.com\" rel=\"preconnect\">\n<link href=\"https://fonts.googleapis.com/css2?family=Satisfy&amp;display=swap\" rel=\"stylesheet\">",
+  "is_url": 0,
+  "language": "English",
+  "modified": "2022-06-09 11:26:12.892564",
+  "name": "Satisfy",
+  "name1": "Satisfy",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "preview_text": "A journey of a thousand miles begins with a single step.",
+  "type": "Google Fonts"
  }
 ]
