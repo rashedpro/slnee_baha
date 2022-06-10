@@ -19,6 +19,7 @@ class Analytics(object):
 	def __init__(self, filters=None):
 		self.filters = frappe._dict(filters or {})
 		self.totaltotal=0
+		self.total_today=0
 		self.maxvalue=0
 		self.maxunit=""
 		self.maxunitname=""
@@ -297,7 +298,7 @@ as_dict=1,
 	def get_rows(self):
 		self.data = []
 		self.get_periodic_data()
-
+		now=frappe.utils.get_datetime()
 		for entity, period_data in iteritems(self.entity_periodic_data):
 			row = {
 				"entity": entity,

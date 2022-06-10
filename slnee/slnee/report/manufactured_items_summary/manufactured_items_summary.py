@@ -24,10 +24,14 @@ def execute(filters=None):
 		{"label":_("Total Items"),"value":dataa["total_items"],'indicator':'Blue',"width":50},
 		{"label":_("Total Produced Quantity"),"value":dataa["total_produced_qty"],'indicator':'Green',"width":50},
 	]
-	if not link:
+	if not link and filters["status"] =="Completed":
 		cards.append({"label":_("Max Produced Quantity"),"value":str(dataa["max_name"])+"("+str(dataa["max_produced_qty"])+")",'indicator':'Red',"width":50})
-	else:
-		 cards.append({"label":_("Max Produced Quantity"),"value":"<a href='"+link+"/app/item/{}' style='color:#4de3fa !important;'>{}</a>".format(dataa["max_name"],dataa["max_name"])+"("+str(dataa["max_produced_qty"])+")",'indicator':'Red',"width":50})
+	if link and filters["status"] == "Completed":
+		cards.append({"label":_("Max Produced Quantity"),"value":"<a href='"+link+"/app/item/{}' style='color:#4de3fa !important;'>{}</a>".format(dataa["max_name"],dataa["max_name"])+"("+str(dataa["max_produced_qty"])+")",'indicator':'Red',"width":50})
+	if filters["status"]=="Completed":
+		cards.append({"label":_("Today Produced Quantity"),"value":dataa["total_today"],'indicator':'Green',"width":50})
+	if filters["status"] in [ "Not Started" , "In Process"]:
+		cards.insert(1,{"label":_("Total Quantity To Produce"),"value":dataa["total_qty"],'indicator':'Pink',"width":50})
 	chart=dataa["chart"]
 	return columns, data, None, chart,cards
 
@@ -83,7 +87,13 @@ def get_data(filters):
 	min_value=99999999999
 	for i in items:
 		ans[i] = {"production_item":i,"qty":0,"produced_qty":0,"lead_time":0}
+	total_today=0
+	now=frappe.utils.get_datetime()
 	for d in data:
+		start_date = d.actual_end_date or d.planned_end_date
+		diff=date_diff(start_date,now)
+		if diff==0:
+			total_today+=d.produced_qty
 		row=ans[d.production_item]
 		row["qty"]=row["qty"]+d.qty
 		row["produced_qty"]=row["produced_qty"]+d.produced_qty
@@ -93,9 +103,11 @@ def get_data(filters):
 	ans2=[]
 	labels=[]
 	values=[]
+	values2=[]
 	for r in items:
 		ans2.append(ans[r])
 		qty=ans[r]["produced_qty"]
+		values2.append(ans[r]["qty"])
 		if qty > max_value:
 			max_value=qty
 			max_name=r
@@ -103,8 +115,11 @@ def get_data(filters):
 			min_value=qty
 			min_name=r
 		values.append(qty)
+	total_qty=sum(values2)
+	if max_value==-1:
+		max_value=0
 	chart = {'data':{'labels':items,'datasets':[{'name':'Produced Qty','values':values}] },"type":"bar","colors":["#03befc"]}
-	return {"res":ans2,"total_items":len(items),"total_produced_qty":total_produced_qty,"chart":chart,"max_produced_qty":max_value,"max_name":max_name}
+	return {"total_qty":total_qty,"res":ans2,"total_today":total_today,"total_items":len(items),"total_produced_qty":total_produced_qty,"chart":chart,"max_produced_qty":max_value,"max_name":max_name}
 
 
 def get_chart_data(data, filters):
@@ -229,8 +244,8 @@ def get_columns(filters):
 				"options": "Item",
 				"width": 150,
 			},
-			{"label": _("Produce Qty"), "fieldname": "qty", "fieldtype": "Float", "width": 130},
-			{"label": _("Produced Qty"), "fieldname": "produced_qty", "fieldtype": "Float", "width": 130}
+			{"label": _("Produce Qty"), "fieldname": "qty", "fieldtype": "Float", "width": 150},
+			{"label": _("Produced Qty"), "fieldname": "produced_qty", "fieldtype": "Float", "width": 150}
 		]
 	)
 
@@ -263,7 +278,7 @@ def get_columns(filters):
 					"label": _("Lead Time (in mins)"),
 					"fieldname": "lead_time",
 					"fieldtype": "Float",
-					"width": 160,
+					"width": 180,
 				},
 			]
 		)
