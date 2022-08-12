@@ -1,113 +1,17 @@
-<!DOCTYPE html>
-<style>
-.btn-primary {background-color:{{button_color}} !important;}
-{% if font %}
-	body{font-family:{{font}} !important;}
-{% endif %}
-{% if square %}
-	button{border-radius:0 !important;}
-{% endif %}
+<!DOCTYPE html> <style> .btn-primary {background-color:{{button_color}} !important;} {% if font %}
+	body{font-family:{{font}} !important;} {% endif %} {% if square %}
+	button{border-radius:0 !important;} {% endif %} 
+
+.navbar-home img {max-height : 50px !important;}
 </style>
 {{css}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
- <script src="https://cdn.jsdelivr.net/npm/frappe-charts@1.2.4/dist/frappe-charts.min.iife.js"></script>
-  <!-- or -->
-  <script src="https://unpkg.com/frappe-charts@1.2.4/dist/frappe-charts.min.iife.js"></script>
-
-<script type="module">
 
 
 
-import interact from 
-'https://cdn.interactjs.io/v1.10.11/interactjs/index.js'
-    
-interact('.resize-drag')
-  .resizable({
-    // resize from all edges and corners
-    edges: { left: true, right: true, bottom: true, top: true },
 
-    listeners: {
-      move (event) {
-          
-        var target = event.target
-        var x = (parseFloat(target.getAttribute('data-x')) || 0)
-        var y = (parseFloat(target.getAttribute('data-y')) || 0)
 
-        // update the element's style
-        var size = event.rect.width;
-        if (event.rect.height<size){size=event.rect.height;}
-        target.style.width = event.rect.width + 'px'
-        target.style.height = event.rect.height + 'px'
-       // target.style.fontSize = size/2 + 'px'
 
-        // translate when resizing from top or left edges
-        x += event.deltaRect.left
-        y += event.deltaRect.top
 
-       
-      }
-    },
-    modifiers: [
-      // keep the edges inside the parent
-      interact.modifiers.restrictEdges({
-        outer: 'parent'
-      }),
-
-      // minimum size
-      interact.modifiers.restrictSize({
-        min: { width: 10, height: 10 }
-      })
-    ],
-
-    inertia: true
-  })
-  .draggable({
-    // enable inertial throwing
-    inertia: true,
-    // keep the element within the area of it's parent
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ],
-    // enable autoScroll
-    autoScroll: true,
-
-    listeners: {
-      // call this function on every dragmove event
-      move: dragMoveListener,
-
-      // call this function on every dragend event
-      end (event) {
-       
-      }
-    }
-  })
-
-function dragMoveListener (event) {
-  var target = event.target
-  // keep the dragged position in the data-x/data-y attributes
-  var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-  var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-  // translate the element
-  //target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-    target.style.borderStyle="none";
-	target.style.top = y+'px';
-    target.style.left =x+'px';
-    
-  // update the posiion attributes
-  target.setAttribute('data-x', x)
-  target.setAttribute('data-y', y)
-}
-
-// this function is used later in the resizing and gesture demos
-window.dragMoveListener = dragMoveListener
-
-        
-</script>
 <html data-theme="{{ desk_theme.lower() }}" dir={{ layout_direction }} lang="{{ lang }}">
 	<head>
 		<!-- Chrome, Firefox OS and Opera -->
@@ -148,17 +52,16 @@ window.dragMoveListener = dragMoveListener
 		<script type="text/javascript" src="/assets/frappe/js/lib/jquery/jquery.min.js"></script>
 
 		<script type="text/javascript">
-		window._version_number = "{{ build_version }}";
-		// browser support
-		window.app = true;
-		window.dev_server = {{ dev_server }};
+			window._version_number = "{{ build_version }}";
+			// browser support
+			window.app = true;
+			window.dev_server = {{ dev_server }};
 
-		if(!window.frappe) window.frappe = {};
+			if (!window.frappe) window.frappe = {};
 
-		frappe.boot = {{ boot }};
-
-		frappe.csrf_token = "{{ csrf_token }}";
-
+			frappe.boot = {{ boot }};
+			frappe._messages = frappe.boot["__messages"];
+			frappe.csrf_token = "{{ csrf_token }}";
 		</script>
 
 		{% for include in include_js %}

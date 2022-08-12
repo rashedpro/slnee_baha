@@ -38,14 +38,6 @@ def get_context(context):
 	# get settings from site config
 	context.no_header = True
 	context.for_test = "login.html"
-
-	try:
-		context["button_color"]=frappe.get_doc("Website Settings").button_color
-	except:
-		context["button_color"]="#2595ec"
-	if not context["button_color"]:
-		context["button_color"]="#2595ec"
-
 	context["title"] = "Login"
 	context["provider_logins"] = []
 	context["disable_signup"] = frappe.utils.cint(

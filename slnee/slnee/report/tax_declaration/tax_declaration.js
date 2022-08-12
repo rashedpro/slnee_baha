@@ -3,7 +3,7 @@
 /* eslint-disable */
 const style = document.createElement('style');
 
-style.textContent = " .summary-item {min-width:150px !important; } "
+style.textContent = " .summary-value{line-height:22px !important; } "
 
 document.head.appendChild(style);
 

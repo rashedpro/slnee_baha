@@ -9,7 +9,7 @@ from frappe.utils import add_days, add_to_date, flt, getdate
 from six import iteritems
 
 from erpnext.accounts.utils import get_fiscal_year
-
+from frappe import _
 
 def execute(filters=None):
 	return Analytics(filters).run()
@@ -19,7 +19,6 @@ class Analytics(object):
 	def __init__(self, filters=None):
 		self.filters = frappe._dict(filters or {})
 		self.totaltotal=0
-		self.total_today=0
 		self.maxvalue=0
 		self.maxunit=""
 		self.maxunitname=""
@@ -51,23 +50,20 @@ class Analytics(object):
 
 		# Skipping total row for tree-view reports
 		skip_total_row = 0
-
+		cur = frappe.get_doc("Global Defaults").default_currency
 		if self.filters.tree_type in ["Supplier Group", "Item Group", "Customer Group", "Territory"]:
 			skip_total_row = 1
 		unit=""
 		if self.filters.value_quantity=="Value":
-			unit="SAR"
+			unit=_(cur)
 		else:
 			unit="unit"
-		link=frappe.get_doc("Website Settings").host_name
 		summary = [
-			{"label":"Total "+str(self.filters.tree_type)+"s","value":len(self.data),"indicator":"Red"},
-			{ "label":"Total "+str(self.filters["value_quantity"]),"value":"{:,.2f} {}".format(self.totaltotal,unit),"indicator":"Blue"},
-			]
-		if not link:
-			summary.append({ "label":"Max (<span style='color:#4de3fa !important;'>{}</span>)".format(self.maxunitname),"value":"{:,.2f} {}".format(self.maxvalue,unit),"indicator":"Green"})
-		else:
-			summary.append({ "label":"Max (<a href='"+link+"/app/{}/{}' style='color:#4de3fa !important;'>{}</a>)".format(self.filters.tree_type.replace(" ","-").lower(),self.maxunit,self.maxunitname),"value":"{:,.2f} {}".format(self.maxvalue,unit),"indicator":"Green"})
+			{"label":_("Total "+str(self.filters.tree_type)+"s"),"value":len(self.data),"indicator":"Red"},
+			{ "label":_("Total "+str(self.filters["value_quantity"])),"value":"{:,.2f} {}".format(self.totaltotal,unit),"indicator":"Blue"},
+			{ "label":_("Max")+" (<a href='https://business.zerabi.deom.com.sa/app/{}/{}' style='color:#4de3fa !important;'>{}</a>)".format(self.filters.tree_type.replace(" ","-").lower(),self.maxunit,self.maxunitname),"value":"{:,.2f} {}".format(self.maxvalue,unit),"indicator":"Green"},
+
+]
 
 
 		return self.columns, self.data, None, self.chart, summary, skip_total_row
@@ -105,8 +101,14 @@ class Analytics(object):
 
 		for end_date in self.periodic_daterange:
 			period = self.get_period(end_date)
+			if "Weekaa" in period:
+				n = period.split(" ")[1]
+				year=period.split(" ")[2]
+				label=_("Week")+ " {} {}".format(n,year)
+			else:
+				label=_(period)
 			self.columns.append(
-				{"label": _(period), "fieldname": scrub(period), "fieldtype": "Float", "width": 120}
+				{"label": label, "fieldname": scrub(period), "fieldtype": "Float", "width": 120}
 			)
 
 		self.columns.append(
@@ -147,14 +149,18 @@ class Analytics(object):
 	def get_sales_transactions_based_on_sales_person(self):
 		if self.filters["value_quantity"] == "Value":
 			value_field = "base_net_total"
+
 		else:
 			value_field = "total_qty"
-
+		if self.filters["doc_type"]=="Sales Order" and  "exclude_closed" in list(self.filters.keys())  and self.filters["exclude_closed"]:
+			exclude="and status != 'Closed'"
+		else:
+			exclude=""
 
 		self.entries = frappe.db.sql( """ select st.sales_person as entity, s.{value_field} as value_field, s.{date_field}
  from `tab{doctype}` as s,`tabSales Team`as st  where s.name = st.parent and  s.docstatus = 1 and s.company = %s and s.{date_field} between %s and %s
- and ifnull(st.sales_person, '') != '' order by st.sales_person
- """.format( date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type ), (self.filters.company, self.filters.from_date, self.filters.to_date), 
+ and ifnull(st.sales_person, '') != '' {exclud} order by st.sales_person
+ """.format( date_field=self.date_field, value_field=value_field,exclud=exclude, doctype=self.filters.doc_type ), (self.filters.company, self.filters.from_date, self.filters.to_date), 
 as_dict=1,
 )
 
@@ -165,13 +171,16 @@ as_dict=1,
 			value_field = "base_net_total"
 		else:
 			value_field = "total_qty"
-
+		if self.filters["doc_type"]=="Sales Order" and  "exclude_closed" in list(self.filters.keys())  and self.filters["exclude_closed"]:
+			exclude="and status != 'Closed'"
+		else:
+			exclude=""
 		self.entries = frappe.db.sql(
 			""" select s.order_type as entity, s.{value_field} as value_field, s.{date_field}
 			from `tab{doctype}` s where s.docstatus = 1 and s.company = %s and s.{date_field} between %s and %s
-			and ifnull(s.order_type, '') != '' order by s.order_type
+			and ifnull(s.order_type, '') != '' {exclud} order by s.order_type
 		""".format(
-				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
+				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type,exclud=exclude
 			),
 			(self.filters.company, self.filters.from_date, self.filters.to_date),
 			as_dict=1,
@@ -191,11 +200,16 @@ as_dict=1,
 		else:
 			entity = "supplier as entity"
 			entity_name = "supplier_name as entity_name"
+		if "exclude_closed" in list(self.filters.keys())  and self.filters["exclude_closed"]:
+			exclude="Closed"
+		else:
+			exclude="Baha"
 
 		self.entries = frappe.get_all(
 			self.filters.doc_type,
 			fields=[entity, entity_name, value_field, self.date_field],
 			filters={
+				"status": ("!=",exclude),
 				"docstatus": 1,
 				"company": self.filters.company,
 				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
@@ -210,17 +224,21 @@ as_dict=1,
 
 		if self.filters["value_quantity"] == "Value":
 			value_field = "base_amount"
+
 		else:
 			value_field = "stock_qty"
-
+		if self.filters["doc_type"]=="Sales Order" and  "exclude_closed" in list(self.filters.keys())  and self.filters["exclude_closed"]:
+			exclude="and status != 'Closed'"
+		else:
+			exclude=""
 		self.entries = frappe.db.sql(
 			"""
 			select i.item_code as entity, i.item_name as entity_name, i.stock_uom, i.{value_field} as value_field, s.{date_field}
 			from `tab{doctype} Item` i , `tab{doctype}` s
-			where s.name = i.parent and i.docstatus = 1 and s.company = %s
+			where s.name = i.parent and i.docstatus = 1 and s.company = %s {exclud}
 			and s.{date_field} between %s and %s
 		""".format(
-				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
+				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type,exclud=exclude
 			),
 			(self.filters.company, self.filters.from_date, self.filters.to_date),
 			as_dict=1,
@@ -243,11 +261,15 @@ as_dict=1,
 			self.get_supplier_parent_child_map()
 		else:
 			entity_field = "territory as entity"
-
+		if "exclude_closed" in list(self.filters.keys())  and self.filters["exclude_closed"]:
+			exclude="Closed"
+		else:
+			exclude="Baha"
 		self.entries = frappe.get_all(
 			self.filters.doc_type,
 			fields=[entity_field, value_field, self.date_field],
 			filters={
+				"status": ("!=",exclude),
 				"docstatus": 1,
 				"company": self.filters.company,
 				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
@@ -260,15 +282,18 @@ as_dict=1,
 			value_field = "base_amount"
 		else:
 			value_field = "qty"
-
+		if self.filters["doc_type"]=="Sales Order" and  "exclude_closed" in list(self.filters.keys())  and self.filters["exclude_closed"]:
+			exclude="and status != 'Closed'"
+		else:
+			exclude=""
 		self.entries = frappe.db.sql(
 			"""
 			select i.item_group as entity, i.{value_field} as value_field, s.{date_field}
 			from `tab{doctype} Item` i , `tab{doctype}` s
-			where s.name = i.parent and i.docstatus = 1 and s.company = %s
+			where s.name = i.parent and i.docstatus = 1 and s.company = %s {exclud}
 			and s.{date_field} between %s and %s
 		""".format(
-				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
+				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type,exclud=exclude
 			),
 			(self.filters.company, self.filters.from_date, self.filters.to_date),
 			as_dict=1,
@@ -279,15 +304,22 @@ as_dict=1,
 	def get_sales_transactions_based_on_project(self):
 		if self.filters["value_quantity"] == "Value":
 			value_field = "base_net_total as value_field"
+			if "include_tax" in list(self.filters.keys()) and  self.filters["include_tax"]==1:
+ 				value_field="grand_total as value_field"
+
 		else:
 			value_field = "total_qty as value_field"
 
 		entity = "project as entity"
-
+		if "exclude_closed" in list(self.filters.keys())  and self.filters["exclude_closed"]:
+			exclude="Closed"
+		else:
+			exclude="Baha"
 		self.entries = frappe.get_all(
 			self.filters.doc_type,
 			fields=[entity, value_field, self.date_field],
 			filters={
+				"status": ("!=",exclude),
 				"docstatus": 1,
 				"company": self.filters.company,
 				"project": ["!=", ""],
@@ -298,7 +330,7 @@ as_dict=1,
 	def get_rows(self):
 		self.data = []
 		self.get_periodic_data()
-		now=frappe.utils.get_datetime()
+
 		for entity, period_data in iteritems(self.entity_periodic_data):
 			row = {
 				"entity": entity,
@@ -342,7 +374,8 @@ as_dict=1,
 				total += amount
 
 			row["total"] = total
-			self.totaltotal+=total
+			if row["indent"]==0:
+				self.totaltotal+=total
 			out = [row] + out
 
 		self.data = out

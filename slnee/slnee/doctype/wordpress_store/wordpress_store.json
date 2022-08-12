@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-08-10 10:43:16.334905",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_3",
+  "url",
+  "test",
+  "column_break_6",
+  "key",
+  "secret",
+  "section_break_9",
+  "sync_stock",
+  "get_categories",
+  "get_products"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "test",
+   "fieldtype": "Button",
+   "label": "Test"
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "key",
+   "fieldtype": "Data",
+   "label": "API consumer key"
+  },
+  {
+   "fieldname": "secret",
+   "fieldtype": "Data",
+   "label": "API consumer secret"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break",
+   "label": "Stock"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "Woocommerce Server URL"
+  },
+  {
+   "default": "0",
+   "fieldname": "sync_stock",
+   "fieldtype": "Check",
+   "label": "Enable Sync"
+  },
+  {
+   "fieldname": "get_categories",
+   "fieldtype": "Button",
+   "label": "Get Categories from store"
+  },
+  {
+   "fieldname": "get_products",
+   "fieldtype": "Button",
+   "label": "Get Produtcs from Store"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2022-08-11 13:36:31.839066",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "Wordpress Store",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

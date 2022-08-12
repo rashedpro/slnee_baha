@@ -1,0 +1,218 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:name1",
+ "creation": "2022-08-10 12:29:03.757409",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "id",
+  "item",
+  "name1",
+  "column_break_3",
+  "type",
+  "status",
+  "section_break_6",
+  "regular_price",
+  "column_break_8",
+  "on_sale",
+  "sale_price",
+  "section_break_11",
+  "manage_stock",
+  "stock_quantity",
+  "column_break_14",
+  "html_15",
+  "backorders",
+  "section_break_14",
+  "weight",
+  "length",
+  "column_break_17",
+  "height",
+  "width",
+  "section_break_66",
+  "description",
+  "short_description",
+  "section_break_17",
+  "related_ids",
+  "permalink"
+ ],
+ "fields": [
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "Id",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "item.item_name",
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "simple",
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "simple\ngrouped\nexternal\nvariable"
+  },
+  {
+   "default": "draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "draft\npending\nprivate\npublish"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "short_description",
+   "fieldtype": "Data",
+   "label": "Short Description"
+  },
+  {
+   "fieldname": "regular_price",
+   "fieldtype": "Currency",
+   "label": "Regular Price"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "on_sale",
+   "fieldtype": "Check",
+   "label": "On Sale"
+  },
+  {
+   "depends_on": "eval:doc.on_sale==1;",
+   "fieldname": "sale_price",
+   "fieldtype": "Currency",
+   "label": "Sale Price"
+  },
+  {
+   "fieldname": "section_break_66",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_11",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "manage_stock",
+   "fieldtype": "Check",
+   "label": "Manage Stock"
+  },
+  {
+   "depends_on": "eval:doc.manage_stock==1;",
+   "fieldname": "stock_quantity",
+   "fieldtype": "Int",
+   "label": "Stock Quantity"
+  },
+  {
+   "fieldname": "section_break_17",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "related_ids",
+   "fieldtype": "Table",
+   "label": "Related Products",
+   "options": "Store Item Item"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Float",
+   "label": "Weight"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Float",
+   "label": "Length"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "height",
+   "fieldtype": "Float",
+   "label": "Height"
+  },
+  {
+   "fieldname": "width",
+   "fieldtype": "Float",
+   "label": "Width"
+  },
+  {
+   "fieldname": "permalink",
+   "fieldtype": "Data",
+   "label": "product url"
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.manage_stock==1;",
+   "fieldname": "html_15",
+   "fieldtype": "HTML",
+   "options": "<div style=\"height: 38px;\"></div>"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "default": "Yes, but with customer notification",
+   "depends_on": "eval:doc.manage_stock==1;",
+   "fieldname": "backorders",
+   "fieldtype": "Select",
+   "label": "Allow backorders?",
+   "options": "No\nYes, but with customer notification\nYes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-08-12 10:10:27.794880",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "Store Item",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

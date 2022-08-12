@@ -37,20 +37,23 @@ class Analytics(object):
 		total_taxes=0
 		total=0
 		total_total=0
-		for i in self.data:
-			total_taxes+=self.data[i]["taxe"]
+		for i in range(len(self.data)):
+			total_taxes+=self.data[i]["taxes"]
 			total+=self.data[i]["base_total"]
-			total_total+=self.data[i]["taxe"]+self.data[i]["base_total"]
+			total_total+=self.data[i]["taxes"]+self.data[i]["base_total"]
 		if self.filters.tree_type in ["Supplier Group", "Item Group", "Customer Group", "Territory"]:
 			skip_total_row = 1
 		if self.filters["type"] in ["Sales","المبيعات"]:
-			name="Total Buyers"
+			name=_("Total Buyers")
 		else:
-			name="Total Sellers"
+			name=_("Total Sellers")
+		total_taxes=frappe.utils.fmt_money(total_taxes,currency="SAR")
+		total=frappe.utils.fmt_money(total,currency="SAR")
+		total_total=frappe.utils.fmt_money(total_total,currency="SAR")
 		report_summary = [	{"label":name,"value":len(self.data),'indicator':'Blue',"width":50},
-					 {"label":"Total","value":"<span style='color:#8400f7;'>"+str(total)+"</span>",'indicator':'Orange',"width":50},
-					{"label":"Total Taxes","value":total_taxes,'indicator':'Red',"width":50},
-					 {"label":"Total included VAT","value":total_total,'indicator':'Green',"width":50}
+					 {"label":_("Total"),"value":"<span style='color:#8400f7;'>"+str(total)+"</span>",'indicator':'Orange',"width":50},
+					{"label":_("Total Taxes"),"value":total_taxes,'indicator':'Red',"width":50},
+					 {"label":_("Total included VAT"),"value":total_total,'indicator':'Green',"width":50}
 ]
 		return self.columns, self.data ,None,None,report_summary
 

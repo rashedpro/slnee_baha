@@ -1,10 +1,17 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 /* eslint-disable */
-var styles = ".summary-value{line-height : 20px !important;}"
-var styleSheet = document.createElement("style")
-styleSheet.innerText = styles
-document.head.appendChild(styleSheet)
+
+//var style=".summary-value{line-height:px !important}";
+//var styleSheet = document.createElement("style");
+//styleSheet.innerText = styles;
+//document.head.appendChild(styleSheet);
+const style = document.createElement('style');
+style.innerHTML=".summary-value{line-height:25px !important;}";
+document.head.appendChild(style);
+
+
+// $("div").find("[data-fieldname='exclude_closed']").hide();
 
 frappe.query_reports["Sales Analytics"] = {
 	"filters": [
@@ -21,8 +28,17 @@ frappe.query_reports["Sales Analytics"] = {
 			label: __("based_on"),
 			fieldtype: "Select",
 			options: ["Sales Order","Delivery Note","Sales Invoice"],
-			default: "Sales Invoice",
-			reqd: 1
+			default: "Sales Order",
+			reqd: 1,
+			on_change: function() {
+				var based_on = frappe.query_report.get_filter_value('doc_type');
+				if (based_on =='Sales Order'){
+					$("div").find("[data-fieldname='exclude_closed']").show();
+				 }else{
+					$("div").find("[data-fieldname='exclude_closed']").hide()
+				}
+				frappe.query_report.refresh();
+			}
 		},
 		{
 			fieldname: "value_quantity",
@@ -69,6 +85,12 @@ frappe.query_reports["Sales Analytics"] = {
 			],
 			default: "Monthly",
 			reqd: 1
+		},
+		{
+			fieldname: "exclude_closed",
+			label: __("Exclude Closed Sales Orders"),
+			fieldtype:"Check",
+			default :1
 		}
 	],
 	after_datatable_render: function(datatable_obj) {
