@@ -12,10 +12,25 @@
   "column_break_6",
   "key",
   "secret",
+  "shopping_cart_section",
+  "company",
+  "default_warehouse",
+  "price_list",
+  "column_break_12",
+  "customer_group",
+  "territory",
+  "quotation_series",
+  "sales_taxes_and_charges_template",
+  "section_break_15",
+  "taxes",
   "section_break_9",
-  "sync_stock",
+  "sync",
+  "opening_data_section",
   "get_categories",
-  "get_products"
+  "get_products",
+  "get_customers",
+  "get_orders",
+  "tax_per"
  ],
  "fields": [
   {
@@ -44,18 +59,12 @@
   {
    "fieldname": "section_break_9",
    "fieldtype": "Section Break",
-   "label": "Stock"
+   "label": "Sync"
   },
   {
    "fieldname": "url",
    "fieldtype": "Data",
    "label": "Woocommerce Server URL"
-  },
-  {
-   "default": "0",
-   "fieldname": "sync_stock",
-   "fieldtype": "Check",
-   "label": "Enable Sync"
   },
   {
    "fieldname": "get_categories",
@@ -66,12 +75,111 @@
    "fieldname": "get_products",
    "fieldtype": "Button",
    "label": "Get Produtcs from Store"
+  },
+  {
+   "fieldname": "get_orders",
+   "fieldtype": "Button",
+   "label": "Get Orders from Store"
+  },
+  {
+   "fieldname": "shopping_cart_section",
+   "fieldtype": "Section Break",
+   "label": "Shopping cart"
+  },
+  {
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Default Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "price_list",
+   "fieldtype": "Link",
+   "label": "Price List",
+   "options": "Price List",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_group",
+   "fieldtype": "Link",
+   "label": "Default Customer Group",
+   "options": "Customer Group",
+   "reqd": 1
+  },
+  {
+   "default": "WP-QN-.#",
+   "fieldname": "quotation_series",
+   "fieldtype": "Select",
+   "label": "Quotation Series",
+   "options": "QN-.#\nWP-QN-.#",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "opening_data_section",
+   "fieldtype": "Section Break",
+   "label": "Opening data"
+  },
+  {
+   "fieldname": "sales_taxes_and_charges_template",
+   "fieldtype": "Link",
+   "label": "Sales Taxes and Charges Template",
+   "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "taxes",
+   "fieldtype": "Table",
+   "label": "taxes",
+   "options": "Sales Taxes and Charges",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "sync",
+   "fieldtype": "Check",
+   "label": "Enable Sync"
+  },
+  {
+   "default": "0",
+   "fieldname": "tax_per",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "tax_per"
+  },
+  {
+   "fieldname": "get_customers",
+   "fieldtype": "Button",
+   "label": "Get Customers from Store"
+  },
+  {
+   "fieldname": "territory",
+   "fieldtype": "Link",
+   "label": "Default Customer Territory",
+   "options": "Territory",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-11 13:36:31.839066",
+ "modified": "2022-08-26 16:11:33.404153",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Wordpress Store",

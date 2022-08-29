@@ -46,9 +46,10 @@
    "read_only": 1
   }
  ],
+ "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-10 13:45:25.460498",
+ "modified": "2022-08-26 14:01:20.351308",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Store Category",

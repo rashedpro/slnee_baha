@@ -21,10 +21,37 @@ frappe.ui.form.on('Wordpress Store', {
 	get_categories : function(frm){
 		frm.call({
 			doc:frm.doc,
+			freeze:true,
+			freeze_message: __("Fetching Categories, please wait."),
 			method: "get_categories",
+			})},
+	get_products : function(frm){
+		frm.call({
+			doc:frm.doc,
+			freeze:true,
+			freeze_message: __("Fetching Products, please wait."),
+			method: "get_products",
+			})},
+	get_customers :  function(frm){
+		frm.call({
+			doc:frm.doc,
+			freeze: true,
+			freeze_message: __("Fetching Customers, please wait."),
+			method: "get_customers",
+			})},
+	get_orders : function(frm){
+		frm.call({
+			doc:frm.doc,
+			freeze: true,
+			freeze_message: __("Fetching Orders, please wait."),
+			method: "get_orders",
+			})},
+	sales_taxes_and_charges_template : function(frm){
+		console.log("taxes");
+		frm.call({
+			doc:frm.doc,
+			method: "get_taxes",
 			})
-
-
-
+		frm.refresh_field("taxes");
 	}
 });

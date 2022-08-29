@@ -8,12 +8,15 @@
  "engine": "InnoDB",
  "field_order": [
   "id",
-  "item",
   "name1",
+  "warehouse",
   "column_break_3",
   "type",
   "status",
+  "s",
+  "items",
   "section_break_6",
+  "tax",
   "regular_price",
   "column_break_8",
   "on_sale",
@@ -34,13 +37,26 @@
   "description",
   "short_description",
   "section_break_17",
+  "images_section",
+  "image_1",
+  "image_4",
+  "column_break_34",
+  "image_2",
+  "image_5",
+  "column_break_37",
+  "image_3",
+  "image_6",
+  "section_break_37",
   "related_ids",
-  "permalink"
+  "update_store",
+  "permalink",
+  "tax_per"
  ],
  "fields": [
   {
    "fieldname": "id",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Id",
    "read_only": 1
   },
@@ -66,6 +82,8 @@
    "default": "draft",
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Status",
    "options": "draft\npending\nprivate\npublish"
   },
@@ -86,7 +104,9 @@
   {
    "fieldname": "regular_price",
    "fieldtype": "Currency",
-   "label": "Regular Price"
+   "in_list_view": 1,
+   "label": "Regular Price",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_8",
@@ -96,6 +116,7 @@
    "default": "0",
    "fieldname": "on_sale",
    "fieldtype": "Check",
+   "in_standard_filter": 1,
    "label": "On Sale"
   },
   {
@@ -116,6 +137,7 @@
    "default": "0",
    "fieldname": "manage_stock",
    "fieldtype": "Check",
+   "in_standard_filter": 1,
    "label": "Manage Stock"
   },
   {
@@ -164,7 +186,8 @@
   },
   {
    "fieldname": "permalink",
-   "fieldtype": "Data",
+   "fieldtype": "Text",
+   "hidden": 1,
    "label": "product url"
   },
   {
@@ -178,23 +201,102 @@
    "options": "<div style=\"height: 38px;\"></div>"
   },
   {
-   "fieldname": "item",
-   "fieldtype": "Link",
-   "label": "Item",
-   "options": "Item"
-  },
-  {
    "default": "Yes, but with customer notification",
    "depends_on": "eval:doc.manage_stock==1;",
    "fieldname": "backorders",
    "fieldtype": "Select",
    "label": "Allow backorders?",
    "options": "No\nYes, but with customer notification\nYes"
+  },
+  {
+   "default": "1",
+   "fieldname": "update_store",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "update_store"
+  },
+  {
+   "fieldname": "images_section",
+   "fieldtype": "Section Break",
+   "label": "Images"
+  },
+  {
+   "fieldname": "image_1",
+   "fieldtype": "Attach Image",
+   "label": "Image 1"
+  },
+  {
+   "fieldname": "image_4",
+   "fieldtype": "Attach Image",
+   "label": "Image 4"
+  },
+  {
+   "fieldname": "column_break_34",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "image_2",
+   "fieldtype": "Attach Image",
+   "label": "Image 2"
+  },
+  {
+   "fieldname": "image_5",
+   "fieldtype": "Attach Image",
+   "label": "Image 5"
+  },
+  {
+   "fieldname": "column_break_37",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "image_3",
+   "fieldtype": "Attach Image",
+   "label": "Image 3"
+  },
+  {
+   "fieldname": "image_6",
+   "fieldtype": "Attach Image",
+   "label": "Image 6"
+  },
+  {
+   "fieldname": "section_break_37",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "s",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Store Item List"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "default": "0",
+   "fieldname": "tax",
+   "fieldtype": "Currency",
+   "label": "Total Tax",
+   "options": "Sales Taxes and Charges",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tax_per",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "tax per"
   }
  ],
+ "image_field": "image_1",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-12 10:10:27.794880",
+ "modified": "2022-08-26 11:28:52.141780",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Store Item",

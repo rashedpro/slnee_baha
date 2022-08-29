@@ -42,6 +42,15 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Quotations",
+   "link_to": "Quotation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Integrations",
    "link_type": "DocType",
    "onboard": 0,
@@ -57,12 +66,26 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-11 14:07:39.975182",
+ "modified": "2022-08-26 10:25:44.396620",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Store",
  "owner": "Administrator",
  "pin_to_bottom": 1,
  "pin_to_top": 0,
- "shortcuts": []
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Products",
+   "link_to": "Store Item",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Quotations",
+   "link_to": "Quotation",
+   "restrict_to_domain": "",
+   "type": "DocType"
+  }
+ ]
 }
