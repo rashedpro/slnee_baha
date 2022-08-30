@@ -2,9 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Wordpress Store', {
-	// refresh: function(frm) {
-
-	// }
+	 refresh: function(frm) {
+		 frm.add_custom_button(__("Fetch Orders"), function() {
+			frm.call({
+			doc:frm.doc,
+			freeze: true,
+			freeze_message: __("Fetching Orders, please wait."),
+			method: "get_orders",
+			})
+		})
+	 },
 	test : function(frm){
 		frm.call({
 			doc:frm.doc,

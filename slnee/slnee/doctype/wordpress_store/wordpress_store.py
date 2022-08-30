@@ -29,25 +29,37 @@ class WordpressStore(Document):
 	@frappe.whitelist()
 	def get_orders(self):
 		wcapi=get_api(timeout=10)
-		settings=frappe.get_doc("Wordpress Store")
 		if wcapi==-1:
 			return
-		orders=wcapi.get("orders",params={"per_page":100})
-		for o in orders.json()[:10]:
+		orders=wcapi.get("orders",params={"per_page":100,"status":"processing"})
+		existed_orders=frappe.db.get_list("Quotation",filters=[["wordpress_id","not in",[]]],fields=["wordpress_id"])
+		existed_orders=[ str(i["wordpress_id"]) for i in existed_orders]
+		print(existed_orders)
+		settings=frappe.get_doc("Wordpress Store")
+		for o in orders.json():
+			print(o["id"])
+			if str(o["id"]) in existed_orders:
+				continue
 			customer_id=o["customer_id"]
-			#frappe.throw(str(o["customer_id"]))
-			l=frappe.db.get_list("Customer",filters={"wordpress_id":customer_id})
-			if len(l)==0:
-				name=get_customer(customer_id)
+			if str(customer_id)=="0":
+				name=o["billing"]["first_name"]+" "+o["billing"]["last_name"]
+				name=get_customer(customer_id,o["billing"])
 			else:
-				name=l[0]["name"]
+				l=frappe.db.get_list("Customer",filters={"wordpress_id":customer_id})
+				if len(l)==0:
+					name=get_customer(customer_id)
+				else:
+					name=l[0]["name"]
 			if not name:
-				return
+				print("no customer found.")
+				continue
 			doc=frappe.new_doc("Quotation")
-			doc.naming_series=settings.quotations_series
-			doc.order_type="Shopping_cart"
+			doc.wordpress_id=o["id"]
+			doc.naming_series=settings.quotation_series
+			doc.order_type="Shopping Cart"
 			doc.party_name=name
-			frappe.throw("here")
+			doc.taxes_and_charges=settings.sales_taxes_and_charges_template
+			doc.taxes=settings.taxes
 			for i in o["line_items"]:
 				item=frappe.get_doc("Store Item",i["name"])
 				qty=i["quantity"]
@@ -59,7 +71,13 @@ class WordpressStore(Document):
 						row.rate=it.sale_price
 					else:
 						row.rate=it.price
-			doc.insert()
+			try:
+				if len(doc.items)>0:
+					doc.insert()
+					if settings.submit_quotations:
+						doc.submit()
+			except:
+				continue
 	@frappe.whitelist()
 	def get_categories(self):
 		wcapi=self.get_api()
@@ -160,32 +178,38 @@ class WordpressStore(Document):
 			return wcapi
 		except:
 			return -1
-def get_customer(id):
+def get_customer(id,bill=None):
 	wcapi=get_api()
 	if wcapi==-1:
 		return
 	url="customers/"+str(id)
 	c=wcapi.get(url).json()
-	#settings=frappe.get_doc("Wordpress Store")
-	if "id" in c.keys():
+	if "id" in c.keys() or bill :
 		settings=frappe.get_doc("Wordpress Store")
-		return save_customer(c,settings)
+		return save_customer(c,settings,bill=bill)
 	return
-def save_customer(c,settings):
+def save_customer(c,settings,bill=None):
 	if True:
 		doc=frappe.new_doc("Customer")
 		doc.customer_group=settings.customer_group
 		doc.territory=settings.territory
-		doc.wordpress_id=c["id"]
-		doc.customer_name=c["first_name"]+" "+c["last_name"]
+		if bill:
+			doc.wordpress_id= "0"
+			email=bill["email"]
+			doc.customer_name=bill["first_name"]+" "+bill["last_name"]
+		else:
+			email=c["email"]
+			doc.wordpress_id=c["id"]
+			doc.customer_name=c["first_name"]+" "+c["last_name"]
+		if not bill:
+			bill=c["billing"]
 		try:
-			doc.mobile_no=c["billing"]["phone"]
+			doc.mobile_no=bill["phone"]
 		except:
 			a=0
 		if doc.customer_name not in [""," ",None]:
 			doc.insert(ignore_if_duplicate=True)
-			if c["billing"]:
-				bill=c["billing"]
+			if bill :
 				address=frappe.new_doc("Address")
 				address.address_title=doc.name
 				address.address_line1=bill["address_1"]
@@ -196,7 +220,7 @@ def save_customer(c,settings):
 				address.state=bill["state"]
 				address.pincode=bill["postcode"]
 				address.phone=bill["phone"]
-				address.email=c["email"]
+				address.email=email
 				customer=address.append("links",{})
 				customer.link_doctype="Customer"
 				customer.link_name=doc.name

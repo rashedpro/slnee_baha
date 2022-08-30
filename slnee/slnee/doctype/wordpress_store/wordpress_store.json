@@ -16,13 +16,12 @@
   "company",
   "default_warehouse",
   "price_list",
+  "sales_taxes_and_charges_template",
   "column_break_12",
   "customer_group",
   "territory",
   "quotation_series",
-  "sales_taxes_and_charges_template",
-  "section_break_15",
-  "taxes",
+  "submit_quotations",
   "section_break_9",
   "sync",
   "opening_data_section",
@@ -30,7 +29,8 @@
   "get_products",
   "get_customers",
   "get_orders",
-  "tax_per"
+  "tax_per",
+  "taxes"
  ],
  "fields": [
   {
@@ -140,17 +140,6 @@
    "options": "Sales Taxes and Charges Template"
   },
   {
-   "fieldname": "section_break_15",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "taxes",
-   "fieldtype": "Table",
-   "label": "taxes",
-   "options": "Sales Taxes and Charges",
-   "read_only": 1
-  },
-  {
    "default": "0",
    "fieldname": "sync",
    "fieldtype": "Check",
@@ -174,12 +163,25 @@
    "label": "Default Customer Territory",
    "options": "Territory",
    "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "submit_quotations",
+   "fieldtype": "Check",
+   "label": "submit Quotations"
+  },
+  {
+   "fieldname": "taxes",
+   "fieldtype": "Table",
+   "hidden": 1,
+   "label": "taxes",
+   "options": "Sales Taxes and Charges"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-26 16:11:33.404153",
+ "modified": "2022-08-30 14:25:23.697273",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Wordpress Store",
