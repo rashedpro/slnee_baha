@@ -30,15 +30,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Categories",
-   "link_to": "Store Category",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Customers",
    "link_to": "Customer",
    "link_type": "DocType",
@@ -66,7 +57,7 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Reports",
+   "label": "Others",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -74,10 +65,37 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Categories",
+   "link_to": "Store Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attribute",
+   "link_to": "Store Item Attribute",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
    "label": "Store Quotations Trends",
    "link_to": "Store Quotation Trends",
    "link_type": "Report",
    "onboard": 0,
+   "only_for": "",
    "type": "Link"
   },
   {
@@ -98,7 +116,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-30 17:31:48.851223",
+ "modified": "2022-09-07 11:28:27.439951",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Store",
