@@ -4,6 +4,7 @@
  "autoname": "naming_series:",
  "creation": "2022-09-05 14:12:00.663709",
  "doctype": "DocType",
+ "document_type": "Document",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
@@ -11,6 +12,7 @@
   "naming_series",
   "column_break_3",
   "status",
+  "required_by",
   "items_section",
   "items",
   "amended_from"
@@ -38,12 +40,13 @@
   },
   {
    "allow_on_submit": 1,
-   "default": "Draft",
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Status",
    "options": "\nDraft\nOpen\nManufactured\nPartially Manufactured\nCancelled",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -61,12 +64,18 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "required_by",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Required By"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-06 13:30:55.366162",
+ "modified": "2022-09-09 10:16:59.896645",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Intern Sales Order",

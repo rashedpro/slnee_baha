@@ -11,9 +11,13 @@ from frappe.utils import add_days, cint, cstr, flt, get_link_to_form, getdate, n
 
 class InternSalesOrder(Document):
 
+	#def before_save(self):
+	#	if self.docstatus==0:
+	#		self.status=="Draft"
+
 	def on_submit(self):
 		self.status='Open'
-
+		self.save()
 	def on_cancel(self):
 		self.status="Cancelled"
 

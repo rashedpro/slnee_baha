@@ -7,8 +7,18 @@ frappe.ui.form.on('Intern Sales Order', {
 
 		if (frm.doc.docstatus==1 && (frm.doc.status=="Open" || frm.doc.status=="Partially Manufactured")){
 			frm.add_custom_button(__('Work Order'), () => make_work_order(frm), __('Create'));
-	 }}
+	 }},
+	required_by :function(frm) {
+		for (var i =0;i<frm.doc.items.length;i++){
+			frm.doc.items[i].schedule_date=frm.doc.required_by;
+		}
+		refresh_field("items");
+
+	}
 });
+
+
+
 
 frappe.ui.form.on('Intern Sales Order ITem', {
 	item_code(frm,cdt,cdn){
@@ -28,6 +38,7 @@ frappe.ui.form.on('Intern Sales Order ITem', {
 					row.item_name=i.item_name;
 					row.qty=1;
 					row.conversion_factor=1;
+					if (frm.doc.required_by){row.schedule_date=frm.doc.required_by};
 					refresh_field("items");
 				}
 			}
