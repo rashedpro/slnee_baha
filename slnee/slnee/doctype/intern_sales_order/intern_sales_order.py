@@ -20,7 +20,16 @@ class InternSalesOrder(Document):
 		self.save()
 	def on_cancel(self):
 		self.status="Cancelled"
-
+	def lon_save(self):
+		finished=True
+		for i in self.items:
+			if i.qty>i.ordered_qty:
+				finished=False
+				break
+		if finished:
+			self.status="Manufactured"
+		self.save()
+		frappe.db.commit()
 
 	@frappe.whitelist()
 	def get_work_order_items(self, for_raw_material_request=0):
@@ -43,7 +52,7 @@ class InternSalesOrder(Document):
 					total_work_order_qty = flt(
 						frappe.db.sql(
 							"""select sum(qty) from `tabWork Order`
-						where production_item=%s and sales_order=%s and sales_order_item = %s and docstatus<2""",
+						where production_item=%s and intern_sales_order=%s and sales_order_item = %s and docstatus<2""",
 							(i.item_code, self.name, i.name),
 						)[0][0]
 					)
@@ -71,7 +80,7 @@ def make_work_orders(items, sales_order, company, project=None):
 	"""Make Work Orders against the given Sales Order for the given `items`"""
 	items = json.loads(items).get("items")
 	out = []
-
+	#frappe.throw(str(items))
 	for i in items:
 		if not i.get("bom"):
 			frappe.throw(_("Please select BOM against item {0}").format(i.get("item_code")))
@@ -85,7 +94,7 @@ def make_work_orders(items, sales_order, company, project=None):
 				bom_no=i.get("bom"),
 				qty=i["pending_qty"],
 				company=company,
-				inter_sales_order=sales_order,
+				intern_sales_order=sales_order,
 				#sales_order_item=i["sales_order_item"],
 				project=project,
 				fg_warehouse=i["warehouse"],
@@ -97,5 +106,13 @@ def make_work_orders(items, sales_order, company, project=None):
 		work_order.save()
 		out.append(work_order)
 
-	frappe.db.set_value("Intern Sales Order",sales_order,"status","Manufactured")
+	#frappe.throw(str(out)+"&")
+	#frappe.db.set_value("Intern Sales Order",sales_order,"status","Manufactured")
+	order=frappe.get_doc("Intern Sales Order",sales_order)
+	for i in items:
+		for o in order.items:
+			if i["item_code"]==o.item_code:
+				o.ordered_qty=o.ordered_qty+i["pending_qty"]
+	order.save()
+	frappe.db.commit()
 	return [p.name for p in out]

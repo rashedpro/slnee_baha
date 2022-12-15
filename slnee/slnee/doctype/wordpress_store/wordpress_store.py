@@ -7,6 +7,19 @@ from woocommerce import API
 from frappe.model.document import Document
 
 class WordpressStore(Document):
+
+	def validate(self):
+		warehouses=self.default_warehouse
+		type="all" if len(warehouses)==0 else "default"
+		warehouses=[w.warehouse for w in warehouses]
+		warehouses=str(warehouses)
+		defaults=frappe.db.get_list("Store Item List",filters=[["warehouse_type","in",["all","default"] ]])
+		#frappe.throw(type)
+		for d in defaults:
+			frappe.db.set_value("Store Item List",d["name"],"warehouse",warehouses)
+			frappe.db.set_value("Store Item List",d["name"],"warehouse_type",type)
+		frappe.db.commit()
+
 	@frappe.whitelist()
 	def test(self):
 		if not self.url:
@@ -96,6 +109,27 @@ class WordpressStore(Document):
 			doc.insert(ignore_if_duplicate=True)
 		frappe.db.commit()
 	@frappe.whitelist()
+	def get_attributes(self):
+		wcapi=self.get_api()
+		if wcapi==-1:
+			return
+		attributes=wcapi.get("products/attributes")
+		for a in attributes.json():
+			doc=frappe.new_doc("Product Attribute")
+			doc.name1=a["name"]
+			doc.id=a["id"]
+			doc.type=a["type"]
+			terms=wcapi.get("products/attributes/"+str(doc.id)+"/terms")
+			for t in terms.json():
+				row=doc.append("terms", {})
+				row.id=t["id"]
+				row.name1=t["name"]
+				row.description=t["description"]
+			doc.insert(ignore_if_duplicate=True)
+
+		frappe.db.commit()
+
+	@frappe.whitelist()
 	def get_products(self):
 		wcapi=self.get_api()
 		if wcapi==-1:
@@ -148,6 +182,9 @@ class WordpressStore(Document):
 			for e in p["related_ids"]:
 				item= doc.append("related_ids",{})
 				item.id=e
+			for c in p["categories"]:
+				category=doc.append("categories",{})
+				category.category=c["name"]
 			doc.insert(ignore_if_duplicate=True)
 		return 
 	@frappe.whitelist()

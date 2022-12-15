@@ -13,7 +13,11 @@
   "column_break_3",
   "type",
   "status",
+  "last_sync",
   "s",
+  "has_variants",
+  "attribute",
+  "attribute_id",
   "items",
   "section_break_6",
   "tax",
@@ -46,11 +50,14 @@
   "column_break_37",
   "image_3",
   "image_6",
+  "section_break_40",
+  "categories",
   "section_break_37",
   "related_ids",
   "update_store",
   "permalink",
-  "tax_per"
+  "tax_per",
+  "variants"
  ],
  "fields": [
   {
@@ -58,7 +65,8 @@
    "fieldtype": "Data",
    "in_standard_filter": 1,
    "label": "Id",
-   "read_only": 1
+   "read_only": 1,
+   "unique": 1
   },
   {
    "fetch_from": "item.item_name",
@@ -88,6 +96,7 @@
    "options": "draft\npending\nprivate\npublish"
   },
   {
+   "depends_on": "eval:doc.type!=\"variable\";",
    "fieldname": "section_break_6",
    "fieldtype": "Section Break"
   },
@@ -130,6 +139,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "depends_on": "eval:doc.type!=\"variable\";",
    "fieldname": "section_break_11",
    "fieldtype": "Section Break"
   },
@@ -144,7 +154,8 @@
    "depends_on": "eval:doc.manage_stock==1;",
    "fieldname": "stock_quantity",
    "fieldtype": "Int",
-   "label": "Stock Quantity"
+   "label": "Stock Quantity",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_17",
@@ -157,6 +168,7 @@
    "options": "Store Item Item"
   },
   {
+   "depends_on": "eval:doc.type!=\"variable\";",
    "fieldname": "section_break_14",
    "fieldtype": "Section Break"
   },
@@ -274,9 +286,9 @@
   },
   {
    "fieldname": "warehouse",
-   "fieldtype": "Link",
+   "fieldtype": "Table MultiSelect",
    "label": "Warehouse",
-   "options": "Warehouse"
+   "options": "Multiple Warehouse"
   },
   {
    "default": "0",
@@ -291,12 +303,57 @@
    "fieldtype": "Currency",
    "hidden": 1,
    "label": "tax per"
+  },
+  {
+   "fieldname": "section_break_40",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "categories",
+   "fieldtype": "Table",
+   "label": "categories",
+   "options": "Store Category Item"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_variants",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Has variants"
+  },
+  {
+   "default": "height",
+   "depends_on": "eval:doc.type==\"variable\";",
+   "fieldname": "attribute",
+   "fieldtype": "Link",
+   "label": "Attribute",
+   "mandatory_depends_on": "eval:doc.type==\"variable\";",
+   "options": "Product Attribute"
+  },
+  {
+   "fetch_from": "attribute.id",
+   "fieldname": "attribute_id",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "attribute id"
+  },
+  {
+   "fieldname": "variants",
+   "fieldtype": "Data",
+   "label": "variants",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_sync",
+   "fieldtype": "Datetime",
+   "label": "Last Sync",
+   "read_only": 1
   }
  ],
  "image_field": "image_1",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-26 11:28:52.141780",
+ "modified": "2022-12-15 10:12:30.861607",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Store Item",

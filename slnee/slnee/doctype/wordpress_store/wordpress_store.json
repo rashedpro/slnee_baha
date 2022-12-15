@@ -24,6 +24,7 @@
   "section_break_9",
   "sync",
   "opening_data_section",
+  "get_attributes",
   "get_categories",
   "get_products",
   "get_customers",
@@ -87,15 +88,14 @@
   },
   {
    "fieldname": "default_warehouse",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Table MultiSelect",
    "label": "Default Warehouse",
-   "options": "Warehouse",
-   "reqd": 1
+   "options": "Multiple Warehouse"
   },
   {
    "fieldname": "company",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Company",
    "options": "Company",
    "reqd": 1
@@ -103,6 +103,7 @@
   {
    "fieldname": "price_list",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Price List",
    "options": "Price List",
    "reqd": 1
@@ -114,6 +115,7 @@
   {
    "fieldname": "customer_group",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Default Customer Group",
    "options": "Customer Group",
    "reqd": 1
@@ -159,6 +161,7 @@
   {
    "fieldname": "territory",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Default Customer Territory",
    "options": "Territory",
    "reqd": 1
@@ -175,12 +178,17 @@
    "hidden": 1,
    "label": "taxes",
    "options": "Sales Taxes and Charges"
+  },
+  {
+   "fieldname": "get_attributes",
+   "fieldtype": "Button",
+   "label": "Get Attributes"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-09-08 17:43:41.214913",
+ "modified": "2022-12-12 16:39:13.253298",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Wordpress Store",

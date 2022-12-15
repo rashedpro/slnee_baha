@@ -25,6 +25,13 @@ frappe.ui.form.on('Wordpress Store', {
 }
 		})
 	},
+	get_attributes : function(frm){
+		frm.call({
+			doc:frm.doc,
+			freeze:true,
+			freeze_message: __("Fetching Attributes, please wait."),
+			method: "get_attributes",
+			})},
 	get_categories : function(frm){
 		frm.call({
 			doc:frm.doc,

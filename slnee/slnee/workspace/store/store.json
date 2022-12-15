@@ -75,7 +75,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Attribute",
-   "link_to": "Store Item Attribute",
+   "link_to": "Product Attribute",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -114,9 +114,18 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add Items Tool",
+   "link_to": "Add Items to Store Tool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-09-07 11:28:27.439951",
+ "modified": "2022-12-14 09:16:25.382596",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Store",

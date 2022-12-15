@@ -1,0 +1,162 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-11-21 15:54:20.594606",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "insert",
+  "defaults_section",
+  "price_list",
+  "tax_template",
+  "category_type",
+  "c1",
+  "warehouse",
+  "status",
+  "new_category",
+  "old_category",
+  "filters_section",
+  "item_group",
+  "have_price_list",
+  "column_break_3",
+  "items_number",
+  "in_stock",
+  "section_break_3",
+  "items"
+ ],
+ "fields": [
+  {
+   "fieldname": "filters_section",
+   "fieldtype": "Section Break",
+   "label": "Filters"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Item Group",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Store Item List"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "items_number",
+   "fieldtype": "Data",
+   "label": "Items",
+   "read_only": 1
+  },
+  {
+   "fieldname": "defaults_section",
+   "fieldtype": "Section Break",
+   "label": "Defaults"
+  },
+  {
+   "fieldname": "price_list",
+   "fieldtype": "Link",
+   "label": "Price List",
+   "options": "Price List"
+  },
+  {
+   "fieldname": "c1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Table MultiSelect",
+   "label": "Warehouse",
+   "options": "Multiple Warehouse"
+  },
+  {
+   "fieldname": "tax_template",
+   "fieldtype": "Link",
+   "label": "Tax template",
+   "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "draft\npublish"
+  },
+  {
+   "default": "0",
+   "fieldname": "have_price_list",
+   "fieldtype": "Check",
+   "label": "have price list"
+  },
+  {
+   "default": "0",
+   "fieldname": "in_stock",
+   "fieldtype": "Check",
+   "label": "in stock"
+  },
+  {
+   "depends_on": "eval:doc.items.length>0;",
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.items.length>0;",
+   "fieldname": "insert",
+   "fieldtype": "Button",
+   "label": "Insert"
+  },
+  {
+   "fieldname": "category_type",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "Create new category\nadd to existing category"
+  },
+  {
+   "depends_on": "eval:doc.category_type==\"Create new category\";",
+   "fetch_from": "item_group.name",
+   "fieldname": "new_category",
+   "fieldtype": "Data",
+   "label": "New Category Name"
+  },
+  {
+   "depends_on": "eval:doc.category_type!=\"Create new category\";",
+   "fieldname": "old_category",
+   "fieldtype": "Link",
+   "label": "Category",
+   "options": "Store Category"
+  }
+ ],
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2022-12-15 10:58:12.998164",
+ "modified_by": "Administrator",
+ "module": "Slnee",
+ "name": "Add Items to Store Tool",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

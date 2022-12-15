@@ -27,11 +27,11 @@
   "conversion_factor",
   "stock_qty",
   "qty_info_sec_break",
+  "ordered_qty",
   "min_order_qty",
   "projected_qty",
   "qty_info_col_break",
   "actual_qty",
-  "ordered_qty",
   "received_qty",
   "rate_and_amount_section_break",
   "rate",
@@ -230,6 +230,7 @@
   {
    "fieldname": "stock_qty",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Stock Qty",
    "no_copy": 1,
    "print_hide": 1,
@@ -242,6 +243,7 @@
   {
    "fieldname": "min_order_qty",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Min Order Qty",
    "no_copy": 1,
    "oldfieldname": "min_order_qty",
@@ -255,6 +257,7 @@
    "allow_on_submit": 1,
    "fieldname": "projected_qty",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Projected Qty",
    "no_copy": 1,
    "oldfieldname": "projected_qty",
@@ -271,6 +274,7 @@
   {
    "fieldname": "actual_qty",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Actual Qty",
    "no_copy": 1,
    "print_hide": 1,
@@ -278,20 +282,21 @@
    "report_hide": 1
   },
   {
-   "depends_on": "eval:doc.docstatus==1",
+   "allow_on_submit": 1,
    "fieldname": "ordered_qty",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Completed Qty",
    "no_copy": 1,
    "oldfieldname": "ordered_qty",
    "oldfieldtype": "Currency",
-   "print_hide": 1,
-   "read_only": 1
+   "print_hide": 1
   },
   {
    "depends_on": "eval:doc.docstatus==1",
    "fieldname": "received_qty",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Received Qty",
    "no_copy": 1,
    "print_hide": 1,
@@ -465,7 +470,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-09-05 18:56:40.306029",
+ "modified": "2022-09-21 12:48:39.954852",
  "modified_by": "Administrator",
  "module": "Slnee",
  "name": "Intern Sales Order ITem",

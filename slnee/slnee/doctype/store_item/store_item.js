@@ -4,17 +4,57 @@
 frappe.ui.form.on('Store Item', {
 	 refresh: function(frm) {
 		frm.add_custom_button(__("Open Link"), function() {
-			if (frm.doc.permalink != "" ){
+			if (frm.doc.permalink && frm.doc.permalink != "" ){
 			window.open(frm.doc.permalink,'_blank');}
+			else{
+				frappe.msgprint(__('Item not synchronized to store'));
+			}
 
-		})
+		}),
+		frm.add_custom_button(__("Reload from Store"), function() {
+		
+
+		}),
+		frm.add_custom_button(__("Sync to Store"), function() {
+			frappe.msgprint({
+				title: __('Sync'),
+				message: __('Are you sure you want to Sync data with the store?'),
+				primary_action:{
+					 action(values) {
+						cur_dialog.hide();
+						frappe.call({
+							async:false,
+							doc:frm.doc,
+							args:{"show_alert":true},
+							method:"sync_to_store",
+							//freeze: true,
+							//freeze_message: __("synchronizing"),
+							callback(r) {if(r.message){ frm.reload_doc();refresh_field("last_sync") }}
+						})
+					}
+				}
+			});
+		});
 	 },
+	has_variants: function(frm){
+		if(frm.doc.has_variants){frm.set_value("type","variable")}
+		else{frm.set_value("type","simple")}
+		refresh_field("type")
+
+
+	},
 	warehouse: function(frm){
+		var warehouses=[];
+		if (frm.doc.warehouse){
+			for (var i=0;i<frm.doc.warehouse.length;i++){
+				warehouses.push(frm.doc.warehouse[i].warehouse)
+		}}
+		console.log("warehouse chanegd")
 		for (var i=0;i<frm.doc.items.length;i++){
 			var item=frm.doc.items[i];
 			frappe.call({
 				async:false,
-				args:{"item":item.item,"warehouse":frm.doc.warehouse},
+				args:{"item":item.item,"warehouse":warehouses},
 				method:"slnee.slnee.doctype.store_item.store_item.get_item_info",
 				callback(r) {
 					if(r.message){
@@ -22,6 +62,7 @@ frappe.ui.form.on('Store Item', {
 						item.price=parseFloat(ans[0]);
 						item.tax=parseFloat(ans[2])
 						item.stock=parseFloat(ans[1]);
+						//item.warehouse=frm.doc.warehouse;
 					}
 				}
 			})
@@ -32,8 +73,14 @@ frappe.ui.form.on('Store Item', {
 });
 	frappe.ui.form.on('Store Item List','item' ,function(frm,cdt,cdn){
 		var item = locals[cdt][cdn];
+		var warehouses=[];
+		if (frm.doc.warehouse){
+		for (var i=0;i<frm.doc.warehouse.length;i++){
+			warehouses.push(frm.doc.warehouse[i].warehouse)
+		}}
+		console.log(warehouses);
 		frappe.call({
-			args:{"item":item.item,"warehouse":frm.doc.warehouse},
+			args:{"item":item.item,"warehouse":warehouses},
 			method:"slnee.slnee.doctype.store_item.store_item.get_item_info",
 			callback(r) {
 				if(r.message){
@@ -41,6 +88,7 @@ frappe.ui.form.on('Store Item', {
 					item.price=parseFloat(ans[0]);
 					item.stock=parseFloat(ans[1]);
 					item.tax=parseFloat(ans[2])
+					//item.warehouse=frm.doc.warehouse;
 					frm.refresh_field("items");
 					set_total_price(frm);
 				}
