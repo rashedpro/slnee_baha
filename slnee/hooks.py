@@ -15,8 +15,10 @@ doc_events = {
         "Company": {
 
         "before_validate": "slnee.color.change_color"
-		}
-
+		},
+        "Payroll Entry":{
+        "validate":["slnee.slnee.custom_hr.common.payroll_common.assign_override_methods"]
+    }
 }
 
 
